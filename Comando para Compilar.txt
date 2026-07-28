@@ -1,0 +1,19 @@
+COMPILAR EL PROYECTO:
+    php -S localhost:8000 -t Publico
+
+COMPILAR LA BASE DE DATOS:
+    sudo mysql < baseDatos1.sql
+
+COMPROBAR QUE SE COMPILO CORRECTAMENTE(BASE DE DATOS):
+    sudo mysql
+
+VER TABLAS:
+    SHOW DATABASES;
+    USE baseDatos1;
+    SHOW TABLES;
+
+CREAR USUARIO CON PRIVILEGIOS EN MYSQL:
+    CREATE USER 'key'@'localhost' IDENTIFIED BY '2323';
+    GRANT ALL PRIVILEGES ON baseDatos1.* TO 'appuser'@'localhost';
+    FLUSH PRIVILEGES;
+    EXIT;

@@ -1,0 +1,57 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container {
+    background-color: #F4F6F9;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.info-container{
+    background-color: #1B2A4A;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+}
+
+.tabla-container{
+    background-color: #1B2A4A;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+}
+
+
+.btnPerfil {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2C5F8A;
+    color: white;
+    cursor: pointer;
+}
+
+.inputPerfil{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+footer {
+    background-color: #1B2A4A;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
