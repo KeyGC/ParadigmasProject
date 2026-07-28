@@ -1,12 +1,13 @@
-// Público/js/perfil.js
 
 const URL_CONTROLADOR = 'api.php';
+let listaPerfiles = []; 
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarPerfiles();
 
     document.getElementById('formPerfil').addEventListener('submit', guardarPerfil);
     document.getElementById('btnCancelar').addEventListener('click', cancelarEdicion);
+    document.getElementById('buscador').addEventListener('input', buscarPerfiles);
 });
 
 // GETLIST
@@ -15,7 +16,8 @@ function cargarPerfiles() {
         .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
-                pintarTabla(respuesta.data);
+                listaPerfiles = respuesta.data; 
+                pintarTabla(listaPerfiles);
             } else {
                 alert(respuesta.mensaje);
             }
@@ -23,9 +25,30 @@ function cargarPerfiles() {
         .catch(err => console.error('Error al cargar perfiles:', err));
 }
 
+
+function buscarPerfiles() {
+    const query = document.getElementById('buscador').value.trim().toLowerCase();
+
+    if (query === '') {
+        pintarTabla(listaPerfiles);
+        return;
+    }
+
+    const filtrados = listaPerfiles.filter(p =>
+        p.nickname.toLowerCase().includes(query)
+    );
+
+    pintarTabla(filtrados);
+}
+
 function pintarTabla(perfiles) {
     const cuerpo = document.getElementById('cuerpoTabla');
     cuerpo.innerHTML = '';
+
+    if (perfiles.length === 0) {
+        cuerpo.innerHTML = `<tr><td colspan="4" style="text-align:center;">No se encontraron resultados</td></tr>`;
+        return;
+    }
 
     perfiles.forEach(p => {
         const fila = document.createElement('tr');
@@ -42,7 +65,7 @@ function pintarTabla(perfiles) {
     });
 }
 
-// GETPERFIL (para editar)
+
 function editarPerfil(id) {
     fetch(`${URL_CONTROLADOR}?accion=getPerfil&id=${id}`)
         .then(res => res.json())
@@ -66,7 +89,7 @@ function cancelarEdicion() {
     document.getElementById('btnCancelar').style.display = 'none';
 }
 
-// INSERT o UPDATE (según si hay id)
+// INSERT o UPDATE 
 function guardarPerfil(e) {
     e.preventDefault();
 
@@ -93,7 +116,8 @@ function guardarPerfil(e) {
             alert(respuesta.mensaje);
             if (respuesta.exito) {
                 cancelarEdicion();
-                cargarPerfiles(); // recarga solo la tabla, no la página
+                document.getElementById('buscador').value = ''; // limpiar búsqueda al guardar
+                cargarPerfiles();
             }
         })
         .catch(err => console.error('Error al guardar perfil:', err));

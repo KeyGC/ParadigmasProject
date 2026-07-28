@@ -12,6 +12,14 @@
     text-align: center;
 
 }
+.buscador-container{
+    background-color: #1B2A4A;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+}
 
 .info-container{
     background-color: #1B2A4A;
@@ -45,6 +53,13 @@
 .inputPerfil{
     margin: 10px;
     padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.inputTabla{
+    margin: 0px;
+    padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
