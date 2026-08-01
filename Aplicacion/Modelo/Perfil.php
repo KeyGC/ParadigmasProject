@@ -2,32 +2,41 @@
 // Aplicacion/Modelo/Perfil.php
 
 class Perfil {
-    private $id;
-    private $nickname;
-    private $password;
+    private $tbperfilid;
+    private $tbperfilnombre;
+    private $tbperfilcontra;
+    private $tbperfilcorreo;
+    
 
-    public function __construct($id = null, $nickname = "", $password = "") {
-        $this->id = $id;
-        $this->nickname = $nickname;
-        $this->password = $password;
+    public function __construct($id = null, $nombre = "", $contra = "", $correo = "") {
+        $this->tbperfilid = $id;
+        $this->tbperfilnombre = $nombre;
+        $this->tbperfilcontra = $contra;
+        $this->tbperfilcorreo = $correo;
     }
 
     // Getters
-    public function getId() { return $this->id; }
-    public function getNickname() { return $this->nickname; }
-    public function getPassword() { return $this->password; }
+ public function get_tbperfilid() {
+        return $this->tbperfilid;
+    }   
+    public function get_tbperfilnombre() {
+        return $this->tbperfilnombre;
+    }
+    public function get_tbperfilcontra() {
+        return $this->tbperfilcontra;
+    }
+    public function get_tbperfilcorreo() {
+        return $this->tbperfilcorreo;
+    }
 
-    // Setters
-    public function setId($id) { $this->id = $id; }
-    public function setNickname($nickname) { $this->nickname = $nickname; }
-    public function setPassword($password) { $this->password = $password; }
 
     // Para convertir a array/JSON fácilmente (sin exponer password si no quieres)
     public function toArray() {
         return [
-            "id" => $this->id,
-            "nickname" => $this->nickname,
-            "password" => $this->password
+            "tbperfilid" => $this->tbperfilid,
+            "tbperfilnombre" => $this->tbperfilnombre,
+            "tbperfilcontra" => $this->tbperfilcontra,
+            "tbperfilcorreo" => $this->tbperfilcorreo
         ];
     }
 }

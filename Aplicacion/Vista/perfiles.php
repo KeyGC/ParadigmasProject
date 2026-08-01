@@ -17,8 +17,9 @@
 
             <form id="formPerfil">
                 <input type="hidden" id="perfilId" value="">
-                <input type="text" id="nickname" class="inputPerfil" placeholder="Sobre-Nombre" required>
-                <input type="text" id="password" class="inputPerfil" placeholder="Contraseña" required>
+                <input type="text" id="nombre" class="inputPerfil" placeholder="Sobre-Nombre" required>
+                <input type="text" id="contra" class="inputPerfil" placeholder="Contraseña" required>
+                <input type="text" id="correo" class="inputPerfil" placeholder="Correo Electrónico" required>
                 <button type="submit" class="btnPerfil" id="btnGuardar">Guardar</button>
                 <button type="button" class="btnPerfil" id="btnCancelar" style="display:none;">Cancelar edición</button>
             </form>
@@ -35,6 +36,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Contraseña</th>
+                        <th>Correo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
