@@ -12,4 +12,10 @@ switch ($vista) {
     default:
         require_once APP_PATH . '/Vista/Login.php';
         break;
+    case 'perfiles':
+        require_once APP_PATH . '/Vista/perfiles.php';
+        break;
+    case 'cliente':
+        require_once APP_PATH . '/Vista/cliente.php';
+        break;
 }

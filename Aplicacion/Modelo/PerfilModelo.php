@@ -73,4 +73,18 @@ class PerfilModelo {
 
         return $stmt->execute();
     }
+
+    public function login($nombre, $contra) {
+        $sql = "SELECT * FROM tbperfil WHERE tbperfilnombre = :nombre AND tbperfilcontra = :contra";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':contra', $contra);
+        $stmt->execute();
+        $fila = $stmt->fetch();
+
+        if ($fila) {
+            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo']))->toArray();
+        }
+        return null;
+    }
 }

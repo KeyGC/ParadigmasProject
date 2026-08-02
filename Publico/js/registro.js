@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alertaRegistro.innerHTML = `
                     <div class="alert alert-success text-dark">
                         <p>${resp.mensaje}</p>
-                        <p>Tu contraseña temporal es: <strong>${resp.contraTemporal}</strong></p>
-                        <p>Guárdala, la necesitarás para iniciar sesión.</p>
+
                     </div>
                 `;
                 registroForm.reset();

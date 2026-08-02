@@ -14,6 +14,7 @@
         <div class="container-fluid  p-5  text-center" id="contenedorPrincipal">
             <div class="container bg text-light p-5 mt-5" id="contenedorFormulario">
                 <h1>Login</h1>
+                <div id="alertaLogin"></div>
                 <form id="loginForm">
                     <input type="text" id="nombre" class="form-control my-3" placeholder="SobreNombre" required>
                     <input type="password" id="contra" class="form-control mb-3" placeholder="Contraseña" required>
@@ -23,6 +24,7 @@
             </div>
         </div>
     </main>
+    <script src="js/login.js"></script>
 </body>
 
 </html>

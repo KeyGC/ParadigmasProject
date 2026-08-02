@@ -1,6 +1,7 @@
 <?php
 // Aplicacion/Controlador/PerfilControlador.php
 require_once __DIR__ . '/../Modelo/PerfilModelo.php';
+require_once __DIR__ . '/../Utilidades/EnviarCorreo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -8,7 +9,8 @@ $modelo = new PerfilModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
 // genera una contraseña temporal aleatoria,para q no caiga null 
-function generarContraTemporal($nombre) {
+function generarContraTemporal($nombre)
+{
     $base = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
     $base = substr($base, 0, 4);
     $aleatorio = substr(bin2hex(random_bytes(4)), 0, 6);
@@ -36,7 +38,6 @@ switch ($accion) {
         }
         break;
 
-    // registrar
     case 'registrar':
         $nombre = trim($_POST['nombre'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
@@ -51,20 +52,22 @@ switch ($accion) {
             break;
         }
 
-        // la contraseña se genera en el backend
         $contraTemporal = generarContraTemporal($nombre);
-
         $perfil = new Perfil(null, $nombre, $contraTemporal, $correo);
 
         try {
             $id = $modelo->insert($perfil);
 
             if ($id) {
+                $correoEnviado = enviarContrasenaTemporal($correo, $nombre, $contraTemporal);
+
                 echo json_encode([
                     "exito" => true,
-                    "mensaje" => "Registro exitoso",
-                    "id" => $id,
-                    "contraTemporal" => $contraTemporal
+                    "mensaje" => $correoEnviado
+                        ? "Registro exitoso. Revisa tu correo para ver tu contraseña temporal."
+                        : "Registro exitoso, pero hubo un problema al enviar el correo.",
+                    "id" => $id
+                    // Ya NO devolvemos contraTemporal en el JSON por seguridad, ahora va solo por correo
                 ]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al registrar"]);
@@ -77,7 +80,6 @@ switch ($accion) {
             }
         }
         break;
-
     case 'insert':
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
@@ -137,8 +139,28 @@ switch ($accion) {
             echo json_encode(["exito" => false, "mensaje" => "Error al eliminar el perfil"]);
         }
         break;
+    case 'login':
+        $nombre = trim($_POST['nombre'] ?? '');
+        $contra = trim($_POST['contra'] ?? '');
+
+        if ($nombre === '' || $contra === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
+            break;
+        }
+
+        $perfil = $modelo->login($nombre, $contra);
+        
+        if ($perfil) {
+            session_start();
+            $_SESSION['perfil'] = $perfil;
+            echo json_encode(["exito" => true, "mensaje" => "Login exitoso"]);
+        } else {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
+        }
+        break;
 
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;
+        
 }
