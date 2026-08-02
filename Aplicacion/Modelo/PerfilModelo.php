@@ -25,15 +25,16 @@ class PerfilModelo {
     }
 
     // GETPERFIL - Obtener un perfil por id
-    public function getPerfil($tbperfilid) {
+    public function getPerfil($id) {
         $sql = "SELECT * FROM tbperfil WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bindParam(':id', $tbperfilid, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $fila = $stmt->fetch();
 
         if ($fila) {
             return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo']))->toArray();
+            
         }
         return null;
     }
@@ -42,9 +43,9 @@ class PerfilModelo {
     public function insert(Perfil $perfil) {
         $sql = "INSERT INTO tbperfil (tbperfilnombre, tbperfilcontra, tbperfilcorreo) VALUES (:nombre, :contra, :correo)";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':tbperfilnombre', $perfil->get_tbperfilnombre());
-        $stmt->bindValue(':tbperfilcontra', $perfil->get_tbperfilcontra());
-        $stmt->bindValue(':tbperfilcorreo', $perfil->get_tbperfilcorreo());
+        $stmt->bindValue(':nombre', $perfil->get_tbperfilnombre());
+        $stmt->bindValue(':contra', $perfil->get_tbperfilcontra());
+        $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
 
         if ($stmt->execute()) {
             return $this->conexion->lastInsertId();
@@ -56,10 +57,10 @@ class PerfilModelo {
     public function update(Perfil $perfil) {
         $sql = "UPDATE tbperfil SET tbperfilnombre = :nombre, tbperfilcontra = :contra, tbperfilcorreo = :correo WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':tbperfilnombre', $perfil->get_tbperfilnombre());
-        $stmt->bindValue(':tbperfilcontra', $perfil->get_tbperfilcontra());
-        $stmt->bindValue(':tbperfilcorreo', $perfil->get_tbperfilcorreo());
-        $stmt->bindValue(':tbperfilid', $perfil->get_tbperfilid(), PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $perfil->get_tbperfilnombre());
+        $stmt->bindValue(':contra', $perfil->get_tbperfilcontra());
+        $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
+        $stmt->bindValue(':id', $perfil->get_tbperfilid(), PDO::PARAM_INT);
 
         return $stmt->execute();
     }

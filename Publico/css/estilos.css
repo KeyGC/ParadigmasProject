@@ -1,72 +1,39 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.container {
-    background-color: #F4F6F9;
+body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    text-align: center;
+
 
 }
-.buscador-container{
-    background-color: #1B2A4A;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 80%;
+
+#bodyLogin {
+
+    background-image: url('../imagenes/fondo.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
-.info-container{
-    background-color: #1B2A4A;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 80%;
+#loginForm {
+    display: flex;
+    flex-direction: column;
 }
 
-.tabla-container{
-    background-color: #1B2A4A;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 80%;
+#formPerfil {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
 }
 
 
-.btnPerfil {
-    margin: 10px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    background-color: #2C5F8A;
-    color: white;
-    cursor: pointer;
+
+#contenedorFormulario {
+    border: 1px solid #eee;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
 }
 
-.inputPerfil{
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.inputTabla{
-    margin: 0px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-footer {
-    background-color: #1B2A4A;
-    text-align: center;
-    padding: 20px;
-    color: white;
+#contenedorBotonNuevo {
+    display: flex;
+    justify-content: flex-end;
 }

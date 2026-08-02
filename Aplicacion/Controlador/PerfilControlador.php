@@ -29,15 +29,16 @@ switch ($accion) {
         break;
 
     case 'insert':
-        $nickname = trim($_POST['nickname'] ?? '');
-        $password = trim($_POST['password'] ?? '');
+        $nombre = trim($_POST['nombre'] ?? '');
+        $contra = trim($_POST['contra'] ?? '');
+        $correo = trim($_POST['correo'] ?? '');
 
-        if ($nickname === '' || $password === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Nickname y password son obligatorios"]);
+        if ($nombre === '' || $contra === '' || $correo === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
             break;
         }
 
-        $perfil = new Perfil(null, $nickname, $password);
+        $perfil = new Perfil(null, $nombre, $contra, $correo);
         try{
         $id = $modelo->insert($perfil);
 
@@ -48,7 +49,7 @@ switch ($accion) {
         }
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) { // Código de error para violación de restricción de clave única
-                echo json_encode(["exito" => false, "mensaje" => "El nickname ya está en uso"]);
+                echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil: " . $e->getMessage()]);
             }
@@ -57,15 +58,16 @@ switch ($accion) {
 
     case 'update':
         $id = $_POST['id'] ?? null;
-        $nickname = trim($_POST['nickname'] ?? '');
-        $password = trim($_POST['password'] ?? '');
+        $nombre = trim($_POST['nombre'] ?? '');
+        $contra = trim($_POST['contra'] ?? '');
+        $correo = trim($_POST['correo'] ?? '');
 
-        if (!$id || $nickname === '' || $password === '') {
+        if (!$id || $nombre === '' || $contra === '' || $correo === '') {
             echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
             break;
         }
 
-        $perfil = new Perfil($id, $nickname, $password);
+        $perfil = new Perfil($id, $nombre, $contra, $correo);
         if ($modelo->update($perfil)) {
             echo json_encode(["exito" => true, "mensaje" => "Perfil actualizado correctamente"]);
         } else {

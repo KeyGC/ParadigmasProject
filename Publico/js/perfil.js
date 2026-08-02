@@ -1,6 +1,6 @@
 
 const URL_CONTROLADOR = 'api.php';
-let listaPerfiles = []; 
+let listaPerfiles = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarPerfiles();
@@ -8,7 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('formPerfil').addEventListener('submit', guardarPerfil);
     document.getElementById('btnCancelar').addEventListener('click', cancelarEdicion);
     document.getElementById('buscador').addEventListener('input', buscarPerfiles);
+    document.getElementById('btnNuevo').addEventListener('click', mostrarFormulario);
 });
+
+function mostrarFormulario() {
+    document.getElementById('contenedorFormulario').style.display = 'block';
+
+    document.getElementById('formPerfil').reset();
+    document.getElementById('perfilId').value = '';
+
+    document.getElementById('btnGuardar').textContent = 'Guardar';
+    document.getElementById('btnCancelar').style.display = 'none';
+}
 
 // GETLIST
 function cargarPerfiles() {
@@ -16,7 +27,7 @@ function cargarPerfiles() {
         .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
-                listaPerfiles = respuesta.data; 
+                listaPerfiles = respuesta.data;
                 pintarTabla(listaPerfiles);
             } else {
                 alert(respuesta.mensaje);
@@ -72,10 +83,11 @@ function editarPerfil(id) {
         .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
-                document.getElementById('perfilId').value = respuesta.data.id;
-                document.getElementById('nombre').value = respuesta.data.nombre;
-                document.getElementById('contra').value = respuesta.data.contra;
-                document.getElementById('correo').value = respuesta.data.correo;
+                document.getElementById('contenedorFormulario').style.display = 'block';
+                document.getElementById('perfilId').value = respuesta.data.tbperfilid;
+                document.getElementById('nombre').value = respuesta.data.tbperfilnombre;
+                document.getElementById('contra').value = respuesta.data.tbperfilcontra;
+                document.getElementById('correo').value = respuesta.data.tbperfilcorreo;
                 document.getElementById('btnGuardar').textContent = 'Actualizar';
                 document.getElementById('btnCancelar').style.display = 'inline-block';
             } else {
@@ -89,6 +101,7 @@ function cancelarEdicion() {
     document.getElementById('perfilId').value = '';
     document.getElementById('btnGuardar').textContent = 'Guardar';
     document.getElementById('btnCancelar').style.display = 'none';
+    document.getElementById('contenedorFormulario').style.display = 'none';
 }
 
 // INSERT o UPDATE 

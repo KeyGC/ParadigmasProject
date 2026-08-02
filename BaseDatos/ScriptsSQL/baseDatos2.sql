@@ -1,5 +1,5 @@
-create database IF NOT EXISTS `baseDatos1`;
-use `baseDatos1`;
+create database IF NOT EXISTS `baseDatos2`;
+use `baseDatos2`;
 
 create table IF NOT EXISTS `tbperfil` (
   `tbperfilid` int NOT NULL AUTO_INCREMENT,
