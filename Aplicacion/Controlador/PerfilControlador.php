@@ -7,6 +7,14 @@ header('Content-Type: application/json; charset=utf-8');
 $modelo = new PerfilModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
+// genera una contraseña temporal aleatoria,para q no caiga null 
+function generarContraTemporal($nombre) {
+    $base = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
+    $base = substr($base, 0, 4);
+    $aleatorio = substr(bin2hex(random_bytes(4)), 0, 6);
+    return $base . $aleatorio;
+}
+
 switch ($accion) {
 
     case 'getList':
@@ -28,6 +36,48 @@ switch ($accion) {
         }
         break;
 
+    // registrar
+    case 'registrar':
+        $nombre = trim($_POST['nombre'] ?? '');
+        $correo = trim($_POST['correo'] ?? '');
+
+        if ($nombre === '' || $correo === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre y correo son obligatorios"]);
+            break;
+        }
+
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(["exito" => false, "mensaje" => "Correo inválido"]);
+            break;
+        }
+
+        // la contraseña se genera en el backend
+        $contraTemporal = generarContraTemporal($nombre);
+
+        $perfil = new Perfil(null, $nombre, $contraTemporal, $correo);
+
+        try {
+            $id = $modelo->insert($perfil);
+
+            if ($id) {
+                echo json_encode([
+                    "exito" => true,
+                    "mensaje" => "Registro exitoso",
+                    "id" => $id,
+                    "contraTemporal" => $contraTemporal
+                ]);
+            } else {
+                echo json_encode(["exito" => false, "mensaje" => "Error al registrar"]);
+            }
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
+            } else {
+                echo json_encode(["exito" => false, "mensaje" => "Error al registrar: " . $e->getMessage()]);
+            }
+        }
+        break;
+
     case 'insert':
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
@@ -39,16 +89,16 @@ switch ($accion) {
         }
 
         $perfil = new Perfil(null, $nombre, $contra, $correo);
-        try{
-        $id = $modelo->insert($perfil);
+        try {
+            $id = $modelo->insert($perfil);
 
-        if ($id) {
-            echo json_encode(["exito" => true, "mensaje" => "Perfil creado correctamente", "id" => $id]);
-        } else {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
-        }
+            if ($id) {
+                echo json_encode(["exito" => true, "mensaje" => "Perfil creado correctamente", "id" => $id]);
+            } else {
+                echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
+            }
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) { // Código de error para violación de restricción de clave única
+            if ($e->getCode() == 23000) { // codigo de error de clave única
                 echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil: " . $e->getMessage()]);
