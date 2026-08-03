@@ -12,7 +12,7 @@
 <body id="bodyLogin">
     <main>
         <div class="container-fluid p-5 text-center" id="contenedorPrincipal">
-            <div class="container bg text-light p-5 mt-5" id="contenedorFormulario">
+            <div class="container bg contenedorFormulario text-light p-5 mt-5" id="">
                 <h1>Registro</h1>
 
                 <div id="alertaRegistro"></div>

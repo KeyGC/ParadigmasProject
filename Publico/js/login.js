@@ -20,13 +20,25 @@ function loguear(e) {
     })
         .then(res => res.json())
         .then(resp => {
+
             if (resp.exito) {
-                window.location.href = 'index.php?vista=cliente';
+
+                if (resp.cambiarContra) {
+                    window.location.href = 'index.php?vista=cambiarContra';
+                } else {
+                    window.location.href = 'index.php?vista=cliente';
+                }
+
             } else {
-                document.getElementById('alertaLogin').innerHTML = `<div class="alert alert-danger">${resp.mensaje}</div>`;
+
+                document.getElementById('alertaLogin').innerHTML =
+                    `<div class="alert alert-danger">${resp.mensaje}</div>`;
+
             }
+
         })
         .catch(err => {
-            document.getElementById('alertaLogin').innerHTML = `<div class="alert alert-danger">Error de conexión: ${err}</div>`;
+            document.getElementById('alertaLogin').innerHTML =
+                `<div class="alert alert-danger">Error de conexión: ${err}</div>`;
         });
 }

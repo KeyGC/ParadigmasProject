@@ -1,4 +1,11 @@
 <!-- Aplicacion/Vista/perfiles.php -->
+ <?php
+if (!isset($_SESSION['perfil'])) {
+    header('Location: index.php?vista=login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 

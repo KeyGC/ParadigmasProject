@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Match</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
@@ -12,7 +12,7 @@
 <body id="bodyLogin">
     <main>
         <div class="container-fluid  p-5  text-center" id="contenedorPrincipal">
-            <div class="container bg text-light p-5 mt-5" id="contenedorFormulario">
+            <div class="container contenedorFormulario text-dark p-5 mt-5" id="">
                 <h1>Login</h1>
                 <div id="alertaLogin"></div>
                 <form id="loginForm">

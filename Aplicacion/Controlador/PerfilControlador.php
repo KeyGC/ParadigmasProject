@@ -52,8 +52,19 @@ switch ($accion) {
             break;
         }
 
+        // Validar que el nombre no exista
+        $perfilExistente = $modelo->getPerfilByNombre($nombre);
+
+        if ($perfilExistente) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "El nombre ya está en uso"
+            ]);
+            break;
+        }
+
         $contraTemporal = generarContraTemporal($nombre);
-        $perfil = new Perfil(null, $nombre, $contraTemporal, $correo);
+        $perfil = new Perfil(null, $nombre, $contraTemporal, $correo, 0);
 
         try {
             $id = $modelo->insert($perfil);
@@ -67,18 +78,21 @@ switch ($accion) {
                         ? "Registro exitoso. Revisa tu correo para ver tu contraseña temporal."
                         : "Registro exitoso, pero hubo un problema al enviar el correo.",
                     "id" => $id
-                    // Ya NO devolvemos contraTemporal en el JSON por seguridad, ahora va solo por correo
                 ]);
             } else {
-                echo json_encode(["exito" => false, "mensaje" => "Error al registrar"]);
+                echo json_encode([
+                    "exito" => false,
+                    "mensaje" => "Error al registrar"
+                ]);
             }
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
-            } else {
-                echo json_encode(["exito" => false, "mensaje" => "Error al registrar: " . $e->getMessage()]);
-            }
+
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Error al registrar: " . $e->getMessage()
+            ]);
         }
+
         break;
     case 'insert':
         $nombre = trim($_POST['nombre'] ?? '');
@@ -86,81 +100,211 @@ switch ($accion) {
         $correo = trim($_POST['correo'] ?? '');
 
         if ($nombre === '' || $contra === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Todos los campos son obligatorios"
+            ]);
             break;
         }
 
-        $perfil = new Perfil(null, $nombre, $contra, $correo);
+        // Validar que el nombre no exista
+        $perfilExistente = $modelo->getPerfilByNombre($nombre);
+
+        if ($perfilExistente) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "El nombre ya está en uso"
+            ]);
+            break;
+        }
+
+        $perfil = new Perfil(null, $nombre, $contra, $correo, 0);
+
         try {
+
             $id = $modelo->insert($perfil);
 
             if ($id) {
-                echo json_encode(["exito" => true, "mensaje" => "Perfil creado correctamente", "id" => $id]);
+                echo json_encode([
+                    "exito" => true,
+                    "mensaje" => "Perfil creado correctamente",
+                    "id" => $id
+                ]);
             } else {
-                echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
+                echo json_encode([
+                    "exito" => false,
+                    "mensaje" => "Error al crear el perfil"
+                ]);
             }
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) { // codigo de error de clave única
-                echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
-            } else {
-                echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil: " . $e->getMessage()]);
-            }
+
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Error al crear el perfil: " . $e->getMessage()
+            ]);
         }
+
         break;
 
     case 'update':
+
         $id = $_POST['id'] ?? null;
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
 
         if (!$id || $nombre === '' || $contra === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Datos incompletos"
+            ]);
             break;
         }
 
-        $perfil = new Perfil($id, $nombre, $contra, $correo);
+        // Obtener el estado actual del cambio de contraseña
+        $perfilActual = $modelo->getPerfil($id);
+
+        if (!$perfilActual) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Perfil no encontrado"
+            ]);
+            break;
+        }
+
+        $perfil = new Perfil(
+            $id,
+            $nombre,
+            $contra,
+            $correo,
+            $perfilActual['tbperfilcambiocontra']
+        );
+
         if ($modelo->update($perfil)) {
-            echo json_encode(["exito" => true, "mensaje" => "Perfil actualizado correctamente"]);
+            echo json_encode([
+                "exito" => true,
+                "mensaje" => "Perfil actualizado correctamente"
+            ]);
         } else {
-            echo json_encode(["exito" => false, "mensaje" => "Error al actualizar el perfil"]);
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Error al actualizar el perfil"
+            ]);
         }
-        break;
 
-    case 'delete':
-        $id = $_POST['id'] ?? null;
-        if (!$id) {
-            echo json_encode(["exito" => false, "mensaje" => "ID no proporcionado"]);
-            break;
-        }
-        if ($modelo->delete($id)) {
-            echo json_encode(["exito" => true, "mensaje" => "Perfil eliminado correctamente"]);
-        } else {
-            echo json_encode(["exito" => false, "mensaje" => "Error al eliminar el perfil"]);
-        }
         break;
     case 'login':
+
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
 
         if ($nombre === '' || $contra === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Nombre y contraseña son obligatorios"
+            ]);
             break;
         }
 
         $perfil = $modelo->login($nombre, $contra);
-        
+
         if ($perfil) {
-            session_start();
+
             $_SESSION['perfil'] = $perfil;
-            echo json_encode(["exito" => true, "mensaje" => "Login exitoso"]);
+
+            if ($perfil['tbperfilcambiocontra'] == 0) {
+
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => true,
+                    "mensaje" => "Debe cambiar su contraseña temporal"
+                ]);
+            } else {
+
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => false,
+                    "mensaje" => "Login exitoso"
+                ]);
+            }
         } else {
-            echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
+
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Nombre o contraseña incorrectos"
+            ]);
         }
+
+        break;
+    case 'cambiarContra':
+
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Sesión no encontrada"
+            ]);
+            break;
+        }
+
+        $id = $_SESSION['perfil']['tbperfilid'];
+        $contra = trim($_POST['contra'] ?? '');
+
+        if ($contra === '') {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "La contraseña es obligatoria"
+            ]);
+            break;
+        }
+
+
+        // Obtener datos actuales del perfil
+        $perfilActual = $modelo->getPerfil($id);
+
+
+        if (!$perfilActual) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Perfil no encontrado"
+            ]);
+            break;
+        }
+
+
+        // Crear perfil conservando los datos existentes
+        $perfil = new Perfil(
+            $id,
+            $perfilActual['tbperfilnombre'],
+            $contra,
+            $perfilActual['tbperfilcorreo'],
+            1
+        );
+
+
+        if ($modelo->update($perfil)) {
+
+
+            // Actualizar la sesión con la nueva información
+            $_SESSION['perfil'] = $perfil->toArray();
+
+
+            echo json_encode([
+                "exito" => true,
+                "mensaje" => "Contraseña actualizada correctamente"
+            ]);
+        } else {
+
+
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Error al actualizar la contraseña"
+            ]);
+        }
+
+
         break;
 
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;
-        
 }

@@ -1,3 +1,11 @@
+<?php
+// Aplicacion/Vista/cliente.php
+if (!isset($_SESSION['perfil'])) {
+    header('Location: index.php?vista=login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,30 +17,19 @@
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg bg-danger navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Universidad Nacional</a>
+<body class="cuerpoCliente">
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
+    <?php include APP_PATH . '/Vista/Componentes/navbar.php'; ?>
 
-                </ul>
-            </div>
-        </div>
-    </nav>
     <main>
-        <div class="container-fluid text-dark p-5 text-center" id="contenedorPrincipal">
+        <div class="container-fluid text-dark p-5 text-center" id="contenedorPCliente">
             <h1>Cliente</h1>
             <p>Bienvenido al área de cliente.</p>
         </div>
     </main>
-    <footer class="container-fluid bg-danger text-light text-center p-3 mt-auto">
-            <p>&copy; 2023 MatchCitas. Todos los derechos reservados.</p>
-    </footer>
+
+    <?php include APP_PATH . '/Vista/Componentes/footer.php'; ?>
+
 </body>
 
 </html>

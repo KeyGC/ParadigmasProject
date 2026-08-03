@@ -19,7 +19,7 @@ class PerfilModelo {
 
         $perfiles = [];
         foreach ($filas as $fila) {
-            $perfiles[] = (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo']))->toArray();
+            $perfiles[] = (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo'], $fila['tbperfilcambiocontra']))->toArray();
         }
         return $perfiles;
     }
@@ -33,19 +33,34 @@ class PerfilModelo {
         $fila = $stmt->fetch();
 
         if ($fila) {
-            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo']))->toArray();
+            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo'], $fila['tbperfilcambiocontra']))->toArray();
             
+        }
+        return null;
+    }
+
+    function getPerfilByNombre($nombre) {
+        $sql = "SELECT * FROM tbperfil WHERE tbperfilnombre = :nombre";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->execute();
+        $fila = $stmt->fetch();
+
+        if ($fila) {
+            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo'], $fila['tbperfilcambiocontra']))->toArray();
         }
         return null;
     }
 
     // INSERT - Crear un nuevo perfil
     public function insert(Perfil $perfil) {
-        $sql = "INSERT INTO tbperfil (tbperfilnombre, tbperfilcontra, tbperfilcorreo) VALUES (:nombre, :contra, :correo)";
+        $sql = "INSERT INTO tbperfil (tbperfilnombre, tbperfilcontra, tbperfilcorreo, tbperfilcambiocontra) VALUES (:nombre, :contra, :correo, :cambioContra)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':nombre', $perfil->get_tbperfilnombre());
         $stmt->bindValue(':contra', $perfil->get_tbperfilcontra());
         $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
+        $stmt->bindValue(':cambioContra', $perfil->get_tbperfilcambiocontra());
+
 
         if ($stmt->execute()) {
             return $this->conexion->lastInsertId();
@@ -55,11 +70,12 @@ class PerfilModelo {
     
     // UPDATE - Actualizar un perfil existente
     public function update(Perfil $perfil) {
-        $sql = "UPDATE tbperfil SET tbperfilnombre = :nombre, tbperfilcontra = :contra, tbperfilcorreo = :correo WHERE tbperfilid = :id";
+        $sql = "UPDATE tbperfil SET tbperfilnombre = :nombre, tbperfilcontra = :contra, tbperfilcorreo = :correo, tbperfilcambiocontra = :cambioContra WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':nombre', $perfil->get_tbperfilnombre());
         $stmt->bindValue(':contra', $perfil->get_tbperfilcontra());
         $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
+        $stmt->bindValue(':cambioContra', $perfil->get_tbperfilcambiocontra());
         $stmt->bindValue(':id', $perfil->get_tbperfilid(), PDO::PARAM_INT);
 
         return $stmt->execute();
@@ -83,7 +99,7 @@ class PerfilModelo {
         $fila = $stmt->fetch();
 
         if ($fila) {
-            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo']))->toArray();
+            return (new Perfil($fila['tbperfilid'], $fila['tbperfilnombre'], $fila['tbperfilcontra'], $fila['tbperfilcorreo'], $fila['tbperfilcambiocontra']))->toArray();
         }
         return null;
     }

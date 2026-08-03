@@ -6,15 +6,46 @@ body {
 
 #bodyLogin {
 
-    background-image: url('../imagenes/fondo.jpg');
+    background-image: url('../imagenes/Fondo1.png');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
 }
 
 #loginForm {
     display: flex;
     flex-direction: column;
 }
+
+#loginForm .form-control {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(219, 39, 119, 0.3);
+    color: #831843;
+}
+
+#loginForm .form-control::placeholder {
+    color: rgba(131, 24, 67, 0.6);
+}
+
+#loginForm .form-control:focus {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: #db2777;
+    box-shadow: 0 0 0 0.2rem rgba(219, 39, 119, 0.25);
+    color: #831843;
+}
+
+#loginForm .btn-primary {
+    background-color: #db2777;
+    border-color: #db2777;
+}
+
+#loginForm .btn-primary:hover {
+    background-color: #9d174d;
+    border-color: #9d174d;
+}
+
 
 #formPerfil {
     display: flex;
@@ -24,11 +55,42 @@ body {
 
 
 
-#contenedorFormulario {
-    border: 1px solid #eee;
+.contenedorFormulario {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(219, 39, 119, 0.25);
     max-width: 600px;
     margin: 0 auto;
     padding: 30px;
+    color: #831843;
+}
+
+.contenedorFormulario h1 {
+    color: #9d174d;
+    font-weight: 700;
+}
+
+
+.contenedorFormulario .btn-link {
+    color: #db2777;
+}
+
+.contenedorFormulario .btn-link:hover {
+    color: #831843;
+}
+
+.contenedorFormulario {
+    background: rgba(255, 255, 255, 0.55);
+}
+
+@supports (backdrop-filter: blur(15px)) {
+    .contenedorFormulario {
+        background: rgba(255, 255, 255, 0.35);
+        backdrop-filter: blur(15px);
+    }
 }
 
 #contenedorBotonNuevo {
@@ -36,8 +98,18 @@ body {
     justify-content: flex-end;
 }
 
-#registroForm{
+#registroForm {
     display: flex;
     flex-direction: column;
 }
 
+#cuerpoCliente{
+    background-color: #FDF2F8;
+}
+
+#contenedorPPerfil{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
