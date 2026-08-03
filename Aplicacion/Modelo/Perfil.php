@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Modelo/Perfil.php
+
 
 class Perfil
 {
@@ -42,7 +42,7 @@ class Perfil
     }
 
 
-    // Para convertir a array/JSON fácilmente (sin exponer password si no quieres)
+ 
     public function toArray()
     {
         return [

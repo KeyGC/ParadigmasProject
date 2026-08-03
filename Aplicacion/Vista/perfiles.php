@@ -79,7 +79,7 @@ if (!isset($_SESSION['perfil'])) {
                         </tr>
                     </thead>
                     <tbody id="cuerpoTabla">
-                        <!-- Se llena por AJAX -->
+                        <!-- AJAX -->
                     </tbody>
                 </table>
             </div>

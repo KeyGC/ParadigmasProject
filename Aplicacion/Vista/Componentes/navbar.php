@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Vista/Componentes/navbar.php
+
 $vistaActual = $_GET['vista'] ?? '';
 $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
 ?>

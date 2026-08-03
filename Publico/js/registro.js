@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(resp => {
             if (resp.exito) {
-                // mostrar la contraseña temporal generada para que el usuario la anote
+
                 alertaRegistro.innerHTML = `
                     <div class="alert alert-success text-dark">
                         <p>${resp.mensaje}</p>

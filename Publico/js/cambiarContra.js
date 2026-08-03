@@ -33,7 +33,7 @@ function validarContra(contra) {
     }
 
 
-    // No permite caracteres consecutivos repetidos
+    // No permitir caracteres consecutivos repetidos
     if (/(.)\1/.test(contra)) {
         return "No puede tener letras o números repetidos consecutivamente";
     }

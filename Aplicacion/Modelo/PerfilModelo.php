@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Modelo/PerfilModelo.php
+
 require_once __DIR__ . '/../../Configuracion/Basedatos.php';
 require_once __DIR__ . '/Perfil.php';
 
@@ -10,7 +10,7 @@ class PerfilModelo {
         $this->conexion = Basedatos::conectar();
     }
 
-    // GETLIST - Obtener todos los perfiles
+    // GETLIST
     public function getList() {
         $sql = "SELECT * FROM tbperfil ORDER BY tbperfilid ASC";
         $stmt = $this->conexion->prepare($sql);
@@ -24,7 +24,7 @@ class PerfilModelo {
         return $perfiles;
     }
 
-    // GETPERFIL - Obtener un perfil por id
+    // GETPERFIL
     public function getPerfil($id) {
         $sql = "SELECT * FROM tbperfil WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
@@ -52,7 +52,7 @@ class PerfilModelo {
         return null;
     }
 
-    // INSERT - Crear un nuevo perfil
+    // INSERT 
     public function insert(Perfil $perfil) {
         $sql = "INSERT INTO tbperfil (tbperfilnombre, tbperfilcontra, tbperfilcorreo, tbperfilcambiocontra) VALUES (:nombre, :contra, :correo, :cambioContra)";
         $stmt = $this->conexion->prepare($sql);
@@ -68,7 +68,7 @@ class PerfilModelo {
         return false;
     }
     
-    // UPDATE - Actualizar un perfil existente
+    // UPDATE 
     public function update(Perfil $perfil) {
         $sql = "UPDATE tbperfil SET tbperfilnombre = :nombre, tbperfilcontra = :contra, tbperfilcorreo = :correo, tbperfilcambiocontra = :cambioContra WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
@@ -81,7 +81,7 @@ class PerfilModelo {
         return $stmt->execute();
     }
 
-    // DELETE - Eliminar un perfil por id
+    // DELETE 
     public function delete($id) {
         $sql = "DELETE FROM tbperfil WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);

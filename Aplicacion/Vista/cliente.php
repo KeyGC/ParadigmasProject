@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Vista/cliente.php
+
 if (!isset($_SESSION['perfil'])) {
     header('Location: index.php?vista=login');
     exit;

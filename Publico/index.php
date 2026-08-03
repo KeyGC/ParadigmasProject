@@ -1,5 +1,5 @@
 <?php
-// Publico/index.php
+
 require_once __DIR__ . '/../Configuracion/Configuracion.php';
 
 $vista = $_GET['vista'] ?? 'login';

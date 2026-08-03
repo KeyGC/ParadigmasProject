@@ -20,10 +20,10 @@ class Basedatos {
                 self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-                // Mensaje de prueba
+                
 
             } catch (PDOException $e) {
-                die("❌ Error de conexión: " . $e->getMessage());
+                die("Error de conexión: " . $e->getMessage());
             }
         }
 

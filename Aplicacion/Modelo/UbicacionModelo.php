@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Modelo/UbicacionModelo.php
+
 require_once __DIR__ . '/../../Configuracion/Basedatos.php';
 
 class UbicacionModelo

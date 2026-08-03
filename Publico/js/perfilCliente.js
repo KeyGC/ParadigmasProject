@@ -10,30 +10,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// Cargar datos del perfil
+
+function validarContra(contra) {
+
+    // Entre 8 y 16 caracteres
+    if (contra.length < 8 || contra.length > 16) {
+        return "La contraseña debe tener entre 8 y 16 caracteres";
+    }
+
+    // No puede contener vocales
+    if (/[aeiouAEIOU]/.test(contra)) {
+        return "La contraseña no puede contener vocales";
+    }
+
+    // Mínimo 4 letras
+    const letras = contra.match(/[a-zA-Z]/g);
+
+    if (!letras || letras.length < 4) {
+        return "La contraseña debe tener mínimo 4 letras";
+    }
+
+    // Mínimo 4 números
+    const numeros = contra.match(/[0-9]/g);
+
+    if (!numeros || numeros.length < 4) {
+        return "La contraseña debe tener mínimo 4 números";
+    }
+
+    // No permitir caracteres consecutivos repetidos
+    if (/(.)\1/.test(contra)) {
+        return "No puede tener letras o números repetidos consecutivamente";
+    }
+
+    return null;
+}
+
+// Cargar datos del perfil logueado 
 function cargarMiPerfil() {
 
-    const perfilId = document.getElementById('perfilId').value;
+    const alerta = document.getElementById('alertaPerfil');
 
-    fetch(`${URL_PERFIL}?accion=getPerfil&id=${perfilId}`)
+    fetch(`${URL_PERFIL}?accion=getMiPerfil`)
         .then(res => res.json())
         .then(resp => {
 
             if (resp.exito) {
 
-                document.getElementById('perfilId').value = resp.data.tbperfilid;
                 document.getElementById('nombre').value = resp.data.tbperfilnombre;
                 document.getElementById('contra').value = resp.data.tbperfilcontra;
                 document.getElementById('correo').value = resp.data.tbperfilcorreo;
 
             } else {
 
-                alert(resp.mensaje);
+                alerta.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${resp.mensaje}
+                    </div>
+                `;
 
             }
 
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+
+            alerta.innerHTML = `
+                <div class="alert alert-danger">
+                    Error de conexión: ${err}
+                </div>
+            `;
+
+        });
 
 }
 
@@ -53,6 +99,8 @@ function activarEdicion() {
 // Cancelar edición
 function cancelarEdicion() {
 
+    document.getElementById('alertaPerfil').innerHTML = '';
+
     cargarMiPerfil();
 
     document.getElementById('nombre').disabled = true;
@@ -70,39 +118,80 @@ function guardarPerfil(e) {
 
     e.preventDefault();
 
-    const id = document.getElementById('perfilId').value;
     const nombre = document.getElementById('nombre').value.trim();
     const contra = document.getElementById('contra').value.trim();
     const correo = document.getElementById('correo').value.trim();
 
+    const alerta = document.getElementById('alertaPerfil');
+
     if (!nombre || !contra || !correo) {
 
-        alert('Todos los campos son obligatorios');
+        alerta.innerHTML = `
+            <div class="alert alert-danger">
+                Todos los campos son obligatorios
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const errorContra = validarContra(contra);
+
+    if (errorContra) {
+
+        alerta.innerHTML = `
+            <div class="alert alert-danger">
+                ${errorContra}
+            </div>
+        `;
+
         return;
 
     }
 
     const formData = new FormData();
 
-    formData.append('id', id);
     formData.append('nombre', nombre);
     formData.append('contra', contra);
     formData.append('correo', correo);
 
-    fetch(`${URL_PERFIL}?accion=update`, {
+    fetch(`${URL_PERFIL}?accion=actualizarPerfil`, {
         method: 'POST',
         body: formData
     })
         .then(res => res.json())
         .then(resp => {
 
-            alert(resp.mensaje);
-
             if (resp.exito) {
+
+                alerta.innerHTML = `
+                    <div class="alert alert-success">
+                        ${resp.mensaje}
+                    </div>
+                `;
+
                 cancelarEdicion();
+
+            } else {
+
+                alerta.innerHTML = `
+                    <div class="alert alert-danger">
+                        ${resp.mensaje}
+                    </div>
+                `;
+
             }
 
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+
+            alerta.innerHTML = `
+                <div class="alert alert-danger">
+                    Error de conexión: ${err}
+                </div>
+            `;
+
+        });
 
 }

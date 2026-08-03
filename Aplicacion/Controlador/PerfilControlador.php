@@ -8,13 +8,35 @@ header('Content-Type: application/json; charset=utf-8');
 $modelo = new PerfilModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
-// genera una contraseña temporal aleatoria,para q no caiga null 
+
 function generarContraTemporal($nombre)
 {
     $base = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
     $base = substr($base, 0, 4);
     $aleatorio = substr(bin2hex(random_bytes(4)), 0, 6);
     return $base . $aleatorio;
+}
+
+function validarContra($contra)
+{
+    if (strlen($contra) < 8 || strlen($contra) > 16) {
+        return "La contraseña debe tener entre 8 y 16 caracteres";
+    }
+    if (preg_match('/[aeiouAEIOU]/', $contra)) {
+        return "La contraseña no puede contener vocales";
+    }
+    preg_match_all('/[a-zA-Z]/', $contra, $letras);
+    if (count($letras[0]) < 4) {
+        return "La contraseña debe tener mínimo 4 letras";
+    }
+    preg_match_all('/[0-9]/', $contra, $numeros);
+    if (count($numeros[0]) < 4) {
+        return "La contraseña debe tener mínimo 4 números";
+    }
+    if (preg_match('/(.)\1/', $contra)) {
+        return "No puede tener letras o números repetidos consecutivamente";
+    }
+    return null;
 }
 
 switch ($accion) {
@@ -52,7 +74,7 @@ switch ($accion) {
             break;
         }
 
-        // Validar que el nombre no exista
+        // Validacion de que el nombre no exista
         $perfilExistente = $modelo->getPerfilByNombre($nombre);
 
         if ($perfilExistente) {
@@ -107,7 +129,7 @@ switch ($accion) {
             break;
         }
 
-        // Validar que el nombre no exista
+        // Validacion de que el nombre no exista
         $perfilExistente = $modelo->getPerfilByNombre($nombre);
 
         if ($perfilExistente) {
@@ -257,10 +279,17 @@ switch ($accion) {
             break;
         }
 
+        $errorContra = validarContra($contra);
+        if ($errorContra) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => $errorContra
+            ]);
+            break;
+        }
 
         // Obtener datos actuales del perfil
         $perfilActual = $modelo->getPerfil($id);
-
 
         if (!$perfilActual) {
             echo json_encode([
@@ -269,7 +298,6 @@ switch ($accion) {
             ]);
             break;
         }
-
 
         // Crear perfil conservando los datos existentes
         $perfil = new Perfil(
@@ -280,13 +308,10 @@ switch ($accion) {
             1
         );
 
-
         if ($modelo->update($perfil)) {
-
 
             // Actualizar la sesión con la nueva información
             $_SESSION['perfil'] = $perfil->toArray();
-
 
             echo json_encode([
                 "exito" => true,
@@ -294,13 +319,120 @@ switch ($accion) {
             ]);
         } else {
 
-
             echo json_encode([
                 "exito" => false,
                 "mensaje" => "Error al actualizar la contraseña"
             ]);
         }
 
+        break;
+
+    case 'actualizarPerfil':
+
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Sesión no encontrada"
+            ]);
+            break;
+        }
+
+        $id = $_SESSION['perfil']['tbperfilid'];
+        $nombre = trim($_POST['nombre'] ?? '');
+        $contra = trim($_POST['contra'] ?? '');
+        $correo = trim($_POST['correo'] ?? '');
+
+        if ($nombre === '' || $contra === '' || $correo === '') {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Todos los campos son obligatorios"
+            ]);
+            break;
+        }
+
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Correo inválido"
+            ]);
+            break;
+        }
+
+        $errorContra = validarContra($contra);
+        if ($errorContra) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => $errorContra
+            ]);
+            break;
+        }
+
+        $perfilActual = $modelo->getPerfil($id);
+
+        if (!$perfilActual) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Perfil no encontrado"
+            ]);
+            break;
+        }
+
+        $perfil = new Perfil(
+            $id,
+            $nombre,
+            $contra,
+            $correo,
+            $perfilActual['tbperfilcambiocontra']
+        );
+
+        try {
+            if ($modelo->update($perfil)) {
+
+                $_SESSION['perfil'] = $perfil->toArray();
+
+                echo json_encode([
+                    "exito" => true,
+                    "mensaje" => "Perfil actualizado correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "exito" => false,
+                    "mensaje" => "Error al actualizar el perfil"
+                ]);
+            }
+        } catch (PDOException $e) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Error al actualizar: " . $e->getMessage()
+            ]);
+        }
+
+        break;
+
+    case 'getMiPerfil':
+
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Sesión no encontrada"
+            ]);
+            break;
+        }
+
+        $id = $_SESSION['perfil']['tbperfilid'];
+        $perfil = $modelo->getPerfil($id);
+
+        if ($perfil) {
+            echo json_encode([
+                "exito" => true,
+                "data" => $perfil
+            ]);
+        } else {
+            echo json_encode([
+                "exito" => false,
+                "mensaje" => "Perfil no encontrado"
+            ]);
+        }
 
         break;
 

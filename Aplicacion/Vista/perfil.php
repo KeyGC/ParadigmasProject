@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Vista/perfil.php
+
 if (!isset($_SESSION['perfil'])) {
     header('Location: index.php?vista=login');
     exit;
@@ -27,9 +27,10 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
     <main>
         <div class="container-fluid p-5 text-center" id="contenedorPPerfil">
 
-            <!-- FORMULARIO: INFORMACIÓN PERSONAL -->
+
             <div class="container contenedorFormulario p-5 me-5" id="contenedorFormularioPerfil">
                 <h1>Información Personal</h1>
+                <div id="alertaPerfil"></div>
 
                 <form id="formPerfil">
                     <input type="hidden" id="perfilId" value="<?= $_SESSION['perfil']['tbperfilid'] ?>">
@@ -40,12 +41,12 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                         <input type="email" id="correo" class="form-control p-2" placeholder="Correo Electrónico" required disabled>
                     </div>
                     <button type="button" class="btn btn-primary p-2 my-4" id="btnEditar">Actualizar</button>
-                    <button type="submit" class="btn btn-primary p-2 my-4" id="btnGuardarPerfil" style="display: none;">Guardar</button>
+                    <button type="submit" class="btn btn-primary p-2 mt-4" id="btnGuardarPerfil" style="display: none;">Guardar</button>
                     <button type="button" class="btn btn-secondary p-2 my-4" id="btnCancelarPerfil" style="display:none;">Cancelar edición</button>
                 </form>
             </div>
 
-            <!-- FORMULARIO: UBICACIÓN -->
+
             <div class="container contenedorFormulario p-5" id="contenedorFormularioUbicacion">
                 <h1>Ubicación</h1>
 

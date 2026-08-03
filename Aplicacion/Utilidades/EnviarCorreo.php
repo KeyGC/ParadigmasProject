@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Utilidades/EnviarCorreo.php
+
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

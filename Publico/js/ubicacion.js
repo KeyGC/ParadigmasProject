@@ -1,4 +1,3 @@
-// Publico/js/ubicacion.js
 
 const URL_UBICACION = 'apiUbicacion.php';
 
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('formUbicacion').addEventListener('submit', guardarUbicacion);
 });
 
-// ===================== MAPA (Leaflet + OpenStreetMap, sin API key) =====================
+// MAPA (Leaflet + OpenStreetMap, sin API key) 
 
 function initMapa() {
     const centroDefault = [9.9281, -84.0907]; // San José, Costa Rica
@@ -57,7 +56,7 @@ function initMapa() {
         colocarMarcador(evento.latlng);
     });
 
-    // Centra el mapa en la ubicación real del usuario, si la autoriza (no coloca marcador solo)
+    // Centra el mapa en la ubicación real, si la autoriza
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((posicion) => {
             const ubicacionUsuario = [posicion.coords.latitude, posicion.coords.longitude];
@@ -83,7 +82,7 @@ function actualizarCoordenadas(latlng) {
     document.getElementById('longitud').value = latlng.lng;
 }
 
-// ===================== SELECTS EN CASCADA =====================
+//  SELECTS EN CASCADA 
 
 function resetSelect(id, textoDefault) {
     const select = document.getElementById(id);
@@ -208,7 +207,7 @@ function cargarDistritos(cantonId) {
 
 }
 
-// ===================== GUARDAR UBICACIÓN =====================
+//  GUARDAR UBICACIÓN 
 
 function guardarUbicacion(e) {
     e.preventDefault();
