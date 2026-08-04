@@ -1,0 +1,106 @@
+<?php
+// Aplicacion/Modelo/UbicacionModelo.php
+require_once __DIR__ . '/../../Configuracion/basedatos.php';
+
+class UbicacionModelo
+{
+    private $conexion;
+
+    public function __construct()
+    {
+        $this->conexion = Basedatos::conectar();
+    }
+
+    public function getProvincias()
+    {
+        $sql = "SELECT tbprovinciaid, tbprovincianombre FROM tbprovincia ORDER BY tbprovinciaid";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getCantonesPorProvincia($provinciaId)
+    {
+        $sql = "SELECT tbcantonid, tbcantonnombre FROM tbcanton WHERE tbprovinciaid = :provinciaId ORDER BY tbcantonnombre";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getDistritosPorCanton($cantonId)
+    {
+        $sql = "SELECT tbdistritoid, tbdistritonombre FROM tbdistrito WHERE tbcantonid = :cantonId ORDER BY tbdistritonombre";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    // Crea una ubicación nueva e independiente, devuelve su id (se usa al registrar un perfil)
+    public function insert($provinciaId, $cantonId, $distritoId, $lat, $lng)
+    {
+        $sql = "INSERT INTO tbubicacion
+                (tbubicacionprovincia, tbubicacioncanton, tbubicaciondistrito, tbubicacionlatitud, tbubicacionlongitud)
+                VALUES (:provinciaId, :cantonId, :distritoId, :lat, :lng)";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
+        $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
+        $stmt->bindValue(':distritoId', $distritoId, PDO::PARAM_INT);
+        $stmt->bindValue(':lat', $lat);
+        $stmt->bindValue(':lng', $lng);
+
+        if ($stmt->execute()) {
+            return $this->conexion->lastInsertId();
+        }
+        return false;
+    }
+
+    // Actualiza una ubicación existente por su propio id (no por perfilId)
+    public function update($ubicacionId, $provinciaId, $cantonId, $distritoId, $lat, $lng)
+    {
+        $sql = "UPDATE tbubicacion
+            SET tbubicacionprovincia = :provinciaId,
+                tbubicacioncanton = :cantonId,
+                tbubicaciondistrito = :distritoId,
+                tbubicacionlatitud = :lat,
+                tbubicacionlongitud = :lng
+            WHERE tbubicacionid = :ubicacionId";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
+        $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
+        $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
+        $stmt->bindValue(':distritoId', $distritoId, PDO::PARAM_INT);
+        $stmt->bindValue(':lat', $lat);
+        $stmt->bindValue(':lng', $lng);
+
+        return $stmt->execute();
+    }
+
+    // Trae la ubicación completa (con nombres de provincia/cantón/distrito) por su id
+    public function getPorId($ubicacionId)
+    {
+        $sql = "SELECT
+                u.tbubicacionid,
+                u.tbubicacionprovincia,
+                u.tbubicacioncanton,
+                u.tbubicaciondistrito,
+                u.tbubicacionlatitud,
+                u.tbubicacionlongitud,
+                p.tbprovincianombre,
+                c.tbcantonnombre,
+                d.tbdistritonombre
+            FROM tbubicacion u
+            INNER JOIN tbprovincia p ON u.tbubicacionprovincia = p.tbprovinciaid
+            INNER JOIN tbcanton c ON u.tbubicacioncanton = c.tbcantonid
+            INNER JOIN tbdistrito d ON u.tbubicaciondistrito = d.tbdistritoid
+            WHERE u.tbubicacionid = :ubicacionId";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+}

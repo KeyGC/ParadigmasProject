@@ -79,7 +79,7 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
     <?php include APP_PATH . '/Vista/Componentes/footer.php'; ?>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="js/perfilCliente.js"></script>
+    <script src="js/perfilcliente.js"></script>
     <script src="js/ubicacion.js"></script>
 </body>
 

@@ -76,7 +76,7 @@ if (!isset($_SESSION['perfil'])) {
     <?php include APP_PATH . '/Vista/Componentes/footer.php'; ?>
 
 
-    <script src="js/cambiarContra.js"></script>
+    <script src="js/cambiarcontra.js"></script>
 
 </body>
 

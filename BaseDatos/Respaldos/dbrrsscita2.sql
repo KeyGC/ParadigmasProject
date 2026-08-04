@@ -19,10 +19,6 @@ CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicacionlatitud` decimal(10,8) NOT NULL,
   `tbperfilcambiocontra` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`tbubicacionid`),
-  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
-  FOREIGN KEY (`tbubicacionprovincia`) REFERENCES `tbprovincia`(`tbprovinciaid`),
-  FOREIGN KEY (`tbubicacioncanton`) REFERENCES `tbcanton`(`tbcantonid`),
-  FOREIGN KEY (`tbubicaciondistrito`) REFERENCES `tbdistrito`(`tbdistritoid`)
 );
 
 insert into `tbperfil` (`tbperfilnombre`, `tbperfilcontra`, `tbperfilcorreo`) values

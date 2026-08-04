@@ -2,7 +2,7 @@
 
 class Basedatos {
     private static $host = "127.0.0.1";
-    private static $dbname = "baseDatos2";
+    private static $dbname = "dbrrsscita";
     private static $usuario = "key";
     private static $password = "2323";
     private static $conexion = null;

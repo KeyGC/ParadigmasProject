@@ -1,5 +1,5 @@
 
-const URL_UBICACION = 'apiUbicacion.php';
+const URL_UBICACION = 'apiubicacion.php';
 
 let mapa;
 let marcador;

@@ -8,15 +8,21 @@ class Perfil
     private $tbperfilcontra;
     private $tbperfilcorreo;
     private $tbperfilcambiocontra;
+    
+    private $tbubicacionid;
+
+    private $tbperfilactivo;
 
 
-    public function __construct($id = null, $nombre = "", $contra = "", $correo = "", $cambioContra = 0)
+    public function __construct($id = null, $nombre = "", $contra = "", $correo = "", $cambioContra = 0, $tbubicacionid = null, $tbperfilactivo = false)
     {
         $this->tbperfilid = $id;
         $this->tbperfilnombre = $nombre;
         $this->tbperfilcontra = $contra;
         $this->tbperfilcorreo = $correo;
         $this->tbperfilcambiocontra = $cambioContra;
+        $this->tbubicacionid = $tbubicacionid;
+        $this->tbperfilactivo = $tbperfilactivo;
     }
 
     // Getters
@@ -41,6 +47,14 @@ class Perfil
         return $this->tbperfilcambiocontra;
     }
 
+    public function get_tbubicacionid(){
+        return $this->tbubicacionid;
+    }
+
+    public function get_tbperfilactivo(){
+        return $this->tbperfilactivo;
+    }
+
 
  
     public function toArray()
@@ -50,7 +64,9 @@ class Perfil
             "tbperfilnombre" => $this->tbperfilnombre,
             "tbperfilcontra" => $this->tbperfilcontra,
             "tbperfilcorreo" => $this->tbperfilcorreo,
-            "tbperfilcambiocontra" => $this->tbperfilcambiocontra
+            "tbperfilcambiocontra" => $this->tbperfilcambiocontra,
+            "tbubicacionid" => $this->tbubicacionid,
+            "tbperfilactivo" => $this->tbperfilactivo
         ];
     }
 }

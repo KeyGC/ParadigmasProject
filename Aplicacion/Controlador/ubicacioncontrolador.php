@@ -1,6 +1,6 @@
 <?php
 // Aplicacion/Controlador/UbicacionControlador.php
-require_once __DIR__ . '/../Modelo/UbicacionModelo.php';
+require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -35,64 +35,43 @@ switch ($accion) {
         break;
 
     case 'guardarUbicacion':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
+            break;
+        }
 
-        $perfilId = $_POST['perfilId'] ?? null;
         $provinciaId = $_POST['provinciaId'] ?? null;
         $cantonId = $_POST['cantonId'] ?? null;
         $distritoId = $_POST['distritoId'] ?? null;
         $lat = $_POST['lat'] ?? null;
         $lng = $_POST['lng'] ?? null;
 
-        if (!$perfilId || !$provinciaId || !$cantonId || !$distritoId || !$lat || !$lng) {
-            echo json_encode([
-                "exito" => false,
-                "mensaje" => "Faltan datos de ubicación"
-            ]);
+        if (!$provinciaId || !$cantonId || !$distritoId || !$lat || !$lng) {
+            echo json_encode(["exito" => false, "mensaje" => "Faltan datos de ubicación"]);
             break;
         }
 
-        if ($modelo->existeUbicacion($perfilId)) {
+        $ubicacionId = $_SESSION['perfil']['tbubicacionid'];
 
-            $resultado = $modelo->update(
-                $perfilId,
-                $provinciaId,
-                $cantonId,
-                $distritoId,
-                $lat,
-                $lng
-            );
-
-            $mensaje = "Ubicación actualizada correctamente";
-        } else {
-
-            $resultado = $modelo->insert(
-                $perfilId,
-                $provinciaId,
-                $cantonId,
-                $distritoId,
-                $lat,
-                $lng
-            );
-
-            $mensaje = "Ubicación guardada correctamente";
-        }
+        $resultado = $modelo->update($ubicacionId, $provinciaId, $cantonId, $distritoId, $lat, $lng);
 
         echo json_encode([
             "exito" => $resultado,
-            "mensaje" => $mensaje
+            "mensaje" => $resultado ? "Ubicación actualizada correctamente" : "Error al actualizar la ubicación"
         ]);
 
         break;
+
     case 'getUbicacion':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
+            break;
+        }
 
-        $perfilId = $_GET['perfilId'];
+        $ubicacionId = $_SESSION['perfil']['tbubicacionid'];
+        $ubicacion = $modelo->getPorId($ubicacionId);
 
-        $ubicacion = $modelo->getPorPerfil($perfilId);
-
-        echo json_encode([
-            "exito" => true,
-            "data" => $ubicacion
-        ]);
+        echo json_encode(["exito" => true, "data" => $ubicacion]);
 
         break;
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../Configuracion/Configuracion.php';
+require_once __DIR__ . '/../Configuracion/configuracion.php';
 
 $vista = $_GET['vista'] ?? 'login';
 
@@ -17,19 +17,19 @@ switch ($vista) {
         break;
     case 'login':
     default:
-        require_once APP_PATH . '/Vista/Login.php';
+        require_once APP_PATH . '/Vista/Cliente/login.php';
         break;
     case 'perfiles':
-        require_once APP_PATH . '/Vista/perfiles.php';
+        require_once APP_PATH . '/Vista/Admin/perfiles.php';
         break;
     case 'cliente':
-        require_once APP_PATH . '/Vista/cliente.php';
+        require_once APP_PATH . '/Vista/Cliente/index.php';
         break;
     case 'perfil':
-        require_once APP_PATH . '/Vista/perfil.php';
+        require_once APP_PATH . '/Vista/Cliente/perfil.php';
         break;
     case 'cambiarContra':
-        require_once APP_PATH . '/Vista/cambiarContra.php';
+        require_once APP_PATH . '/Vista/Cliente/cambiarcontra.php';
         break;
         
 }

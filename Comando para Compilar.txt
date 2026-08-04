@@ -13,7 +13,12 @@ VER TABLAS:
     SHOW TABLES;
 
 CREAR USUARIO CON PRIVILEGIOS EN MYSQL:
-    CREATE USER 'key'@'localhost' IDENTIFIED BY '2323';
-    GRANT ALL PRIVILEGES ON baseDatos1.* TO 'key'@'localhost';
+    GRANT ALL PRIVILEGES ON *.* TO 'key'@'localhost' WITH GRANT OPTION;
     FLUSH PRIVILEGES;
-    EXIT;
+
+LEVANTAR APACHE Y MARIA DB
+    sudo systemctl start apache2
+    sudo systemctl start mariadb
+
+NAVEGADOR
+    http://localhost/phpmyadmin
