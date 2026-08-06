@@ -13,7 +13,7 @@ if ($vista === 'logout') {
 
 switch ($vista) {
     case 'registro':
-        require_once APP_PATH . '/Vista/registro.php';
+        require_once APP_PATH . '/Vista/Cliente/registro.php';
         break;
     case 'login':
     default:
