@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Controlador/PerfilControlador.php
+
 require_once __DIR__ . '/../Modelo/perfilmodelo.php';
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
@@ -9,7 +9,7 @@ header('Content-Type: application/json; charset=utf-8');
 $modelo = new PerfilModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
-// Ubicación por defecto para perfiles recién creados (San José / San José / Carmen)
+// Ubicacion por defecto para perfiles recien creados
 const UBICACION_PROVINCIA_DEFAULT = 1;
 const UBICACION_CANTON_DEFAULT = 101;
 const UBICACION_DISTRITO_DEFAULT = 10101;
@@ -87,7 +87,7 @@ switch ($accion) {
             break;
         }
 
-        // Toda cuenta necesita una ubicación (tbubicacionid es NOT NULL); se crea una por defecto
+        
         $ubicacionModelo = new UbicacionModelo();
         $ubicacionId = $ubicacionModelo->insert(
             UBICACION_PROVINCIA_DEFAULT,

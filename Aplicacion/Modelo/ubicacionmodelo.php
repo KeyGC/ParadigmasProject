@@ -1,5 +1,5 @@
 <?php
-// Aplicacion/Modelo/UbicacionModelo.php
+
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 
 class UbicacionModelo
@@ -56,7 +56,7 @@ class UbicacionModelo
         return false;
     }
 
-    // Actualiza una ubicación existente por su propio id (no por perfilId)
+    
     public function update($ubicacionId, $provinciaId, $cantonId, $distritoId, $lat, $lng)
     {
         $sql = "UPDATE tbubicacion
@@ -78,7 +78,7 @@ class UbicacionModelo
         return $stmt->execute();
     }
 
-    // Trae la ubicación completa (con nombres de provincia/cantón/distrito) por su id
+    
     public function getPorId($ubicacionId)
     {
         $sql = "SELECT

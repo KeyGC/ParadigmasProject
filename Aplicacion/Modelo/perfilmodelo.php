@@ -12,7 +12,7 @@ class PerfilModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    // Convierte una fila de la BD en un array a través de la clase Perfil (evita repetir el mapeo)
+    
     private function mapearFila($fila)
     {
         return (new Perfil(
