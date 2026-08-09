@@ -5,12 +5,12 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
 ?>
 <nav class="navbar navbar-expand-lg" id="navCliente" style="background-color: #db2777;">
     <div class="container-fluid">
-        <a class="navbar-brand text-light" href="index.php?vista=cliente">Universidad Nacional</a>
+        <a class="navbar-brand text-light" href="index.php?vista=cliente">UnaMatch ♥</a>
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-light <?= $vistaActual === 'cliente' ? 'active fw-bold border-bottom border-light' : '' ?>" href="index.php?vista=cliente">Home</a>
+                    <a class="nav-link text-light <?= $vistaActual === 'cliente' ? 'active fw-bold border-bottom border-light' : '' ?>" href="index.php?vista=cliente">Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light <?= $vistaActual === 'perfil' ? 'active fw-bold border-bottom border-light' : '' ?>" href="index.php?vista=perfil">Perfil</a>

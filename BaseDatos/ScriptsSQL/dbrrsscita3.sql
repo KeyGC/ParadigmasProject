@@ -641,3 +641,123 @@ VALUES
   (70602, 706, 'Mercedes'),
   (70603, 706, 'Pocora'),
   (70604, 706, 'Río Jiménez');
+
+
+-- SEMANA 3
+
+USE `dbrrsscita`;
+
+CREATE TABLE IF NOT EXISTS `tbgenero` (
+  `tbgeneroid` int NOT NULL AUTO_INCREMENT,
+  `tbgeneronombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`tbgeneroid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbcancion` (
+  `tbcancionid` int NOT NULL AUTO_INCREMENT,
+  `tbgeneroid` int NOT NULL,
+  `tbcancionnombre` varchar(200) NOT NULL,
+  `tbcancionartista` varchar(200) NOT NULL,
+  `tbcancionurl` text NOT NULL,
+  `tbcancionactivo` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbcancionid`),
+  FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbreproduccion` (
+  `tbreproduccionid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbcancionid` int NOT NULL,
+  `tbreproducciontiempo` int NOT NULL DEFAULT 0,
+  `tbreproduccionultima` datetime DEFAULT NULL,
+  PRIMARY KEY (`tbreproduccionid`),
+  UNIQUE KEY `uq_perfil_cancion` (`tbperfilid`, `tbcancionid`),
+  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
+  FOREIGN KEY (`tbcancionid`) REFERENCES `tbcancion`(`tbcancionid`)
+);
+
+INSERT INTO `tbgenero` (`tbgeneronombre`) VALUES
+('Pop'),
+('Rock'),
+('Reggaetón'),
+('Salsa'),
+('Electrónica'),
+('Jazz'),
+('Hip Hop'),
+('Rap'),
+('Trap'),
+('R&B'),
+('Reggae'),
+('Country'),
+('Metal'),
+('Bachata'),
+('Merengue'),
+('Cumbia'),
+('Clásica'),
+('Funk'),
+('Punk'),
+('Indie');
+
+-- Canciones de ejemplo
+INSERT INTO `tbcancion`
+(`tbgeneroid`, `tbcancionnombre`, `tbcancionartista`, `tbcancionurl`) VALUES
+
+-- 1. Pop
+(1, 'Thriller', 'Michael Jackson', 'https://www.youtube.com/watch?v=sOnqjkJTMaA'),
+
+-- 2. Rock
+(2, 'Bohemian Rhapsody', 'Queen', 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ'),
+
+-- 3. Reggaetón
+(3, 'Titi Me Pregunto', 'Bad Bunny', 'https://www.youtube.com/watch?v=Cr8K88UcO0s'),
+
+-- 4. Salsa
+(4, 'Vivir Mi Vida', 'Marc Anthony', 'https://www.youtube.com/watch?v=YXnjy5YlDwk'),
+
+-- 5. Electrónica
+(5, 'Titanium', 'David Guetta ft. Sia', 'https://www.youtube.com/watch?v=JRfuAukYTKg'),
+
+-- 6. Jazz
+(6, 'Feeling Good', 'Nina Simone', 'https://www.youtube.com/watch?v=D5Y11hwjMNs'),
+
+-- 7. Hip Hop
+(7, 'God''s Plan', 'Drake', 'https://www.youtube.com/watch?v=xpVfcZ0ZcFM'),
+
+-- 8. Rap
+(8, 'Lose Yourself', 'Eminem', 'https://www.youtube.com/watch?v=_Yhyp-_hX2s'),
+
+-- 9. Trap
+(9, 'SICKO MODE', 'Travis Scott', 'https://www.youtube.com/watch?v=6ONRf7h3Mdk'),
+
+-- 10. R&B
+(10, 'Blinding Lights', 'The Weeknd', 'https://www.youtube.com/watch?v=4NRXx6U8ABQ'),
+
+-- 11. Reggae
+(11, 'Three Little Birds', 'Bob Marley & The Wailers', 'https://www.youtube.com/watch?v=zaGUr6wzyT8'),
+
+-- 12. Country
+(12, 'Take Me Home, Country Roads', 'John Denver', 'https://www.youtube.com/watch?v=1vrEljMfXYo'),
+
+-- 13. Metal
+(13, 'Enter Sandman', 'Metallica', 'https://www.youtube.com/watch?v=CD-E-LDc384'),
+
+-- 14. Bachata
+(14, 'Propuesta Indecente', 'Romeo Santos', 'https://www.youtube.com/watch?v=QFs3PIZb3js'),
+
+-- 15. Merengue
+(15, 'Suavemente', 'Elvis Crespo', 'https://www.youtube.com/watch?v=YVw7eJ0vGfM'),
+
+-- 16. Cumbia
+(16, 'La Pollera Colorá', 'La Sonora Dinamita', 'https://www.youtube.com/watch?v=4JrIuFjUgNw&list=RD4JrIuFjUgNw&start_radio=1'),
+
+-- 17. Clásica
+(17, 'Für Elise', 'Ludwig van Beethoven', 'https://www.youtube.com/watch?v=3cvmONlV5WU&list=RD3cvmONlV5WU&start_radio=1'),
+
+-- 18. Funk
+(18, 'Get Lucky', 'Daft Punk ft. Pharrell Williams', 'https://www.youtube.com/watch?v=5NV6Rdv1a3I'),
+
+-- 19. Punk
+(19, 'American Idiot', 'Green Day', 'https://www.youtube.com/watch?v=Ee_uujKuJMI'),
+
+-- 20. Indie
+(20, 'Do I Wanna Know?', 'Arctic Monkeys', 'https://www.youtube.com/watch?v=bpOSxM0rNPM');

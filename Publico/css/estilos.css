@@ -115,3 +115,79 @@ body {
     justify-content: center;
     
 }
+
+
+.carrusel-canciones {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+}
+
+.carrusel-canciones::-webkit-scrollbar {
+    height: 5px;
+}
+
+.carrusel-canciones::-webkit-scrollbar-thumb {
+    background-color: #db2777;
+    border-radius: 10px;
+}
+
+.tarjeta-cancion {
+    flex: 0 0 auto;
+    width: 110px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    text-align: left;
+}
+
+.tarjeta-cancion:hover {
+    transform: scale(1.05);
+}
+
+.tarjeta-cancion img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tarjeta-cancion .titulo-cancion {
+    font-weight: 600;
+    margin-top: 5px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tarjeta-cancion .artista-cancion {
+    font-size: 0.68rem;
+    color: #6c757d;
+}
+
+
+
+:root {
+    --alto-barra: 64px;
+}
+
+#navCliente,
+#footerCliente {
+    height: var(--alto-barra);
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#footerCliente {
+    justify-content: center;
+}
+
+#footerCliente p {
+    margin-bottom: 0;
+}
