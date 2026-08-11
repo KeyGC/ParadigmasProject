@@ -44,11 +44,12 @@ class UbicacionModelo
                 (tbubicacionprovincia, tbubicacioncanton, tbubicaciondistrito, tbubicacionlatitud, tbubicacionlongitud)
                 VALUES (:provinciaId, :cantonId, :distritoId, :lat, :lng)";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
-        $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
-        $stmt->bindValue(':distritoId', $distritoId, PDO::PARAM_INT);
-        $stmt->bindValue(':lat', $lat);
-        $stmt->bindValue(':lng', $lng);
+
+        $stmt->bindValue(':provinciaId', $provinciaId, $provinciaId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':cantonId', $cantonId, $cantonId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':distritoId', $distritoId, $distritoId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':lat', $lat, $lat === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':lng', $lng, $lng === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
 
         if ($stmt->execute()) {
             return $this->conexion->lastInsertId();
@@ -92,9 +93,9 @@ class UbicacionModelo
                 c.tbcantonnombre,
                 d.tbdistritonombre
             FROM tbubicacion u
-            INNER JOIN tbprovincia p ON u.tbubicacionprovincia = p.tbprovinciaid
-            INNER JOIN tbcanton c ON u.tbubicacioncanton = c.tbcantonid
-            INNER JOIN tbdistrito d ON u.tbubicaciondistrito = d.tbdistritoid
+            LEFT JOIN tbprovincia p ON u.tbubicacionprovincia = p.tbprovinciaid
+            LEFT JOIN tbcanton c ON u.tbubicacioncanton = c.tbcantonid
+            LEFT JOIN tbdistrito d ON u.tbubicaciondistrito = d.tbdistritoid
             WHERE u.tbubicacionid = :ubicacionId";
 
         $stmt = $this->conexion->prepare($sql);

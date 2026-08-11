@@ -126,32 +126,43 @@ function cargarUbicacion() {
 
             const u = resp.data;
 
+            // Si no hay provincia asignada aún, dejamos todo vacío/deshabilitado y no tocamos el mapa
+            if (u.tbubicacionprovincia === null) {
+                return;
+            }
+
             // Provincia
             document.getElementById('provincia').value = u.tbubicacionprovincia;
 
             // Cantones
-            await cargarCantones(u.tbubicacionprovincia);
-            document.getElementById('canton').disabled = false;
-            document.getElementById('canton').value = u.tbubicacioncanton;
+            if (u.tbubicacioncanton !== null) {
+                await cargarCantones(u.tbubicacionprovincia);
+                document.getElementById('canton').disabled = false;
+                document.getElementById('canton').value = u.tbubicacioncanton;
+            }
 
             // Distritos
-            await cargarDistritos(u.tbubicacioncanton);
-            document.getElementById('distrito').disabled = false;
-            document.getElementById('distrito').value = u.tbubicaciondistrito;
+            if (u.tbubicaciondistrito !== null) {
+                await cargarDistritos(u.tbubicacioncanton);
+                document.getElementById('distrito').disabled = false;
+                document.getElementById('distrito').value = u.tbubicaciondistrito;
+            }
 
-            // Coordenadas
-            document.getElementById('latitud').value = u.tbubicacionlatitud;
-            document.getElementById('longitud').value = u.tbubicacionlongitud;
+            // Coordenadas (solo si existen)
+            if (u.tbubicacionlatitud !== null && u.tbubicacionlongitud !== null) {
+                document.getElementById('latitud').value = u.tbubicacionlatitud;
+                document.getElementById('longitud').value = u.tbubicacionlongitud;
 
-            colocarMarcador({
-                lat: parseFloat(u.tbubicacionlatitud),
-                lng: parseFloat(u.tbubicacionlongitud)
-            });
+                colocarMarcador({
+                    lat: parseFloat(u.tbubicacionlatitud),
+                    lng: parseFloat(u.tbubicacionlongitud)
+                });
 
-            mapa.setView(
-                [u.tbubicacionlatitud, u.tbubicacionlongitud],
-                15
-            );
+                mapa.setView(
+                    [u.tbubicacionlatitud, u.tbubicacionlongitud],
+                    15
+                );
+            }
 
         })
         .catch(console.error);

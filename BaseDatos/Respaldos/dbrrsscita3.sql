@@ -15,11 +15,11 @@ create table IF NOT EXISTS `tbperfil` (
 
 CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicacionid` int NOT NULL AUTO_INCREMENT,
-  `tbubicacionprovincia` int NOT NULL,
-  `tbubicacioncanton` int NOT NULL,
+  `tbubicacionprovincia` int NULL,
+  `tbubicacioncanton` int NULL,
   `tbubicaciondistrito` int NOT NULL,
-  `tbubicacionlongitud` decimal(10, 8) NOT NULL,
-  `tbubicacionlatitud` decimal(10, 8) NOT NULL,
+  `tbubicacionlongitud` decimal(10, 8) NULL,
+  `tbubicacionlatitud` decimal(10, 8) NULL,
   PRIMARY KEY (`tbubicacionid`)
 );
 

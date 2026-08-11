@@ -9,13 +9,6 @@ header('Content-Type: application/json; charset=utf-8');
 $modelo = new PerfilModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
-// Ubicacion por defecto para perfiles recien creados
-const UBICACION_PROVINCIA_DEFAULT = 1;
-const UBICACION_CANTON_DEFAULT = 101;
-const UBICACION_DISTRITO_DEFAULT = 10101;
-const UBICACION_LAT_DEFAULT = 9.93463;
-const UBICACION_LNG_DEFAULT = -84.08256;
-
 function generarContraTemporal($nombre)
 {
     $base = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
@@ -89,16 +82,10 @@ switch ($accion) {
 
         
         $ubicacionModelo = new UbicacionModelo();
-        $ubicacionId = $ubicacionModelo->insert(
-            UBICACION_PROVINCIA_DEFAULT,
-            UBICACION_CANTON_DEFAULT,
-            UBICACION_DISTRITO_DEFAULT,
-            UBICACION_LAT_DEFAULT,
-            UBICACION_LNG_DEFAULT
-        );
+        $ubicacionId = $ubicacionModelo->insert(null, null, null, null, null);
 
         if (!$ubicacionId) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear la ubicación por defecto"]);
+            echo json_encode(["exito" => false, "mensaje" => "Error al crear la ubicación"]);
             break;
         }
 
@@ -144,16 +131,10 @@ switch ($accion) {
         }
 
         $ubicacionModelo = new UbicacionModelo();
-        $ubicacionId = $ubicacionModelo->insert(
-            UBICACION_PROVINCIA_DEFAULT,
-            UBICACION_CANTON_DEFAULT,
-            UBICACION_DISTRITO_DEFAULT,
-            UBICACION_LAT_DEFAULT,
-            UBICACION_LNG_DEFAULT
-        );
+        $ubicacionId = $ubicacionModelo->insert(null, null, null, null, null);
 
         if (!$ubicacionId) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear la ubicación por defecto"]);
+            echo json_encode(["exito" => false, "mensaje" => "Error al crear la ubicación"]);
             break;
         }
 
