@@ -213,81 +213,40 @@ switch ($accion) {
         break;
 
     case 'login':
-    $nombre = trim($_POST['nombre'] ?? '');
-    $contra = trim($_POST['contra'] ?? '');
-
-    if ($nombre === '' || $contra === '') {
-        echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
-        break;
-    }
-
-    $perfil = $modelo->login($nombre, $contra);
-
-    if ($perfil) {
-        $_SESSION['perfil'] = $perfil;
-
-        if ($perfil['tbperfilcambiocontra'] == 0) {
-            echo json_encode([
-                "exito" => true,
-                "cambiarContra" => true,
-                "mensaje" => "Debe cambiar su contraseña temporal",
-                "rol" => $perfil['tbperfilrol']
-            ]);
-        } else {
-            echo json_encode([
-                "exito" => true,
-                "cambiarContra" => false,
-                "mensaje" => "Login exitoso",
-                "rol" => $perfil['tbperfilrol']
-            ]);
-        }
-    } else {
-        echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
-    }
-
-    break;
-    case 'cambiarContra':
-        if (!isset($_SESSION['perfil'])) {
-            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
-            break;
-        }
-
-        $id = $_SESSION['perfil']['tbperfilid'];
+        $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
 
-        if ($contra === '') {
-            echo json_encode(["exito" => false, "mensaje" => "La contraseña es obligatoria"]);
+        if ($nombre === '' || $contra === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
             break;
         }
 
-        $errorContra = validarContra($contra);
-        if ($errorContra) {
-            echo json_encode(["exito" => false, "mensaje" => $errorContra]);
-            break;
-        }
+        $perfil = $modelo->login($nombre, $contra);
 
-        $perfilActual = $modelo->getPerfil($id);
-        if (!$perfilActual) {
-            echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
-            break;
-        }
+        if ($perfil) {
 
-        $perfil = new Perfil(
-            $id,
-            $perfilActual['tbperfilnombre'],
-            $contra,
-            $perfilActual['tbperfilcorreo'],
-            1,
-            $perfilActual['tbubicacionid'],
-            $perfilActual['tbperfilrol'],
-            $perfilActual['tbperfilactivo']
-        );
+            if (!$perfil['tbperfilactivo']) {
+                echo json_encode(["exito" => false, "mensaje" => "Su cuenta está inactiva. Contacte al administrador."]);
+                break;
+            }
 
-        if ($modelo->update($perfil)) {
-            $_SESSION['perfil'] = $perfil->toArray();
-            echo json_encode(["exito" => true, "mensaje" => "Contraseña actualizada correctamente"]);
+            $_SESSION['perfil'] = $perfil;
+
+            if ($perfil['tbperfilcambiocontra'] == 0) {
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => true,
+                    "mensaje" => "Debe cambiar su contraseña temporal"
+                ]);
+            } else {
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => false,
+                    "mensaje" => "Login exitoso"
+                ]);
+            }
         } else {
-            echo json_encode(["exito" => false, "mensaje" => "Error al actualizar la contraseña"]);
+            echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
         }
 
         break;
