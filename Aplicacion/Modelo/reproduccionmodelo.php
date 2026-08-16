@@ -37,4 +37,18 @@ class ReproduccionModelo
 
         return $fila ? (int)$fila['tbreproducciontiempo'] : 0;
     }
+
+    public function incrementarContador($perfilId, $cancionId)
+    {
+        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproduccioncontador, tbreproduccionultima)
+                VALUES (:perfilId, :cancionId, 1, NOW())
+                ON DUPLICATE KEY UPDATE
+                    tbreproduccioncontador = tbreproduccioncontador + 1,
+                    tbreproduccionultima = NOW()";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

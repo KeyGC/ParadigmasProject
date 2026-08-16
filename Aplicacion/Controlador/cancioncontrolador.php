@@ -50,6 +50,28 @@ switch ($accion) {
 
         break;
 
+    case 'registrarReproduccion':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
+            break;
+        }
+
+        $perfilId = $_SESSION['perfil']['tbperfilid'];
+        $cancionId = $_POST['cancionId'] ?? null;
+
+        if (!$cancionId) {
+            echo json_encode(["exito" => false, "mensaje" => "Falta el id de la canción"]);
+            break;
+        }
+
+        $ok = $reproduccionModelo->incrementarContador($perfilId, (int)$cancionId);
+
+        echo $ok
+            ? json_encode(["exito" => true, "mensaje" => "Reproducción registrada"])
+            : json_encode(["exito" => false, "mensaje" => "Error al registrar la reproducción"]);
+
+        break;
+
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;

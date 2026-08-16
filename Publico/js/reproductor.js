@@ -2,11 +2,15 @@ let player;
 let cancionActualId = null;
 let segundosAcumuladosSesion = 0;
 let intervaloEnvio = null;
+let yaContadaEstaReproduccion = false;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('reproductorYoutube', {
         height: '220',
         width: '100%',
+        playerVars: {
+            controls: 1  // asegura que se vean los controles nativos, incluido el botón de repetir al terminar
+        },
         events: {
             onStateChange: onPlayerStateChange
         }
@@ -49,6 +53,7 @@ function reproducirCancion(cancion, videoId) {
 
     cancionActualId = cancion.tbcancionid;
     segundosAcumuladosSesion = 0;
+    yaContadaEstaReproduccion = false;
 
     document.getElementById('tituloCancionModal').textContent =
         `${cancion.tbcancionnombre} - ${cancion.tbcancionartista}`;
@@ -63,10 +68,37 @@ function reproducirCancion(cancion, videoId) {
 
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
+
+        // Cuenta como nueva reproducción solo si es la primera vez,
+        // o si el video ya había llegado al final y el usuario le dio "reproducir otra vez" (nativo de YouTube)
+        if (!yaContadaEstaReproduccion) {
+            registrarReproduccion();
+            yaContadaEstaReproduccion = true;
+        }
+
         iniciarTracking();
+
+    } else if (event.data === YT.PlayerState.ENDED) {
+        detenerTracking();
+        // Habilita que el próximo PLAYING (originado por el botón nativo de repetir) cuente de nuevo
+        yaContadaEstaReproduccion = false;
+
     } else {
+        // Pausa u otro estado intermedio: no afecta el contador, solo detiene el tiempo
         detenerTracking();
     }
+}
+
+function registrarReproduccion() {
+    if (!cancionActualId) return;
+
+    const formData = new FormData();
+    formData.append('cancionId', cancionActualId);
+
+    fetch('apicancion.php?accion=registrarReproduccion', {
+        method: 'POST',
+        body: formData
+    });
 }
 
 function iniciarTracking() {
@@ -88,6 +120,7 @@ function detenerTracking() {
         if (restante > 0) {
             enviarTiempo(restante);
         }
+        segundosAcumuladosSesion = 0;
     }
 }
 
@@ -104,7 +137,6 @@ function enviarTiempo(segundos) {
     });
 }
 
-// Detener tracking al cerrar el modal
 document.addEventListener('DOMContentLoaded', () => {
     cargarCanciones();
 
