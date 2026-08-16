@@ -12,7 +12,6 @@ class PerfilModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    
     private function mapearFila($fila)
     {
         return (new Perfil(
@@ -22,6 +21,7 @@ class PerfilModelo
             $fila['tbperfilcorreo'],
             $fila['tbperfilcambiocontra'],
             $fila['tbubicacionid'],
+            $fila['tbperfilrol'],
             $fila['tbperfilactivo']
         ))->toArray();
     }
@@ -65,14 +65,15 @@ class PerfilModelo
     public function insert(Perfil $perfil)
     {
         $sql = "INSERT INTO tbperfil
-                (tbubicacionid, tbperfilnombre, tbperfilcontra, tbperfilcorreo, tbperfilcambiocontra, tbperfilactivo)
-                VALUES (:tbubicacionid, :nombre, :contra, :correo, :cambioContra, :activo)";
+                (tbubicacionid, tbperfilnombre, tbperfilcontra, tbperfilcorreo, tbperfilcambiocontra, tbperfilrol, tbperfilactivo)
+                VALUES (:tbubicacionid, :nombre, :contra, :correo, :cambioContra, :rol, :activo)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':tbubicacionid', $perfil->get_tbubicacionid(), PDO::PARAM_INT);
         $stmt->bindValue(':nombre', $perfil->get_tbperfilnombre());
         $stmt->bindValue(':contra', $perfil->get_tbperfilcontra());
         $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
         $stmt->bindValue(':cambioContra', $perfil->get_tbperfilcambiocontra(), PDO::PARAM_INT);
+        $stmt->bindValue(':rol', $perfil->get_tbperfilrol());
         $stmt->bindValue(':activo', $perfil->get_tbperfilactivo(), PDO::PARAM_BOOL);
 
         if ($stmt->execute()) {
@@ -89,6 +90,7 @@ class PerfilModelo
                     tbperfilcorreo = :correo,
                     tbperfilcambiocontra = :cambioContra,
                     tbubicacionid = :tbubicacionid,
+                    tbperfilrol = :rol,
                     tbperfilactivo = :activo
                 WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
@@ -97,6 +99,7 @@ class PerfilModelo
         $stmt->bindValue(':correo', $perfil->get_tbperfilcorreo());
         $stmt->bindValue(':cambioContra', $perfil->get_tbperfilcambiocontra(), PDO::PARAM_INT);
         $stmt->bindValue(':tbubicacionid', $perfil->get_tbubicacionid(), PDO::PARAM_INT);
+        $stmt->bindValue(':rol', $perfil->get_tbperfilrol());
         $stmt->bindValue(':activo', $perfil->get_tbperfilactivo(), PDO::PARAM_BOOL);
         $stmt->bindValue(':id', $perfil->get_tbperfilid(), PDO::PARAM_INT);
 

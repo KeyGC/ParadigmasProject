@@ -28,6 +28,7 @@ if (!isset($_SESSION['perfil'])) {
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="index.php?vista=logout">Cerrar sesion</a>
                     </li>
 
                 </ul>
