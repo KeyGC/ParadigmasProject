@@ -4,6 +4,7 @@ require_once __DIR__ . '/../Modelo/perfilmodelo.php';
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
+require_once __DIR__ . '/../Modelo/perfilaccesomodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -210,6 +211,9 @@ switch ($accion) {
             }
 
             $_SESSION['perfil'] = $perfil;
+
+            $accesoModelo = new PerfilAccesoModelo();
+            $accesoModelo->registrarAcceso($perfil['tbperfilid']);  
 
             if ($perfil['tbperfilcambiocontra'] == 0) {
                 echo json_encode([

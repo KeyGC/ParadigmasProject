@@ -15,7 +15,7 @@ if ($vista === 'logout') {
 $vistasPublicas = ['login', 'registro'];
 
 // Vistas exclusivas de admin
-$vistasAdmin = ['perfiles'];
+$vistasAdmin = ['perfiles', 'perfilaccesos']; 
 
 // Vistas exclusivas de cliente
 $vistasCliente = ['cliente', 'perfil', 'cambiarContra'];
@@ -62,5 +62,8 @@ switch ($vista) {
         break;
     case 'cambiarContra':
         require_once APP_PATH . '/Vista/Cliente/cambiarcontra.php';
+        break;
+    case 'perfilaccesos':
+        require_once APP_PATH . '/Vista/Admin/perfilaccesos.php';
         break;
 }

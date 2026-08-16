@@ -71,12 +71,12 @@ function pintarTabla(perfiles) {
             <td>
                 <button onclick="editarPerfil(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #2C5F8A; border: none; cursor: pointer;">Editar</button>
                 <button onclick="eliminarPerfil(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #DC3545; border: none; cursor: pointer;">Eliminar</button>
+                <button onclick="verAccesos(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #17A2B8; border: none; cursor: pointer;">Accesos</button>
             </td>
         `;
         cuerpo.appendChild(fila);
     });
 }
-
 
 function editarPerfil(id) {
     fetch(`${URL_CONTROLADOR}?accion=getPerfil&id=${id}`)
@@ -159,4 +159,8 @@ function eliminarPerfil(id) {
             }
         })
         .catch(err => console.error('Error al eliminar perfil:', err));
+}
+
+function verAccesos(id) {
+    window.location.href = `index.php?vista=perfilaccesos&id=${id}`;
 }
