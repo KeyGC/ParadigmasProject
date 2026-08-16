@@ -1,10 +1,10 @@
 <?php
 
 class Basedatos {
-private static $host = "127.0.0.1:3307";
+private static $host = "127.0.0.1";
 private static $dbname = "dbrrsscita";
-private static $usuario = "root";
-private static $password = "";
+private static $usuario = "key";
+private static $password = "2323";
 private static $conexion = null;
 
 public static function conectar() {
