@@ -12,16 +12,28 @@ class ReproduccionModelo
 
     public function acumularTiempo($perfilId, $cancionId, $segundos)
     {
-        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproducciontiempo, tbreproduccionultima)
-                VALUES (:perfilId, :cancionId, :segundos, NOW())
+        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproducciontiempo)
+                VALUES (:perfilId, :cancionId, :segundos)
                 ON DUPLICATE KEY UPDATE
-                    tbreproducciontiempo = tbreproducciontiempo + :segundos2,
-                    tbreproduccionultima = NOW()";
+                    tbreproducciontiempo = tbreproducciontiempo + :segundos2";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
         $stmt->bindValue(':segundos', $segundos, PDO::PARAM_INT);
         $stmt->bindValue(':segundos2', $segundos, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function incrementarContador($perfilId, $cancionId)
+    {
+        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproduccioncontador)
+                VALUES (:perfilId, :cancionId, 1)
+                ON DUPLICATE KEY UPDATE
+                    tbreproduccioncontador = tbreproduccioncontador + 1";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -38,17 +50,11 @@ class ReproduccionModelo
         return $fila ? (int)$fila['tbreproducciontiempo'] : 0;
     }
 
-    public function incrementarContador($perfilId, $cancionId)
+    public function deleteByPerfilId($perfilId)
     {
-        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproduccioncontador, tbreproduccionultima)
-                VALUES (:perfilId, :cancionId, 1, NOW())
-                ON DUPLICATE KEY UPDATE
-                    tbreproduccioncontador = tbreproduccioncontador + 1,
-                    tbreproduccionultima = NOW()";
+        $sql = "DELETE FROM tbreproduccion WHERE tbperfilid = :perfilId";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
-        $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
-
         return $stmt->execute();
     }
 }

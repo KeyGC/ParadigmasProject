@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../Configuracion/configuracion.php';
-require_once __DIR__ . '/../Aplicacion/Utilidades/autenticacion.php';
 
 $vista = $_GET['vista'] ?? 'login';
 
@@ -12,25 +11,36 @@ if ($vista === 'logout') {
     exit;
 }
 
-// Mapa de permisos por vista
-$permisos = [
-    'login'         => 'publica',
-    'registro'      => 'publica',
-    'cliente'       => ['cliente'],
-    'perfil'        => ['cliente'],
-    'cambiarContra' => ['cliente', 'admin'],
-    'perfiles'      => ['admin'],
-];
+// Vistas públicas, no requieren sesión
+$vistasPublicas = ['login', 'registro'];
 
-// Si ya hay sesión activa y trata de ir a login/registro, mandarlo a su home
-if (usuarioAutenticado() && in_array($vista, ['login', 'registro'], true)) {
-    header('Location: index.php?vista=' . vistaHomePorRol());
-    exit;
-}
+// Vistas exclusivas de admin
+$vistasAdmin = ['perfiles'];
 
-$rolesRequeridos = $permisos[$vista] ?? 'publica';
-if ($rolesRequeridos !== 'publica') {
-    exigirRol($rolesRequeridos);
+// Vistas exclusivas de cliente
+$vistasCliente = ['cliente', 'perfil', 'cambiarContra'];
+
+if (!in_array($vista, $vistasPublicas, true)) {
+
+    // Cualquier vista no pública requiere sesión activa
+    if (!isset($_SESSION['perfil'])) {
+        header('Location: index.php?vista=login');
+        exit;
+    }
+
+    $rol = $_SESSION['perfil']['tbperfilrol'] ?? 'cliente';
+
+    // Un cliente no puede acceder a vistas de admin
+    if (in_array($vista, $vistasAdmin, true) && $rol !== 'admin') {
+        header('Location: index.php?vista=cliente');
+        exit;
+    }
+
+    // Un admin no puede acceder a vistas de cliente
+    if (in_array($vista, $vistasCliente, true) && $rol === 'admin') {
+        header('Location: index.php?vista=perfiles');
+        exit;
+    }
 }
 
 switch ($vista) {

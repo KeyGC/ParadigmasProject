@@ -104,4 +104,12 @@ class UbicacionModelo
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function delete($ubicacionId)
+    {
+        $sql = "DELETE FROM tbubicacion WHERE tbubicacionid = :ubicacionId";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

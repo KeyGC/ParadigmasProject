@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../Modelo/perfilmodelo.php';
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
+require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -80,6 +81,7 @@ switch ($accion) {
             break;
         }
 
+        
         $ubicacionModelo = new UbicacionModelo();
         $ubicacionId = $ubicacionModelo->insert(null, null, null, null, null);
 
@@ -89,7 +91,6 @@ switch ($accion) {
         }
 
         $contraTemporal = generarContraTemporal($nombre);
-        // Auto-registro siempre crea perfiles de rol "cliente"
         $perfil = new Perfil(null, $nombre, $contraTemporal, $correo, 0, $ubicacionId, 'cliente', true);
 
         try {
@@ -115,20 +116,9 @@ switch ($accion) {
         break;
 
     case 'insert':
-        // Solo un admin autenticado puede crear perfiles manualmente (incluye otros admins)
-        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
-            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
-            break;
-        }
-
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
-        $rol = trim($_POST['rol'] ?? 'cliente');
-
-        if (!in_array($rol, ['cliente', 'admin'], true)) {
-            $rol = 'cliente';
-        }
 
         if ($nombre === '' || $contra === '' || $correo === '') {
             echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
@@ -149,7 +139,7 @@ switch ($accion) {
             break;
         }
 
-        $perfil = new Perfil(null, $nombre, $contra, $correo, 0, $ubicacionId, $rol, true);
+        $perfil = new Perfil(null, $nombre, $contra, $correo, 0, $ubicacionId, 'cliente', true);
 
         try {
             $id = $modelo->insert($perfil);
@@ -166,17 +156,10 @@ switch ($accion) {
         break;
 
     case 'update':
-        // Solo un admin puede editar perfiles de terceros por este endpoint
-        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
-            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
-            break;
-        }
-
         $id = $_POST['id'] ?? null;
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
-        $rol = trim($_POST['rol'] ?? '');
 
         if (!$id || $nombre === '' || $contra === '' || $correo === '') {
             echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
@@ -189,10 +172,6 @@ switch ($accion) {
             break;
         }
 
-        if (!in_array($rol, ['cliente', 'admin'], true)) {
-            $rol = $perfilActual['tbperfilrol'];
-        }
-
         $perfil = new Perfil(
             $id,
             $nombre,
@@ -200,7 +179,7 @@ switch ($accion) {
             $correo,
             $perfilActual['tbperfilcambiocontra'],
             $perfilActual['tbubicacionid'],
-            $rol,
+            $perfilActual['tbperfilrol'],
             $perfilActual['tbperfilactivo']
         );
 
@@ -213,39 +192,43 @@ switch ($accion) {
         break;
 
     case 'login':
-    $nombre = trim($_POST['nombre'] ?? '');
-    $contra = trim($_POST['contra'] ?? '');
+        $nombre = trim($_POST['nombre'] ?? '');
+        $contra = trim($_POST['contra'] ?? '');
 
-    if ($nombre === '' || $contra === '') {
-        echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
-        break;
-    }
-
-    $perfil = $modelo->login($nombre, $contra);
-
-    if ($perfil) {
-        $_SESSION['perfil'] = $perfil;
-
-        if ($perfil['tbperfilcambiocontra'] == 0) {
-            echo json_encode([
-                "exito" => true,
-                "cambiarContra" => true,
-                "mensaje" => "Debe cambiar su contraseña temporal",
-                "rol" => $perfil['tbperfilrol']
-            ]);
-        } else {
-            echo json_encode([
-                "exito" => true,
-                "cambiarContra" => false,
-                "mensaje" => "Login exitoso",
-                "rol" => $perfil['tbperfilrol']
-            ]);
+        if ($nombre === '' || $contra === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre y contraseña son obligatorios"]);
+            break;
         }
-    } else {
-        echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
-    }
 
-    break;
+        $perfil = $modelo->login($nombre, $contra);
+
+        if ($perfil) {
+
+            if (!$perfil['tbperfilactivo']) {
+                echo json_encode(["exito" => false, "mensaje" => "Su cuenta está inactiva. Contacte al administrador."]);
+                break;
+            }
+
+            $_SESSION['perfil'] = $perfil;
+
+            if ($perfil['tbperfilcambiocontra'] == 0) {
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => true,
+                    "mensaje" => "Debe cambiar su contraseña temporal"
+                ]);
+            } else {
+                echo json_encode([
+                    "exito" => true,
+                    "cambiarContra" => false,
+                    "mensaje" => "Login exitoso"
+                ]);
+            }
+        } else {
+            echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
+        }
+
+        break;
     case 'cambiarContra':
         if (!isset($_SESSION['perfil'])) {
             echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
@@ -325,7 +308,6 @@ switch ($accion) {
             break;
         }
 
-        // El propio usuario NUNCA puede cambiar su rol desde aquí
         $perfil = new Perfil(
             $id,
             $nombre,
@@ -333,7 +315,6 @@ switch ($accion) {
             $correo,
             $perfilActual['tbperfilcambiocontra'],
             $perfilActual['tbubicacionid'],
-            $perfilActual['tbperfilrol'],
             $perfilActual['tbperfilactivo']
         );
 
@@ -367,6 +348,62 @@ switch ($accion) {
 
         break;
 
+
+        case 'delete':
+        // Solo un admin puede eliminar perfiles
+        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
+            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
+            break;
+        }
+
+        $id = $_POST['id'] ?? null;
+
+        if (!$id) {
+            echo json_encode(["exito" => false, "mensaje" => "ID no proporcionado"]);
+            break;
+        }
+
+        // Evita que un admin se elimine a sí mismo por accidente y quede sin sesión válida
+        if ((int)$id === (int)$_SESSION['perfil']['tbperfilid']) {
+            echo json_encode(["exito" => false, "mensaje" => "No puede eliminar su propio perfil"]);
+            break;
+        }
+
+        $perfilAEliminar = $modelo->getPerfil($id);
+        if (!$perfilAEliminar) {
+            echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
+            break;
+        }
+
+        $ubicacionId = $perfilAEliminar['tbubicacionid'];
+
+        try {
+            $reproduccionModelo = new ReproduccionModelo();
+            $ubicacionModelo = new UbicacionModelo();
+
+            // 1. Borra el historial de reproducciones ligado a este perfil (FK)
+            $reproduccionModelo->deleteByPerfilId($id);
+
+            // 2. Borra el perfil en sí
+            $perfilEliminado = $modelo->delete($id);
+
+            if (!$perfilEliminado) {
+                echo json_encode(["exito" => false, "mensaje" => "Error al eliminar el perfil"]);
+                break;
+            }
+
+            // 3. Borra la ubicación asociada (ya no depende de nada más)
+            if ($ubicacionId) {
+                $ubicacionModelo->delete($ubicacionId);
+            }
+
+            echo json_encode(["exito" => true, "mensaje" => "Perfil eliminado correctamente junto con sus datos asociados"]);
+
+        } catch (PDOException $e) {
+            echo json_encode(["exito" => false, "mensaje" => "Error al eliminar: " . $e->getMessage()]);
+        }
+
+        break;
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;

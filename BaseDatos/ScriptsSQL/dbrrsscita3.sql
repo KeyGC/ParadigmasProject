@@ -676,7 +676,6 @@ CREATE TABLE IF NOT EXISTS `tbreproduccion` (
   `tbcancionid` int NOT NULL,
   `tbreproducciontiempo` int NOT NULL DEFAULT 0,
   `tbreproduccioncontador` int NOT NULL DEFAULT 0,
-  `tbreproduccionultima` datetime DEFAULT NULL,
   `tbreproduccionestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbreproduccionid`),
   UNIQUE KEY `uq_perfil_cancion` (`tbperfilid`, `tbcancionid`),
@@ -769,3 +768,25 @@ INSERT INTO `tbcancion`
 
 -- 20. Indie
 (20, 'Do I Wanna Know?', 'Arctic Monkeys', 'https://www.youtube.com/watch?v=bpOSxM0rNPM');
+
+-- Semana 4
+
+USE `dbrrsscita`;
+
+CREATE TABLE IF NOT EXISTS `tbperfilaccesosemanal` (
+  `tbperfilaccesosemanalid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilaccesosemanaldata` TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`tbperfilaccesosemanalid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbperfilacceso` (
+  `tbperfilaccesoid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbperfilaccesosemanalid` int NOT NULL,
+  `tbperfilaccesofechaprimera` datetime NOT NULL,
+  `tbperfilaccesofechaultima` datetime NOT NULL,
+  PRIMARY KEY (`tbperfilaccesoid`),
+  UNIQUE KEY `uq_perfilacceso_perfil` (`tbperfilid`),
+  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
+  FOREIGN KEY (`tbperfilaccesosemanalid`) REFERENCES `tbperfilaccesosemanal`(`tbperfilaccesosemanalid`)
+);
