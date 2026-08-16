@@ -9,6 +9,7 @@ create table IF NOT EXISTS `tbperfil` (
   `tbperfilcontra` text NOT NULL,
   `tbperfilcorreo` text NOT NULL,
   `tbperfilcambiocontra` TINYINT(1) NOT NULL DEFAULT 0,
+  `tbperfilrol` varchar(20) NOT NULL DEFAULT 'cliente',
   `tbperfilactivo` boolean NOT NULL DEFAULT TRUE, 
   PRIMARY KEY (`tbperfilid`)
 );
@@ -20,12 +21,14 @@ CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicaciondistrito` int NOT NULL,
   `tbubicacionlongitud` decimal(10, 8) NULL,
   `tbubicacionlatitud` decimal(10, 8) NULL,
+  `tbubicacionestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbubicacionid`)
 );
 
 CREATE TABLE IF NOT EXISTS `tbprovincia` (
   `tbprovinciaid` int NOT NULL,
   `tbprovincianombre` TEXT NOT NULL,
+  `tbprovinciaestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbprovinciaid`)
 );
 
@@ -33,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `tbcanton` (
   `tbcantonid` int NOT NULL,
   `tbprovinciaid` int NOT NULL,
   `tbcantonnombre` TEXT NOT NULL,
+  `tbcantonestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbcantonid`)
 );
 
@@ -40,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `tbdistrito` (
   `tbdistritoid` int NOT NULL,
   `tbcantonid` int NOT NULL,
   `tbdistritonombre` TEXT NOT NULL,
+  `tbdistritoestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbdistritoid`)
 );
 
@@ -650,6 +655,7 @@ USE `dbrrsscita`;
 CREATE TABLE IF NOT EXISTS `tbgenero` (
   `tbgeneroid` int NOT NULL AUTO_INCREMENT,
   `tbgeneronombre` varchar(100) NOT NULL,
+  `tbgeneroestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbgeneroid`)
 );
 
@@ -669,7 +675,9 @@ CREATE TABLE IF NOT EXISTS `tbreproduccion` (
   `tbperfilid` int NOT NULL,
   `tbcancionid` int NOT NULL,
   `tbreproducciontiempo` int NOT NULL DEFAULT 0,
+  `tbreproduccioncontador` int NOT NULL DEFAULT 0,
   `tbreproduccionultima` datetime DEFAULT NULL,
+  `tbreproduccionestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbreproduccionid`),
   UNIQUE KEY `uq_perfil_cancion` (`tbperfilid`, `tbcancionid`),
   FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
