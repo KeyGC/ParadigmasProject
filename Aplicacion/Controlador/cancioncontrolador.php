@@ -1,23 +1,16 @@
 <?php
 
-require_once __DIR__ . '/../Modelo/generomodelo.php';
 require_once __DIR__ . '/../Modelo/cancionmodelo.php';
 require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-$generoModelo = new GeneroModelo();
 $cancionModelo = new CancionModelo();
 $reproduccionModelo = new ReproduccionModelo();
 
 $accion = $_REQUEST['accion'] ?? '';
 
 switch ($accion) {
-
-    case 'getGeneros':
-        $generos = $generoModelo->getList();
-        echo json_encode(["exito" => true, "data" => $generos]);
-        break;
 
     case 'getCanciones':
         $generoId = $_GET['generoId'] ?? null;
