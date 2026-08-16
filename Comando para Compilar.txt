@@ -2,7 +2,7 @@ COMPILAR EL PROYECTO:
     php -S localhost:8000 -t Publico
 
 COMPILAR LA BASE DE DATOS:
-    sudo mysql < baseDatos1.sql
+    sudo mysql < dbrrsscita3.sql
 
 COMPROBAR QUE SE COMPILO CORRECTAMENTE(BASE DE DATOS):
     sudo mysql

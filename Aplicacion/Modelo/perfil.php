@@ -1,6 +1,5 @@
 <?php
 
-
 class Perfil
 {
     private $tbperfilid;
@@ -8,13 +7,11 @@ class Perfil
     private $tbperfilcontra;
     private $tbperfilcorreo;
     private $tbperfilcambiocontra;
-    
     private $tbubicacionid;
-
+    private $tbperfilrol;
     private $tbperfilactivo;
 
-
-    public function __construct($id = null, $nombre = "", $contra = "", $correo = "", $cambioContra = 0, $tbubicacionid = null, $tbperfilactivo = false)
+    public function __construct($id = null, $nombre = "", $contra = "", $correo = "", $cambioContra = 0, $tbubicacionid = null, $rol = "cliente", $tbperfilactivo = false)
     {
         $this->tbperfilid = $id;
         $this->tbperfilnombre = $nombre;
@@ -22,6 +19,7 @@ class Perfil
         $this->tbperfilcorreo = $correo;
         $this->tbperfilcambiocontra = $cambioContra;
         $this->tbubicacionid = $tbubicacionid;
+        $this->tbperfilrol = $rol;
         $this->tbperfilactivo = $tbperfilactivo;
     }
 
@@ -47,16 +45,21 @@ class Perfil
         return $this->tbperfilcambiocontra;
     }
 
-    public function get_tbubicacionid(){
+    public function get_tbubicacionid()
+    {
         return $this->tbubicacionid;
     }
 
-    public function get_tbperfilactivo(){
+    public function get_tbperfilrol()
+    {
+        return $this->tbperfilrol;
+    }
+
+    public function get_tbperfilactivo()
+    {
         return $this->tbperfilactivo;
     }
 
-
- 
     public function toArray()
     {
         return [
@@ -66,6 +69,7 @@ class Perfil
             "tbperfilcorreo" => $this->tbperfilcorreo,
             "tbperfilcambiocontra" => $this->tbperfilcambiocontra,
             "tbubicacionid" => $this->tbubicacionid,
+            "tbperfilrol" => $this->tbperfilrol,
             "tbperfilactivo" => $this->tbperfilactivo
         ];
     }

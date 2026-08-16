@@ -25,6 +25,8 @@ function loguear(e) {
 
                 if (resp.cambiarContra) {
                     window.location.href = 'index.php?vista=cambiarContra';
+                } else if (resp.rol === 'admin') {
+                    window.location.href = 'index.php?vista=perfiles';
                 } else {
                     window.location.href = 'index.php?vista=cliente';
                 }
