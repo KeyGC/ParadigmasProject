@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicacionid` int NOT NULL AUTO_INCREMENT,
   `tbubicacionprovincia` int NULL,
   `tbubicacioncanton` int NULL,
-  `tbubicaciondistrito` int NOT NULL,
+  `tbubicaciondistrito` int NULL,
   `tbubicacionlongitud` decimal(10, 8) NULL,
   `tbubicacionlatitud` decimal(10, 8) NULL,
   `tbubicacionestado` boolean NOT NULL DEFAULT TRUE,
