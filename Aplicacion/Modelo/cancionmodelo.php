@@ -25,7 +25,10 @@ class CancionModelo
 
     public function getList()
     {
-        $sql = "SELECT * FROM tbcancion WHERE tbcancionactivo = 1 ORDER BY tbcancionnombre ASC";
+        $sql = "SELECT c.* FROM tbcancion c
+                INNER JOIN tbgenero g ON c.tbgeneroid = g.tbgeneroid
+                WHERE c.tbcancionactivo = 1 AND g.tbgeneroestado = 1
+                ORDER BY c.tbcancionnombre ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $filas = $stmt->fetchAll();
@@ -39,7 +42,10 @@ class CancionModelo
 
     public function getPorGenero($generoId)
     {
-        $sql = "SELECT * FROM tbcancion WHERE tbgeneroid = :generoId AND tbcancionactivo = 1 ORDER BY tbcancionnombre ASC";
+        $sql = "SELECT c.* FROM tbcancion c
+                INNER JOIN tbgenero g ON c.tbgeneroid = g.tbgeneroid
+                WHERE c.tbgeneroid = :generoId AND c.tbcancionactivo = 1 AND g.tbgeneroestado = 1
+                ORDER BY c.tbcancionnombre ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':generoId', $generoId, PDO::PARAM_INT);
         $stmt->execute();

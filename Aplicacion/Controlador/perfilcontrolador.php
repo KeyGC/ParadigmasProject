@@ -201,6 +201,12 @@ switch ($accion) {
         $perfil = $modelo->login($nombre, $contra);
 
         if ($perfil) {
+
+            if (!$perfil['tbperfilactivo']) {
+                echo json_encode(["exito" => false, "mensaje" => "Su cuenta está inactiva. Contacte al administrador."]);
+                break;
+            }
+
             $_SESSION['perfil'] = $perfil;
 
             if ($perfil['tbperfilcambiocontra'] == 0) {
@@ -221,7 +227,7 @@ switch ($accion) {
         }
 
         break;
-
+        
     case 'cambiarContra':
         if (!isset($_SESSION['perfil'])) {
             echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);

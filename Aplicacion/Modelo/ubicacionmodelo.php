@@ -13,7 +13,7 @@ class UbicacionModelo
 
     public function getProvincias()
     {
-        $sql = "SELECT tbprovinciaid, tbprovincianombre FROM tbprovincia ORDER BY tbprovinciaid";
+        $sql = "SELECT tbprovinciaid, tbprovincianombre FROM tbprovincia WHERE tbprovinciaestado = 1 ORDER BY tbprovinciaid";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -21,7 +21,7 @@ class UbicacionModelo
 
     public function getCantonesPorProvincia($provinciaId)
     {
-        $sql = "SELECT tbcantonid, tbcantonnombre FROM tbcanton WHERE tbprovinciaid = :provinciaId ORDER BY tbcantonnombre";
+        $sql = "SELECT tbcantonid, tbcantonnombre FROM tbcanton WHERE tbprovinciaid = :provinciaId AND tbcantonestado = 1 ORDER BY tbcantonnombre";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
         $stmt->execute();
@@ -30,7 +30,7 @@ class UbicacionModelo
 
     public function getDistritosPorCanton($cantonId)
     {
-        $sql = "SELECT tbdistritoid, tbdistritonombre FROM tbdistrito WHERE tbcantonid = :cantonId ORDER BY tbdistritonombre";
+        $sql = "SELECT tbdistritoid, tbdistritonombre FROM tbdistrito WHERE tbcantonid = :cantonId AND tbdistritoestado = 1 ORDER BY tbdistritonombre";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
         $stmt->execute();
