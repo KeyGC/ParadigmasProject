@@ -34,6 +34,7 @@ if (!$idPerfil) {
                         <th>Artista</th>
                         <th>Tiempo (seg)</th>
                         <th>Veces reproducida</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="cuerpoReproducciones">

@@ -59,16 +59,24 @@ class PerfilAccesoModelo
     {
         $sql = "SELECT pa.tbperfilaccesoid, pa.tbperfilid, pa.tbperfilaccesosemanalid,
                     pa.tbperfilaccesofechacreacion, pa.tbperfilaccesofechaultima,
-                    pas.tbperfilaccesosemanaldata
+                    pa.tbperfilaccesoestado, pas.tbperfilaccesosemanaldata
                 FROM tbperfilacceso pa
                 INNER JOIN tbperfilaccesosemanal pas
                     ON pa.tbperfilaccesosemanalid = pas.tbperfilaccesosemanalid
-                WHERE pa.tbperfilid = :idPerfil";
+                WHERE pa.tbperfilid = :idPerfil AND pa.tbperfilaccesoestado = 1";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch();
     }
+
+    public function toggleEstado($idPerfil)
+    {
+        $sql = "UPDATE tbperfilacceso SET tbperfilaccesoestado = NOT tbperfilaccesoestado WHERE tbperfilid = :idPerfil";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
+        return $stmt->execute();
+}
 
     // Se llama cuando se crea el perfil (registro), NO en el login
     public function crearRegistroAcceso($idPerfil)

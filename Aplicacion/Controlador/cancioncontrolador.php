@@ -81,7 +81,24 @@ switch ($accion) {
         $reproducciones = $reproduccionModelo->getPorPerfil($perfilId);
         echo json_encode(["exito" => true, "data" => $reproducciones]);
         break;
-        case 'getListAdmin':
+    case 'toggleReproduccionEstado':
+        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
+            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
+            break;
+        }
+
+        $id = $_POST['id'] ?? null;
+        if (!$id) {
+            echo json_encode(["exito" => false, "mensaje" => "ID no proporcionado"]);
+            break;
+        }
+
+        echo $reproduccionModelo->toggleEstado($id)
+            ? json_encode(["exito" => true, "mensaje" => "Estado actualizado correctamente"])
+            : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
+
+        break;
+    case 'getListAdmin':
         exigirRol(['admin']);
         $canciones = $cancionModelo->getListAdmin();
         echo json_encode(["exito" => true, "data" => $canciones]);
@@ -186,7 +203,7 @@ switch ($accion) {
             : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
 
         break;
-        
+
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;

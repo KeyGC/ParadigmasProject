@@ -785,6 +785,7 @@ CREATE TABLE IF NOT EXISTS `tbperfilacceso` (
   `tbperfilaccesosemanalid` int NOT NULL,
   `tbperfilaccesofechacreacion` datetime NOT NULL,
   `tbperfilaccesofechaultima` datetime NOT NULL,
+  `tbperfilaccesoestado` BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbperfilaccesoid`),
   UNIQUE KEY `uq_perfilacceso_perfil` (`tbperfilid`),
   FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),

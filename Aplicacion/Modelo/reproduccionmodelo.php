@@ -60,16 +60,24 @@ class ReproduccionModelo
 
     public function getPorPerfil($perfilId)
     {
-        $sql = "SELECT c.tbcancionnombre, c.tbcancionartista,
-                    r.tbreproducciontiempo, r.tbreproduccioncontador
+        $sql = "SELECT r.tbreproduccionid, c.tbcancionnombre, c.tbcancionartista,
+                    r.tbreproducciontiempo, r.tbreproduccioncontador, r.tbreproduccionestado
                 FROM tbreproduccion r
                 INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
-                WHERE r.tbperfilid = :perfilId
+                WHERE r.tbperfilid = :perfilId AND r.tbreproduccionestado = 1
                 ORDER BY r.tbreproduccioncontador DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function toggleEstado($id)
+    {
+        $sql = "UPDATE tbreproduccion SET tbreproduccionestado = NOT tbreproduccionestado WHERE tbreproduccionid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
 

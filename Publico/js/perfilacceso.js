@@ -51,3 +51,25 @@ function cargarMatriz(idPerfil) {
         })
         .catch(err => console.error('Error al cargar la matriz de accesos:', err));
 }
+
+function toggleEstadoAcceso() {
+    const idPerfil = document.getElementById('idPerfil').value;
+
+    if (!confirm('¿Confirma que desea desactivar el registro de accesos de este perfil?')) return;
+
+    const formData = new FormData();
+    formData.append('idPerfil', idPerfil);
+
+    fetch('apiperfilacceso.php?accion=toggleEstado', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => res.json())
+        .then(respuesta => {
+            alert(respuesta.mensaje);
+            if (respuesta.exito) {
+                cargarMatriz(idPerfil);
+            }
+        })
+        .catch(err => console.error('Error al cambiar estado:', err));
+}

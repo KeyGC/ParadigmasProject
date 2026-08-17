@@ -28,6 +28,10 @@ if (!$idPerfil) {
             <h1 id="tituloPerfil">Accesos</h1>
             <p id="resumenFechas" class="text-secondary"></p>
 
+            <button class="btn btn-danger mb-3" id="btnToggleEstado" onclick="toggleEstadoAcceso()">
+                Desactivar registro de accesos
+            </button>
+
             <table class="table table-bordered" id="tablaMatriz">
                 <thead class="table-dark">
                     <tr>
