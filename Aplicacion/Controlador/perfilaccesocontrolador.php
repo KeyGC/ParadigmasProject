@@ -35,7 +35,7 @@ switch ($accion) {
             "exito" => true,
             "data" => [
                 "perfil" => $perfil['tbperfilnombre'],
-                "fechaPrimera" => $matriz['fechaPrimera'] ?? null,
+                "fechaCreacion" => $matriz['fechaCreacion'] ?? null,
                 "fechaUltima" => $matriz['fechaUltima'] ?? null,
                 "semanas" => $matriz['semanas'] ?? []
             ]

@@ -5,15 +5,15 @@ class PerfilAcceso
     private $tbperfilaccesoid;
     private $tbperfilid;
     private $tbperfilaccesosemanalid;
-    private $tbperfilaccesofechaprimera;
+    private $tbperfilaccesofechacreacion;
     private $tbperfilaccesofechaultima;
 
-    public function __construct($id = null, $tbperfilid = null, $tbperfilaccesosemanalid = null, $fechaPrimera = null, $fechaUltima = null)
+    public function __construct($id = null, $tbperfilid = null, $tbperfilaccesosemanalid = null, $fechaCreacion = null, $fechaUltima = null)
     {
         $this->tbperfilaccesoid = $id;
         $this->tbperfilid = $tbperfilid;
         $this->tbperfilaccesosemanalid = $tbperfilaccesosemanalid;
-        $this->tbperfilaccesofechaprimera = $fechaPrimera;
+        $this->tbperfilaccesofechacreacion = $fechaCreacion;
         $this->tbperfilaccesofechaultima = $fechaUltima;
     }
 
@@ -29,9 +29,9 @@ class PerfilAcceso
     {
         return $this->tbperfilaccesosemanalid;
     }
-    public function get_tbperfilaccesofechaprimera()
+    public function get_tbperfilaccesofechacreacion()
     {
-        return $this->tbperfilaccesofechaprimera;
+        return $this->tbperfilaccesofechacreacion;
     }
     public function get_tbperfilaccesofechaultima()
     {
@@ -44,7 +44,7 @@ class PerfilAcceso
             "tbperfilaccesoid" => $this->tbperfilaccesoid,
             "tbperfilid" => $this->tbperfilid,
             "tbperfilaccesosemanalid" => $this->tbperfilaccesosemanalid,
-            "tbperfilaccesofechaprimera" => $this->tbperfilaccesofechaprimera,
+            "tbperfilaccesofechacreacion" => $this->tbperfilaccesofechacreacion,
             "tbperfilaccesofechaultima" => $this->tbperfilaccesofechaultima
         ];
     }

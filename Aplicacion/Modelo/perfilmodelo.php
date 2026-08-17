@@ -106,9 +106,9 @@ class PerfilModelo
         return $stmt->execute();
     }
 
-    public function delete($id)
+    public function toggleEstado($id)
     {
-        $sql = "DELETE FROM tbperfil WHERE tbperfilid = :id";
+        $sql = "UPDATE tbperfil SET tbperfilactivo = NOT tbperfilactivo WHERE tbperfilid = :id";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 

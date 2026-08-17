@@ -15,10 +15,10 @@ function cargarMatriz(idPerfil) {
             const data = res.data;
             document.getElementById('tituloPerfil').textContent = `Accesos de: ${data.perfil}`;
 
-            const fp = data.fechaPrimera ? new Date(data.fechaPrimera).toLocaleString() : 'Sin registros';
+            const fc = data.fechaCreacion ? new Date(data.fechaCreacion).toLocaleString() : 'Sin registros';
             const fu = data.fechaUltima ? new Date(data.fechaUltima).toLocaleString() : 'Sin registros';
             document.getElementById('resumenFechas').textContent =
-                `Primer acceso: ${fp} | Último acceso: ${fu}`;
+                `Cuenta creada: ${fc} | Último acceso: ${fu}`;
 
             const dias = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
             const cuerpo = document.getElementById('cuerpoMatriz');

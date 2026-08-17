@@ -783,7 +783,7 @@ CREATE TABLE IF NOT EXISTS `tbperfilacceso` (
   `tbperfilaccesoid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
   `tbperfilaccesosemanalid` int NOT NULL,
-  `tbperfilaccesofechaprimera` datetime NOT NULL,
+  `tbperfilaccesofechacreacion` datetime NOT NULL,
   `tbperfilaccesofechaultima` datetime NOT NULL,
   PRIMARY KEY (`tbperfilaccesoid`),
   UNIQUE KEY `uq_perfilacceso_perfil` (`tbperfilid`),

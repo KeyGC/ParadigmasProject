@@ -57,4 +57,19 @@ class ReproduccionModelo
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getPorPerfil($perfilId)
+    {
+        $sql = "SELECT c.tbcancionnombre, c.tbcancionartista,
+                    r.tbreproducciontiempo, r.tbreproduccioncontador
+                FROM tbreproduccion r
+                INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
+                WHERE r.tbperfilid = :perfilId
+                ORDER BY r.tbreproduccioncontador DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
+

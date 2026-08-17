@@ -46,7 +46,8 @@ body {
     border-color: #9d174d;
 }
 
-
+#formGenero,
+#formCancion,
 #formPerfil {
     display: flex;
     flex-direction: column;

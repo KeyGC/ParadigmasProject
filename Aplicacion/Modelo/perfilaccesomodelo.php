@@ -58,8 +58,8 @@ class PerfilAccesoModelo
     private function getByPerfilId($idPerfil)
     {
         $sql = "SELECT pa.tbperfilaccesoid, pa.tbperfilid, pa.tbperfilaccesosemanalid,
-                       pa.tbperfilaccesofechaprimera, pa.tbperfilaccesofechaultima,
-                       pas.tbperfilaccesosemanaldata
+                    pa.tbperfilaccesofechacreacion, pa.tbperfilaccesofechaultima,
+                    pas.tbperfilaccesosemanaldata
                 FROM tbperfilacceso pa
                 INNER JOIN tbperfilaccesosemanal pas
                     ON pa.tbperfilaccesosemanalid = pas.tbperfilaccesosemanalid
@@ -68,6 +68,26 @@ class PerfilAccesoModelo
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch();
+    }
+
+    // Se llama cuando se crea el perfil (registro), NO en el login
+    public function crearRegistroAcceso($idPerfil)
+    {
+        $ahora = date('Y-m-d H:i:s');
+
+        $sqlSemanal = "INSERT INTO tbperfilaccesosemanal (tbperfilaccesosemanaldata) VALUES ('')";
+        $stmt = $this->conexion->prepare($sqlSemanal);
+        $stmt->execute();
+        $idSemanal = $this->conexion->lastInsertId();
+
+        $sqlAcceso = "INSERT INTO tbperfilacceso
+                        (tbperfilid, tbperfilaccesosemanalid, tbperfilaccesofechacreacion, tbperfilaccesofechaultima)
+                    VALUES (:idPerfil, :idSemanal, :ahora, :ahora)";
+        $stmt = $this->conexion->prepare($sqlAcceso);
+        $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
+        $stmt->bindValue(':idSemanal', $idSemanal, PDO::PARAM_INT);
+        $stmt->bindValue(':ahora', $ahora);
+        return $stmt->execute();
     }
 
     // Se llama cada vez que un perfil (admin o cliente) hace login
@@ -79,27 +99,12 @@ class PerfilAccesoModelo
 
         $acceso = $this->getByPerfilId($idPerfil);
 
-        // Primer acceso histórico de este perfil
+        // Fallback por si el perfil se creó antes de existir esta funcionalidad
         if (!$acceso) {
-            $data = $semanaActual . "|" . $diaActual . "|1";
-
-            $sqlSemanal = "INSERT INTO tbperfilaccesosemanal (tbperfilaccesosemanaldata) VALUES (:data)";
-            $stmt = $this->conexion->prepare($sqlSemanal);
-            $stmt->bindValue(':data', $data);
-            $stmt->execute();
-            $idSemanal = $this->conexion->lastInsertId();
-
-            $sqlAcceso = "INSERT INTO tbperfilacceso
-                            (tbperfilid, tbperfilaccesosemanalid, tbperfilaccesofechaprimera, tbperfilaccesofechaultima)
-                          VALUES (:idPerfil, :idSemanal, :ahora, :ahora)";
-            $stmt = $this->conexion->prepare($sqlAcceso);
-            $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
-            $stmt->bindValue(':idSemanal', $idSemanal, PDO::PARAM_INT);
-            $stmt->bindValue(':ahora', $ahora);
-            return $stmt->execute();
+            $this->crearRegistroAcceso($idPerfil);
+            $acceso = $this->getByPerfilId($idPerfil);
         }
 
-        // Ya tiene historial: buscar semana+día actual y sumarle 1, o crear la línea
         $lineas = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
         $encontrado = false;
 
@@ -119,16 +124,16 @@ class PerfilAccesoModelo
         $nuevoData = $this->construirData($lineas);
 
         $sqlUpdateSemanal = "UPDATE tbperfilaccesosemanal
-                              SET tbperfilaccesosemanaldata = :data
-                              WHERE tbperfilaccesosemanalid = :id";
+                            SET tbperfilaccesosemanaldata = :data
+                            WHERE tbperfilaccesosemanalid = :id";
         $stmt = $this->conexion->prepare($sqlUpdateSemanal);
         $stmt->bindValue(':data', $nuevoData);
         $stmt->bindValue(':id', $acceso['tbperfilaccesosemanalid'], PDO::PARAM_INT);
         $stmt->execute();
 
         $sqlUpdateAcceso = "UPDATE tbperfilacceso
-                             SET tbperfilaccesofechaultima = :ahora
-                             WHERE tbperfilaccesoid = :id";
+                            SET tbperfilaccesofechaultima = :ahora
+                            WHERE tbperfilaccesoid = :id";
         $stmt = $this->conexion->prepare($sqlUpdateAcceso);
         $stmt->bindValue(':ahora', $ahora);
         $stmt->bindValue(':id', $acceso['tbperfilaccesoid'], PDO::PARAM_INT);
@@ -147,7 +152,7 @@ class PerfilAccesoModelo
         usort($lineas, fn($a, $b) => $a['semana'] <=> $b['semana']);
 
         return [
-            'fechaPrimera' => $acceso['tbperfilaccesofechaprimera'],
+            'fechaCreacion' => $acceso['tbperfilaccesofechacreacion'],
             'fechaUltima' => $acceso['tbperfilaccesofechaultima'],
             'semanas' => $lineas
         ];

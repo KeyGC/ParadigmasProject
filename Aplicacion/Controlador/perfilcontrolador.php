@@ -82,7 +82,6 @@ switch ($accion) {
             break;
         }
 
-        
         $ubicacionModelo = new UbicacionModelo();
         $ubicacionId = $ubicacionModelo->insert(null, null, null, null, null);
 
@@ -98,6 +97,9 @@ switch ($accion) {
             $id = $modelo->insert($perfil);
 
             if ($id) {
+                $accesoModelo = new PerfilAccesoModelo();
+                $accesoModelo->crearRegistroAcceso($id);
+
                 $correoEnviado = enviarContrasenaTemporal($correo, $nombre, $contraTemporal);
 
                 echo json_encode([
@@ -146,6 +148,9 @@ switch ($accion) {
             $id = $modelo->insert($perfil);
 
             if ($id) {
+                $accesoModelo = new PerfilAccesoModelo();
+                $accesoModelo->crearRegistroAcceso($id);
+
                 echo json_encode(["exito" => true, "mensaje" => "Perfil creado correctamente", "id" => $id]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
@@ -213,7 +218,7 @@ switch ($accion) {
             $_SESSION['perfil'] = $perfil;
 
             $accesoModelo = new PerfilAccesoModelo();
-            $accesoModelo->registrarAcceso($perfil['tbperfilid']);  
+            $accesoModelo->registrarAcceso($perfil['tbperfilid']);
 
             if ($perfil['tbperfilcambiocontra'] == 0) {
                 echo json_encode([
@@ -233,6 +238,7 @@ switch ($accion) {
         }
 
         break;
+
     case 'cambiarContra':
         if (!isset($_SESSION['perfil'])) {
             echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
@@ -319,6 +325,7 @@ switch ($accion) {
             $correo,
             $perfilActual['tbperfilcambiocontra'],
             $perfilActual['tbubicacionid'],
+            $perfilActual['tbperfilrol'],
             $perfilActual['tbperfilactivo']
         );
 
@@ -352,9 +359,7 @@ switch ($accion) {
 
         break;
 
-
-        case 'delete':
-        // Solo un admin puede eliminar perfiles
+    case 'toggleEstado':
         if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
             echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
             break;
@@ -367,47 +372,23 @@ switch ($accion) {
             break;
         }
 
-        // Evita que un admin se elimine a sí mismo por accidente y quede sin sesión válida
         if ((int)$id === (int)$_SESSION['perfil']['tbperfilid']) {
-            echo json_encode(["exito" => false, "mensaje" => "No puede eliminar su propio perfil"]);
+            echo json_encode(["exito" => false, "mensaje" => "No puede desactivar su propio perfil"]);
             break;
         }
 
-        $perfilAEliminar = $modelo->getPerfil($id);
-        if (!$perfilAEliminar) {
+        $perfilActual = $modelo->getPerfil($id);
+        if (!$perfilActual) {
             echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
             break;
         }
 
-        $ubicacionId = $perfilAEliminar['tbubicacionid'];
-
-        try {
-            $reproduccionModelo = new ReproduccionModelo();
-            $ubicacionModelo = new UbicacionModelo();
-
-            // 1. Borra el historial de reproducciones ligado a este perfil (FK)
-            $reproduccionModelo->deleteByPerfilId($id);
-
-            // 2. Borra el perfil en sí
-            $perfilEliminado = $modelo->delete($id);
-
-            if (!$perfilEliminado) {
-                echo json_encode(["exito" => false, "mensaje" => "Error al eliminar el perfil"]);
-                break;
-            }
-
-            // 3. Borra la ubicación asociada (ya no depende de nada más)
-            if ($ubicacionId) {
-                $ubicacionModelo->delete($ubicacionId);
-            }
-
-            echo json_encode(["exito" => true, "mensaje" => "Perfil eliminado correctamente junto con sus datos asociados"]);
-
-        } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al eliminar: " . $e->getMessage()]);
-        }
+        echo $modelo->toggleEstado($id)
+            ? json_encode(["exito" => true, "mensaje" => "Estado actualizado correctamente"])
+            : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
 
         break;
+
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;
