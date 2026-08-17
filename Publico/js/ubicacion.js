@@ -126,29 +126,31 @@ function cargarUbicacion() {
 
             const u = resp.data;
 
-            // Si no hay provincia asignada aún, dejamos todo vacío/deshabilitado y no tocamos el mapa
-            if (u.tbubicacionprovincia === null) {
+            // Si la ubicación fue desactivada por un administrador, bloquea el formulario
+            if (u.tbubicacionestado == 0) {
+                deshabilitarFormularioUbicacion();
                 return;
             }
 
             // Provincia
+            if (u.tbubicacionprovincia === null) {
+                return;
+            }
+
             document.getElementById('provincia').value = u.tbubicacionprovincia;
 
-            // Cantones
             if (u.tbubicacioncanton !== null) {
                 await cargarCantones(u.tbubicacionprovincia);
                 document.getElementById('canton').disabled = false;
                 document.getElementById('canton').value = u.tbubicacioncanton;
             }
 
-            // Distritos
             if (u.tbubicaciondistrito !== null) {
                 await cargarDistritos(u.tbubicacioncanton);
                 document.getElementById('distrito').disabled = false;
                 document.getElementById('distrito').value = u.tbubicaciondistrito;
             }
 
-            // Coordenadas (solo si existen)
             if (u.tbubicacionlatitud !== null && u.tbubicacionlongitud !== null) {
                 document.getElementById('latitud').value = u.tbubicacionlatitud;
                 document.getElementById('longitud').value = u.tbubicacionlongitud;
@@ -167,6 +169,21 @@ function cargarUbicacion() {
         })
         .catch(console.error);
 
+}
+
+function deshabilitarFormularioUbicacion() {
+    document.getElementById('provincia').disabled = true;
+    document.getElementById('canton').disabled = true;
+    document.getElementById('distrito').disabled = true;
+    document.getElementById('btnGuardarUbicacion').disabled = true;
+    document.getElementById('mapaUbicacion').style.pointerEvents = 'none';
+    document.getElementById('mapaUbicacion').style.opacity = '0.5';
+
+    const contenedor = document.getElementById('contenedorFormularioUbicacion');
+    const aviso = document.createElement('div');
+    aviso.className = 'alert alert-warning mt-3';
+    aviso.textContent = 'Tu ubicación fue desactivada por un administrador y no puede editarse.';
+    contenedor.appendChild(aviso);
 }
 
 function cargarCantones(provinciaId) {

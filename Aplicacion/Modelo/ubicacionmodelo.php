@@ -89,6 +89,7 @@ class UbicacionModelo
                 u.tbubicaciondistrito,
                 u.tbubicacionlatitud,
                 u.tbubicacionlongitud,
+                u.tbubicacionestado,
                 p.tbprovincianombre,
                 c.tbcantonnombre,
                 d.tbdistritonombre
@@ -109,6 +110,15 @@ class UbicacionModelo
     {
         $sql = "DELETE FROM tbubicacion WHERE tbubicacionid = :ubicacionId";
         $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function setEstado($ubicacionId, $estado)
+    {
+        $sql = "UPDATE tbubicacion SET tbubicacionestado = :estado WHERE tbubicacionid = :ubicacionId";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':estado', $estado, PDO::PARAM_BOOL);
         $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
         return $stmt->execute();
     }

@@ -15,6 +15,7 @@ function mostrarFormulario() {
 
     document.getElementById('formPerfil').reset();
     document.getElementById('perfilId').value = '';
+    document.getElementById('ubicacionEstado').value = '1';
 
     document.getElementById('btnGuardar').textContent = 'Guardar';
     document.getElementById('btnCancelar').style.display = 'none';
@@ -90,6 +91,7 @@ function editarPerfil(id) {
                 document.getElementById('nombre').value = respuesta.data.tbperfilnombre;
                 document.getElementById('contra').value = respuesta.data.tbperfilcontra;
                 document.getElementById('correo').value = respuesta.data.tbperfilcorreo;
+                document.getElementById('ubicacionEstado').value = respuesta.data.tbubicacionestado ? '1' : '0';
                 document.getElementById('btnGuardar').textContent = 'Actualizar';
                 document.getElementById('btnCancelar').style.display = 'inline-block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -114,6 +116,7 @@ function guardarPerfil(e) {
     const nombre = document.getElementById('nombre').value;
     const contra = document.getElementById('contra').value;
     const correo = document.getElementById('correo').value;
+    const ubicacionEstado = document.getElementById('ubicacionEstado').value;
 
     const formData = new FormData();
     formData.append('nombre', nombre);
@@ -124,6 +127,7 @@ function guardarPerfil(e) {
     if (id) {
         accion = 'update';
         formData.append('id', id);
+        formData.append('ubicacionEstado', ubicacionEstado);
     }
 
     fetch(`${URL_CONTROLADOR}?accion=${accion}`, {

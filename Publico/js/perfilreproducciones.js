@@ -16,20 +16,22 @@ function cargarReproducciones(idPerfil) {
             cuerpo.innerHTML = '';
 
             if (res.data.length === 0) {
-                cuerpo.innerHTML = '<tr><td colspan="5">Este perfil aún no ha reproducido canciones</td></tr>';
+                cuerpo.innerHTML = '<tr><td colspan="6">Este perfil aún no ha reproducido canciones</td></tr>';
                 return;
             }
 
             res.data.forEach(r => {
+                const activo = r.tbreproduccionestado == 1;
                 cuerpo.innerHTML += `
                     <tr>
                         <td>${r.tbcancionnombre}</td>
                         <td>${r.tbcancionartista}</td>
                         <td>${r.tbreproducciontiempo}</td>
                         <td>${r.tbreproduccioncontador}</td>
+                        <td>${activo ? 'Activo' : 'Inactivo'}</td>
                         <td>
-                            <button onclick="toggleEstado(${r.tbreproduccionid}, '${idPerfil}')" style="margin: 5px; padding: 5px 10px; color: white; background-color: #DC3545; border: none; cursor: pointer;">
-                                Desactivar
+                            <button onclick="toggleEstado(${r.tbreproduccionid}, '${idPerfil}')" style="margin: 5px; padding: 5px 10px; color: white; background-color: ${activo ? '#DC3545' : '#28A745'}; border: none; cursor: pointer;">
+                                ${activo ? 'Desactivar' : 'Activar'}
                             </button>
                         </td>
                     </tr>
@@ -40,7 +42,7 @@ function cargarReproducciones(idPerfil) {
 }
 
 function toggleEstado(id, idPerfil) {
-    if (!confirm('¿Confirma que desea desactivar este registro de reproducción?')) return;
+    if (!confirm('¿Confirma que desea cambiar el estado de este registro?')) return;
 
     const formData = new FormData();
     formData.append('id', id);

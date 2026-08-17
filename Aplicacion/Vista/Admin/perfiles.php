@@ -41,6 +41,10 @@ if (!isset($_SESSION['perfil'])) {
                         <span class="input-group-text" id="basic-addon1">@</span>
                         <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
                     </div>
+                    <select id="ubicacionEstado" class="form-control mb-2">
+                        <option value="1">Ubicación: Activa</option>
+                        <option value="0">Ubicación: Inactiva</option>
+                    </select>
                     <button type="submit" class="btn btn-primary mb-2" id="btnGuardar">Guardar</button>
                     <button type="button" class="btn btn-secondary" id="btnCancelar" style="display:none;">Cancelar edición</button>
                 </form>

@@ -56,6 +56,10 @@ switch ($accion) {
         }
         $perfil = $modelo->getPerfil($id);
         if ($perfil) {
+            $ubicacionModelo = new UbicacionModelo();
+            $ubicacion = $ubicacionModelo->getPorId($perfil['tbubicacionid']);
+            $perfil['tbubicacionestado'] = $ubicacion ? $ubicacion['tbubicacionestado'] : true;
+
             echo json_encode(["exito" => true, "data" => $perfil]);
         } else {
             echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
@@ -166,6 +170,7 @@ switch ($accion) {
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
+        $ubicacionEstado = $_POST['ubicacionEstado'] ?? null;
 
         if (!$id || $nombre === '' || $contra === '' || $correo === '') {
             echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
@@ -189,7 +194,14 @@ switch ($accion) {
             $perfilActual['tbperfilactivo']
         );
 
-        if ($modelo->update($perfil)) {
+        $actualizado = $modelo->update($perfil);
+
+        if ($actualizado && $ubicacionEstado !== null) {
+            $ubicacionModelo = new UbicacionModelo();
+            $ubicacionModelo->setEstado($perfilActual['tbubicacionid'], (bool)$ubicacionEstado);
+        }
+
+        if ($actualizado) {
             echo json_encode(["exito" => true, "mensaje" => "Perfil actualizado correctamente"]);
         } else {
             echo json_encode(["exito" => false, "mensaje" => "Error al actualizar el perfil"]);
@@ -388,23 +400,7 @@ switch ($accion) {
             : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
 
         break;
-    case 'toggleEstado':
-        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
-            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
-            break;
-        }
 
-        $idPerfil = $_POST['idPerfil'] ?? null;
-        if (!$idPerfil) {
-            echo json_encode(["exito" => false, "mensaje" => "ID de perfil no proporcionado"]);
-            break;
-        }
-
-        echo $modelo->toggleEstado($idPerfil)
-            ? json_encode(["exito" => true, "mensaje" => "Estado actualizado correctamente"])
-            : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
-
-        break;
     default:
         echo json_encode(["exito" => false, "mensaje" => "Acción no reconocida"]);
         break;

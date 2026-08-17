@@ -20,6 +20,12 @@ function cargarMatriz(idPerfil) {
             document.getElementById('resumenFechas').textContent =
                 `Cuenta creada: ${fc} | Último acceso: ${fu}`;
 
+            const activo = data.estado == 1;
+            const btn = document.getElementById('btnToggleEstado');
+            btn.textContent = activo ? 'Desactivar registro de accesos' : 'Activar registro de accesos';
+            btn.style.backgroundColor = activo ? '' : '';
+            btn.className = activo ? 'btn btn-danger mb-3' : 'btn btn-success mb-3';
+
             const dias = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
             const cuerpo = document.getElementById('cuerpoMatriz');
             cuerpo.innerHTML = '';
@@ -55,7 +61,7 @@ function cargarMatriz(idPerfil) {
 function toggleEstadoAcceso() {
     const idPerfil = document.getElementById('idPerfil').value;
 
-    if (!confirm('¿Confirma que desea desactivar el registro de accesos de este perfil?')) return;
+    if (!confirm('¿Confirma que desea cambiar el estado del registro de accesos de este perfil?')) return;
 
     const formData = new FormData();
     formData.append('idPerfil', idPerfil);
@@ -66,9 +72,10 @@ function toggleEstadoAcceso() {
     })
         .then(res => res.json())
         .then(respuesta => {
-            alert(respuesta.mensaje);
             if (respuesta.exito) {
                 cargarMatriz(idPerfil);
+            } else {
+                alert(respuesta.mensaje);
             }
         })
         .catch(err => console.error('Error al cambiar estado:', err));

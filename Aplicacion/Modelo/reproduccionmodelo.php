@@ -64,7 +64,7 @@ class ReproduccionModelo
                     r.tbreproducciontiempo, r.tbreproduccioncontador, r.tbreproduccionestado
                 FROM tbreproduccion r
                 INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
-                WHERE r.tbperfilid = :perfilId AND r.tbreproduccionestado = 1
+                WHERE r.tbperfilid = :perfilId
                 ORDER BY r.tbreproduccioncontador DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);

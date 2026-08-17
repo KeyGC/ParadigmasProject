@@ -37,9 +37,28 @@ switch ($accion) {
                 "perfil" => $perfil['tbperfilnombre'],
                 "fechaCreacion" => $matriz['fechaCreacion'] ?? null,
                 "fechaUltima" => $matriz['fechaUltima'] ?? null,
+                "estado" => $matriz['estado'] ?? true,
                 "semanas" => $matriz['semanas'] ?? []
             ]
         ]);
+        break;
+
+    case 'toggleEstado':
+        if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
+            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
+            break;
+        }
+
+        $idPerfil = $_POST['idPerfil'] ?? null;
+        if (!$idPerfil) {
+            echo json_encode(["exito" => false, "mensaje" => "ID de perfil no proporcionado"]);
+            break;
+        }
+
+        echo $modelo->toggleEstado($idPerfil)
+            ? json_encode(["exito" => true, "mensaje" => "Estado actualizado correctamente"])
+            : json_encode(["exito" => false, "mensaje" => "Error al actualizar el estado"]);
+
         break;
 
     default:

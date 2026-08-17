@@ -63,7 +63,7 @@ class PerfilAccesoModelo
                 FROM tbperfilacceso pa
                 INNER JOIN tbperfilaccesosemanal pas
                     ON pa.tbperfilaccesosemanalid = pas.tbperfilaccesosemanalid
-                WHERE pa.tbperfilid = :idPerfil AND pa.tbperfilaccesoestado = 1";
+                WHERE pa.tbperfilid = :idPerfil";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         $stmt->execute();
@@ -76,7 +76,7 @@ class PerfilAccesoModelo
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         return $stmt->execute();
-}
+    }
 
     // Se llama cuando se crea el perfil (registro), NO en el login
     public function crearRegistroAcceso($idPerfil)
@@ -150,19 +150,20 @@ class PerfilAccesoModelo
 
     // Para el dashboard: devuelve el historial ya parseado y ordenado
     public function getMatriz($idPerfil)
-    {
-        $acceso = $this->getByPerfilId($idPerfil);
-        if (!$acceso) {
-            return null;
-        }
-
-        $lineas = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
-        usort($lineas, fn($a, $b) => $a['semana'] <=> $b['semana']);
-
-        return [
-            'fechaCreacion' => $acceso['tbperfilaccesofechacreacion'],
-            'fechaUltima' => $acceso['tbperfilaccesofechaultima'],
-            'semanas' => $lineas
-        ];
+{
+    $acceso = $this->getByPerfilId($idPerfil);
+    if (!$acceso) {
+        return null;
     }
+
+    $lineas = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
+    usort($lineas, fn($a, $b) => $a['semana'] <=> $b['semana']);
+
+    return [
+        'fechaCreacion' => $acceso['tbperfilaccesofechacreacion'],
+        'fechaUltima' => $acceso['tbperfilaccesofechaultima'],
+        'estado' => $acceso['tbperfilaccesoestado'],
+        'semanas' => $lineas
+    ];
+}
 }
