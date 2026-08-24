@@ -23,6 +23,10 @@ function loguear(e) {
 
             if (resp.exito) {
 
+                // Marca que al llegar al home se intente la ubicación automática.
+                // NO bloquea ni modifica el flujo de login/redirección actual.
+                sessionStorage.setItem('ubicacionAutoPendiente', '1');
+
                 if (resp.cambiarContra) {
                     window.location.href = 'index.php?vista=cambiarContra';
                 } else if (resp.rol === 'admin') {

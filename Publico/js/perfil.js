@@ -75,6 +75,7 @@ function pintarTabla(perfiles) {
                 </button>
                 <button onclick="verAccesos(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #17A2B8; border: none; cursor: pointer;">Accesos</button>
                 <button onclick="verReproducciones(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #6F42C1; border: none; cursor: pointer;">Reproducciones</button>
+                <button onclick="verUbicaciones(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #20C997; border: none; cursor: pointer;">Ubicaciones</button>
             </td>
         `;
         cuerpo.appendChild(fila);
@@ -173,4 +174,8 @@ function verAccesos(id) {
 
 function verReproducciones(id) {
     window.location.href = `index.php?vista=perfilreproducciones&id=${id}`;
+}
+
+function verUbicaciones(id) {
+    window.location.href = `index.php?vista=perfilubicaciones&id=${id}`;
 }

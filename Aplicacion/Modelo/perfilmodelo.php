@@ -115,6 +115,18 @@ class PerfilModelo
         return $stmt->execute();
     }
 
+    // Actualiza la ubicación ACTUAL del perfil (tbubicacionid es una relación
+    // lógica hacia tbubicacion, validada desde PHP sin FOREIGN KEY)
+    public function setUbicacion($perfilId, $ubicacionId)
+    {
+        $sql = "UPDATE tbperfil SET tbubicacionid = :ubicacionId WHERE tbperfilid = :perfilId";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':ubicacionId', $ubicacionId, PDO::PARAM_INT);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     public function login($nombre, $contra)
     {
         $sql = "SELECT * FROM tbperfil WHERE tbperfilnombre = :nombre AND tbperfilcontra = :contra";

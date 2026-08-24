@@ -106,6 +106,36 @@ class UbicacionModelo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Devuelve los nombres de provincia/cantón/distrito SOLO si los tres IDs
+    // existen, están activos y respetan la jerarquía (el cantón pertenece a la
+    // provincia y el distrito al cantón). Si no, devuelve null.
+    // La integridad referencial se valida aquí (PHP) porque las tablas no
+    // tienen FOREIGN KEY entre sí.
+    public function getNombresPorIds($provinciaId, $cantonId, $distritoId)
+    {
+        $sql = "SELECT p.tbprovincianombre AS provincia,
+                    c.tbcantonnombre AS canton,
+                    d.tbdistritonombre AS distrito
+            FROM tbprovincia p
+            INNER JOIN tbcanton c
+                ON c.tbprovinciaid = p.tbprovinciaid AND c.tbcantonestado = TRUE
+            INNER JOIN tbdistrito d
+                ON d.tbcantonid = c.tbcantonid AND d.tbdistritoestado = TRUE
+            WHERE p.tbprovinciaid = :provinciaId
+              AND p.tbprovinciaestado = TRUE
+              AND c.tbcantonid = :cantonId
+              AND d.tbdistritoid = :distritoId";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':provinciaId', $provinciaId, PDO::PARAM_INT);
+        $stmt->bindValue(':cantonId', $cantonId, PDO::PARAM_INT);
+        $stmt->bindValue(':distritoId', $distritoId, PDO::PARAM_INT);
+        $stmt->execute();
+        $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $fila ?: null;
+    }
+
     public function delete($ubicacionId)
     {
         $sql = "DELETE FROM tbubicacion WHERE tbubicacionid = :ubicacionId";

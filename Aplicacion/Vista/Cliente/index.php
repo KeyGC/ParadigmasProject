@@ -51,6 +51,7 @@ if (!isset($_SESSION['perfil'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="js/reproductor.js"></script>
+    <script src="js/ubicacionauto.js"></script>
 
 </body>
 
