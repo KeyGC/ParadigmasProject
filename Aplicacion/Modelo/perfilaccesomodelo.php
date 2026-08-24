@@ -22,7 +22,7 @@ class PerfilAccesoModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    // Convierte el string "33|Mie|45\n34|Lun|2" en un arreglo de filas
+    // Convierte el string "34|Dom|2026-01-15 08:00:00\n34|Lun|2026-01-16 09:30:00" en un arreglo de eventos
     private function parsearData($data)
     {
         $lineas = [];
@@ -38,21 +38,23 @@ class PerfilAccesoModelo
                 $lineas[] = [
                     'semana' => (int) $partes[0],
                     'dia' => $partes[1],
-                    'cantidad' => (int) $partes[2]
+                    'fecha' => $partes[2]
                 ];
             }
         }
         return $lineas;
     }
 
-    // Vuelve a armar el string a partir del arreglo
-    private function construirData($lineas)
+    // Agrega una línea nueva al string existente (nunca modifica ni suma, solo añade)
+    private function agregarLinea($dataActual, $semana, $dia, $fecha)
     {
-        $filas = [];
-        foreach ($lineas as $linea) {
-            $filas[] = $linea['semana'] . "|" . $linea['dia'] . "|" . $linea['cantidad'];
+        $nuevaLinea = $semana . "|" . $dia . "|" . $fecha;
+        $dataActual = trim($dataActual ?? '');
+
+        if ($dataActual === '') {
+            return $nuevaLinea;
         }
-        return implode("\n", $filas);
+        return $dataActual . "\n" . $nuevaLinea;
     }
 
     private function getByPerfilId($idPerfil)
@@ -68,14 +70,6 @@ class PerfilAccesoModelo
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch();
-    }
-
-    public function toggleEstado($idPerfil)
-    {
-        $sql = "UPDATE tbperfilacceso SET tbperfilaccesoestado = NOT tbperfilaccesoestado WHERE tbperfilid = :idPerfil";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
-        return $stmt->execute();
     }
 
     // Se llama cuando se crea el perfil (registro), NO en el login
@@ -99,6 +93,7 @@ class PerfilAccesoModelo
     }
 
     // Se llama cada vez que un perfil (admin o cliente) hace login
+    // Ahora simplemente AGREGA una línea nueva, sin buscar ni sumar
     public function registrarAcceso($idPerfil)
     {
         $ahora = date('Y-m-d H:i:s');
@@ -113,23 +108,12 @@ class PerfilAccesoModelo
             $acceso = $this->getByPerfilId($idPerfil);
         }
 
-        $lineas = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
-        $encontrado = false;
-
-        foreach ($lineas as &$linea) {
-            if ($linea['semana'] === $semanaActual && $linea['dia'] === $diaActual) {
-                $linea['cantidad']++;
-                $encontrado = true;
-                break;
-            }
-        }
-        unset($linea);
-
-        if (!$encontrado) {
-            $lineas[] = ['semana' => $semanaActual, 'dia' => $diaActual, 'cantidad' => 1];
-        }
-
-        $nuevoData = $this->construirData($lineas);
+        $nuevoData = $this->agregarLinea(
+            $acceso['tbperfilaccesosemanaldata'],
+            $semanaActual,
+            $diaActual,
+            $ahora
+        );
 
         $sqlUpdateSemanal = "UPDATE tbperfilaccesosemanal
                             SET tbperfilaccesosemanaldata = :data
@@ -148,22 +132,47 @@ class PerfilAccesoModelo
         return $stmt->execute();
     }
 
-    // Para el dashboard: devuelve el historial ya parseado y ordenado
+    // Para el dashboard: agrupa todos los eventos por semana+día y cuenta cuántos hay,
+    // devolviendo el mismo formato que antes (semana, dia, cantidad) para no tocar el JS/vista
     public function getMatriz($idPerfil)
-{
-    $acceso = $this->getByPerfilId($idPerfil);
-    if (!$acceso) {
-        return null;
+    {
+        $acceso = $this->getByPerfilId($idPerfil);
+        if (!$acceso) {
+            return null;
+        }
+
+        $eventos = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
+
+        // Agrupa: clave "semana|dia" -> cantidad de eventos
+        $conteo = [];
+        foreach ($eventos as $evento) {
+            $clave = $evento['semana'] . '|' . $evento['dia'];
+            if (!isset($conteo[$clave])) {
+                $conteo[$clave] = [
+                    'semana' => $evento['semana'],
+                    'dia' => $evento['dia'],
+                    'cantidad' => 0
+                ];
+            }
+            $conteo[$clave]['cantidad']++;
+        }
+
+        $lineas = array_values($conteo);
+        usort($lineas, fn($a, $b) => $a['semana'] <=> $b['semana']);
+
+        return [
+            'fechaCreacion' => $acceso['tbperfilaccesofechacreacion'],
+            'fechaUltima' => $acceso['tbperfilaccesofechaultima'],
+            'estado' => $acceso['tbperfilaccesoestado'],
+            'semanas' => $lineas
+        ];
     }
 
-    $lineas = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
-    usort($lineas, fn($a, $b) => $a['semana'] <=> $b['semana']);
-
-    return [
-        'fechaCreacion' => $acceso['tbperfilaccesofechacreacion'],
-        'fechaUltima' => $acceso['tbperfilaccesofechaultima'],
-        'estado' => $acceso['tbperfilaccesoestado'],
-        'semanas' => $lineas
-    ];
-}
+    public function toggleEstado($idPerfil)
+    {
+        $sql = "UPDATE tbperfilacceso SET tbperfilaccesoestado = NOT tbperfilaccesoestado WHERE tbperfilid = :idPerfil";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

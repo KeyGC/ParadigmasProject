@@ -14,6 +14,12 @@ create table IF NOT EXISTS `tbperfil` (
   PRIMARY KEY (`tbperfilid`)
 );
 
+INSERT INTO `tbperfil`
+  (`tbperfilid`, `tbubicacionid`, `tbperfilnombre`, `tbperfilcontra`, `tbperfilcorreo`, `tbperfilcambiocontra`, `tbperfilrol`, `tbperfilactivo`)
+VALUES
+  (1, 1, 'admin', 'B7K2M9R4', 'admin@unamatch.com', 1, 'admin', TRUE),
+  (2, 2, 'cliente', 'B7K2M9R4', 'cliente@unamatch.com', 1, 'cliente', TRUE);
+
 CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicacionid` int NOT NULL AUTO_INCREMENT,
   `tbubicacionprovincia` int NULL,
@@ -24,6 +30,12 @@ CREATE TABLE IF NOT EXISTS `tbubicacion` (
   `tbubicacionestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbubicacionid`)
 );
+
+INSERT INTO `tbubicacion`
+  (`tbubicacionid`, `tbubicacionprovincia`, `tbubicacioncanton`, `tbubicaciondistrito`, `tbubicacionlongitud`, `tbubicacionlatitud`)
+VALUES
+  (1, NULL, NULL, NULL, NULL, NULL),
+  (2, NULL, NULL, NULL, NULL, NULL);
 
 CREATE TABLE IF NOT EXISTS `tbprovincia` (
   `tbprovinciaid` int NOT NULL,
@@ -666,21 +678,24 @@ CREATE TABLE IF NOT EXISTS `tbcancion` (
   `tbcancionartista` varchar(200) NOT NULL,
   `tbcancionurl` text NOT NULL,
   `tbcancionactivo` boolean NOT NULL DEFAULT TRUE,
-  PRIMARY KEY (`tbcancionid`),
-  FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
+  PRIMARY KEY (`tbcancionid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbreproduccionsemanal` (
+  `tbreproduccionsemanalid` int NOT NULL AUTO_INCREMENT,
+  `tbreproduccionsemanaldata` TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`tbreproduccionsemanalid`)
 );
 
 CREATE TABLE IF NOT EXISTS `tbreproduccion` (
   `tbreproduccionid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
   `tbcancionid` int NOT NULL,
+  `tbreproduccionsemanalid` int NOT NULL,
   `tbreproducciontiempo` int NOT NULL DEFAULT 0,
-  `tbreproduccioncontador` int NOT NULL DEFAULT 0,
   `tbreproduccionestado` boolean NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbreproduccionid`),
-  UNIQUE KEY `uq_perfil_cancion` (`tbperfilid`, `tbcancionid`),
-  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
-  FOREIGN KEY (`tbcancionid`) REFERENCES `tbcancion`(`tbcancionid`)
+  UNIQUE KEY `uq_perfil_cancion` (`tbperfilid`, `tbcancionid`)
 );
 
 INSERT INTO `tbgenero` (`tbgeneronombre`) VALUES
@@ -716,7 +731,7 @@ INSERT INTO `tbcancion`
 (2, 'Bohemian Rhapsody', 'Queen', 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ'),
 
 -- 3. Reggaetón
-(3, 'Titi Me Pregunto', 'Bad Bunny', 'https://www.youtube.com/watch?v=Cr8K88UcO0s'),
+(3, 'dIvA', 'Daze', 'https://youtu.be/bl_CXIsY-hg?si=G2fmUyqhG0ZvdQrN'),
 
 -- 4. Salsa
 (4, 'Vivir Mi Vida', 'Marc Anthony', 'https://www.youtube.com/watch?v=YXnjy5YlDwk'),
@@ -779,6 +794,11 @@ CREATE TABLE IF NOT EXISTS `tbperfilaccesosemanal` (
   PRIMARY KEY (`tbperfilaccesosemanalid`)
 );
 
+INSERT INTO `tbperfilaccesosemanal` (`tbperfilaccesosemanalid`, `tbperfilaccesosemanaldata`)
+VALUES
+  (1, ''),
+  (2, '');
+
 CREATE TABLE IF NOT EXISTS `tbperfilacceso` (
   `tbperfilaccesoid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
@@ -787,10 +807,14 @@ CREATE TABLE IF NOT EXISTS `tbperfilacceso` (
   `tbperfilaccesofechaultima` datetime NOT NULL,
   `tbperfilaccesoestado` BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbperfilaccesoid`),
-  UNIQUE KEY `uq_perfilacceso_perfil` (`tbperfilid`),
-  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
-  FOREIGN KEY (`tbperfilaccesosemanalid`) REFERENCES `tbperfilaccesosemanal`(`tbperfilaccesosemanalid`)
+  UNIQUE KEY `uq_perfilacceso_perfil` (`tbperfilid`)
 );
+
+INSERT INTO `tbperfilacceso`
+  (`tbperfilid`, `tbperfilaccesosemanalid`, `tbperfilaccesofechacreacion`, `tbperfilaccesofechaultima`)
+VALUES
+  (1, 1, '2026-01-15 08:00:00', '2026-01-15 08:00:00'),
+  (2, 2, '2026-01-15 08:00:00', '2026-01-15 08:00:00');
 
 -- Semana 5
 

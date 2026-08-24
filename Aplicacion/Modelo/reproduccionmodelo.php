@@ -5,36 +5,126 @@ class ReproduccionModelo
 {
     private $conexion;
 
+    private $diasSemana = [
+        1 => 'Lun',
+        2 => 'Mar',
+        3 => 'Mie',
+        4 => 'Jue',
+        5 => 'Vie',
+        6 => 'Sab',
+        7 => 'Dom'
+    ];
+
     public function __construct()
     {
         $this->conexion = Basedatos::conectar();
     }
 
-    public function acumularTiempo($perfilId, $cancionId, $segundos)
+    private function parsearData($data)
     {
-        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproducciontiempo)
-                VALUES (:perfilId, :cancionId, :segundos)
-                ON DUPLICATE KEY UPDATE
-                    tbreproducciontiempo = tbreproducciontiempo + :segundos2";
+        $lineas = [];
+        $data = trim($data ?? '');
+        if ($data === '') {
+            return $lineas;
+        }
+
+        $filas = explode("\n", $data);
+        foreach ($filas as $fila) {
+            $partes = explode("|", trim($fila));
+            if (count($partes) === 3) {
+                $lineas[] = [
+                    'semana' => (int) $partes[0],
+                    'dia' => $partes[1],
+                    'fecha' => $partes[2]
+                ];
+            }
+        }
+        return $lineas;
+    }
+
+    private function agregarLinea($dataActual, $semana, $dia, $fecha)
+    {
+        $nuevaLinea = $semana . "|" . $dia . "|" . $fecha;
+        $dataActual = trim($dataActual ?? '');
+
+        if ($dataActual === '') {
+            return $nuevaLinea;
+        }
+        return $dataActual . "\n" . $nuevaLinea;
+    }
+
+    // Busca la fila de tbreproduccion para este perfil+canción; si no existe, la crea junto con su registro semanal
+    private function obtenerOCrearFila($perfilId, $cancionId)
+    {
+        $sql = "SELECT r.tbreproduccionid, r.tbreproduccionsemanalid, r.tbreproducciontiempo,
+                    s.tbreproduccionsemanaldata
+                FROM tbreproduccion r
+                INNER JOIN tbreproduccionsemanal s ON r.tbreproduccionsemanalid = s.tbreproduccionsemanalid
+                WHERE r.tbperfilid = :perfilId AND r.tbcancionid = :cancionId";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
-        $stmt->bindValue(':segundos', $segundos, PDO::PARAM_INT);
-        $stmt->bindValue(':segundos2', $segundos, PDO::PARAM_INT);
+        $stmt->execute();
+        $fila = $stmt->fetch();
 
+        if ($fila) {
+            return $fila;
+        }
+
+        // No existe: crea el registro semanal vacío y la fila de reproducción
+        $sqlSemanal = "INSERT INTO tbreproduccionsemanal (tbreproduccionsemanaldata) VALUES ('')";
+        $this->conexion->prepare($sqlSemanal)->execute();
+        $idSemanal = $this->conexion->lastInsertId();
+
+        $sqlInsert = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproduccionsemanalid)
+                      VALUES (:perfilId, :cancionId, :idSemanal)";
+        $stmt = $this->conexion->prepare($sqlInsert);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
+        $stmt->bindValue(':idSemanal', $idSemanal, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return [
+            'tbreproduccionid' => $this->conexion->lastInsertId(),
+            'tbreproduccionsemanalid' => $idSemanal,
+            'tbreproducciontiempo' => 0,
+            'tbreproduccionsemanaldata' => ''
+        ];
+    }
+
+    public function acumularTiempo($perfilId, $cancionId, $segundos)
+    {
+        $fila = $this->obtenerOCrearFila($perfilId, $cancionId);
+
+        $sql = "UPDATE tbreproduccion SET tbreproducciontiempo = tbreproducciontiempo + :segundos
+                WHERE tbreproduccionid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':segundos', $segundos, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $fila['tbreproduccionid'], PDO::PARAM_INT);
         return $stmt->execute();
     }
 
+    // Agrega una línea semana|dia|fecha cada vez que se reproduce (reemplaza al viejo contador)
     public function incrementarContador($perfilId, $cancionId)
     {
-        $sql = "INSERT INTO tbreproduccion (tbperfilid, tbcancionid, tbreproduccioncontador)
-                VALUES (:perfilId, :cancionId, 1)
-                ON DUPLICATE KEY UPDATE
-                    tbreproduccioncontador = tbreproduccioncontador + 1";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
-        $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
+        $ahora = date('Y-m-d H:i:s');
+        $semanaActual = (int) date('W');
+        $diaActual = $this->diasSemana[(int) date('N')];
 
+        $fila = $this->obtenerOCrearFila($perfilId, $cancionId);
+
+        $nuevoData = $this->agregarLinea(
+            $fila['tbreproduccionsemanaldata'],
+            $semanaActual,
+            $diaActual,
+            $ahora
+        );
+
+        $sql = "UPDATE tbreproduccionsemanal SET tbreproduccionsemanaldata = :data
+                WHERE tbreproduccionsemanalid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':data', $nuevoData);
+        $stmt->bindValue(':id', $fila['tbreproduccionsemanalid'], PDO::PARAM_INT);
         return $stmt->execute();
     }
 
@@ -58,18 +148,38 @@ class ReproduccionModelo
         return $stmt->execute();
     }
 
+    // Devuelve las mismas columnas que antes (tbreproduccioncontador incluido),
+    // pero ahora calculado contando líneas del string en vez de leer una columna
     public function getPorPerfil($perfilId)
     {
         $sql = "SELECT r.tbreproduccionid, c.tbcancionnombre, c.tbcancionartista,
-                    r.tbreproducciontiempo, r.tbreproduccioncontador, r.tbreproduccionestado
+                    r.tbreproducciontiempo, r.tbreproduccionestado,
+                    s.tbreproduccionsemanaldata
                 FROM tbreproduccion r
                 INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
-                WHERE r.tbperfilid = :perfilId
-                ORDER BY r.tbreproduccioncontador DESC";
+                INNER JOIN tbreproduccionsemanal s ON r.tbreproduccionsemanalid = s.tbreproduccionsemanalid
+                WHERE r.tbperfilid = :perfilId";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $filas = $stmt->fetchAll();
+
+        $resultado = [];
+        foreach ($filas as $fila) {
+            $eventos = $this->parsearData($fila['tbreproduccionsemanaldata']);
+            $resultado[] = [
+                'tbreproduccionid' => $fila['tbreproduccionid'],
+                'tbcancionnombre' => $fila['tbcancionnombre'],
+                'tbcancionartista' => $fila['tbcancionartista'],
+                'tbreproducciontiempo' => $fila['tbreproducciontiempo'],
+                'tbreproduccioncontador' => count($eventos),
+                'tbreproduccionestado' => $fila['tbreproduccionestado']
+            ];
+        }
+
+        usort($resultado, fn($a, $b) => $b['tbreproduccioncontador'] <=> $a['tbreproduccioncontador']);
+
+        return $resultado;
     }
 
     public function toggleEstado($id)
@@ -80,4 +190,3 @@ class ReproduccionModelo
         return $stmt->execute();
     }
 }
-
