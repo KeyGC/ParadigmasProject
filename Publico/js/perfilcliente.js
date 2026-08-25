@@ -13,31 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function validarContra(contra) {
 
-    // Entre 8 y 16 caracteres
     if (contra.length < 8 || contra.length > 16) {
         return "La contraseña debe tener entre 8 y 16 caracteres";
     }
 
-    // No puede contener vocales
     if (/[aeiouAEIOU]/.test(contra)) {
         return "La contraseña no puede contener vocales";
     }
 
-    // Mínimo 4 letras
     const letras = contra.match(/[a-zA-Z]/g);
 
     if (!letras || letras.length < 4) {
         return "La contraseña debe tener mínimo 4 letras";
     }
 
-    // Mínimo 4 números
     const numeros = contra.match(/[0-9]/g);
 
     if (!numeros || numeros.length < 4) {
         return "La contraseña debe tener mínimo 4 números";
     }
 
-    // No permitir caracteres consecutivos repetidos
     if (/(.)\1/.test(contra)) {
         return "No puede tener letras o números repetidos consecutivamente";
     }
@@ -45,7 +40,6 @@ function validarContra(contra) {
     return null;
 }
 
-// Cargar datos del perfil logueado 
 function cargarMiPerfil() {
 
     const alerta = document.getElementById('alertaPerfil');
@@ -83,7 +77,6 @@ function cargarMiPerfil() {
 
 }
 
-// Activar edición
 function activarEdicion() {
 
     document.getElementById('nombre').disabled = false;
@@ -96,7 +89,6 @@ function activarEdicion() {
 
 }
 
-// Cancelar edición
 function cancelarEdicion() {
 
     document.getElementById('alertaPerfil').innerHTML = '';
@@ -113,7 +105,6 @@ function cancelarEdicion() {
 
 }
 
-// Guardar cambios
 function guardarPerfil(e) {
 
     e.preventDefault();

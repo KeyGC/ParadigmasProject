@@ -820,11 +820,6 @@ VALUES
 
 USE `dbrrsscita`;
 
--- Histórico de ubicaciones por perfil.
--- La relación con tbperfil es LÓGICA (validada desde PHP), sin FOREIGN KEY.
--- tbperfilubicaciondata guarda una "fotografía" inmutable:
---   PROVINCIA-CANTON-DISTRITO-LATITUD-LONGITUD-FECHA-HORA-TIPO
--- TIPO solo puede ser AUTOMATICA o MANUAL (validado en PHP).
 CREATE TABLE IF NOT EXISTS `tbperfilubicacion` (
   `tbperfilubicacionid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,

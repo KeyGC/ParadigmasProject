@@ -1,25 +1,8 @@
 <?php
-
-// Utilidad de Reverse Geocoding (coordenadas -> provincia/cantón/distrito)
-//
-// Servicio elegido: Nominatim (https://nominatim.openstreetmap.org)
-// - Es el servicio oficial de OpenStreetMap, el mismo proyecto cuyos mapas
-//   ya usa la aplicación (Leaflet + tiles de OSM), por lo que hay coherencia
-//   de datos y no se depende de un proveedor distinto.
-// - Gratuito y NO requiere API Key (nada que hardcodear ni filtrar).
-// - Política de uso: máximo ~1 petición/segundo y enviar un User-Agent
-//   identificativo; ambas condiciones se respetan aquí.
-// - Si en el futuro se migrara a un servicio con API Key, la clave debe
-//   definirse SOLO en este archivo como constante del servidor y jamás
-//   enviarse al JavaScript.
-
 define('GEO_NOMINATIM_URL', 'https://nominatim.openstreetmap.org/reverse');
 define('GEO_USER_AGENT', 'ParadigmasProject/1.0 (UbicacionAutomatica)');
 define('GEO_TIMEOUT_SEGUNDOS', 8);
 
-// Quita mayúsculas, acentos y espacios sobrantes para poder comparar los
-// nombres devueltos por Nominatim contra los nombres guardados en
-// tbprovincia / tbcanton / tbdistrito sin depender del collation de MySQL.
 function normalizarTextoUbicacion($texto)
 {
     $texto = trim((string) $texto);
@@ -45,19 +28,6 @@ function normalizarTextoUbicacion($texto)
     return $texto;
 }
 
-// Llama a Nominatim y devuelve el bloque 'address' crudo del servicio, o
-// null si falla la petición/respuesta. La interpretación de ese bloque se
-// hace en el controlador (resolución en dos etapas: código postal verificado
-// contra el catálogo y, como respaldo, coincidencia por nombres).
-//
-// Campos relevantes que entrega Nominatim para Costa Rica:
-//   province / state  -> provincia
-//   county            -> cantón (OJO: en algunas zonas del país NO viene)
-//   village/town/city_district/city/neighbourhood/... -> distrito aprox.
-//   postcode          -> código postal nacional de 5 dígitos PCCDD,
-//                        con EXACTAMENTE la misma codificación del catálogo:
-//                        provincia = 1er dígito, cantón = 3 primeros,
-//                        distrito = 5 dígitos completos (ej. 10103 = Hospital)
 function reverseGeocodificar($latitud, $longitud)
 {
     $query = http_build_query([

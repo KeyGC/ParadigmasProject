@@ -22,7 +22,6 @@ class PerfilAccesoModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    // Convierte el string "34|Dom|2026-01-15 08:00:00\n34|Lun|2026-01-16 09:30:00" en un arreglo de eventos
     private function parsearData($data)
     {
         $lineas = [];
@@ -45,7 +44,6 @@ class PerfilAccesoModelo
         return $lineas;
     }
 
-    // Agrega una línea nueva al string existente (nunca modifica ni suma, solo añade)
     private function agregarLinea($dataActual, $semana, $dia, $fecha)
     {
         $nuevaLinea = $semana . "|" . $dia . "|" . $fecha;
@@ -72,7 +70,6 @@ class PerfilAccesoModelo
         return $stmt->fetch();
     }
 
-    // Se llama cuando se crea el perfil (registro), NO en el login
     public function crearRegistroAcceso($idPerfil)
     {
         $ahora = date('Y-m-d H:i:s');
@@ -92,8 +89,6 @@ class PerfilAccesoModelo
         return $stmt->execute();
     }
 
-    // Se llama cada vez que un perfil (admin o cliente) hace login
-    // Ahora simplemente AGREGA una línea nueva, sin buscar ni sumar
     public function registrarAcceso($idPerfil)
     {
         $ahora = date('Y-m-d H:i:s');
@@ -102,7 +97,6 @@ class PerfilAccesoModelo
 
         $acceso = $this->getByPerfilId($idPerfil);
 
-        // Fallback por si el perfil se creó antes de existir esta funcionalidad
         if (!$acceso) {
             $this->crearRegistroAcceso($idPerfil);
             $acceso = $this->getByPerfilId($idPerfil);
@@ -132,8 +126,6 @@ class PerfilAccesoModelo
         return $stmt->execute();
     }
 
-    // Para el dashboard: agrupa todos los eventos por semana+día y cuenta cuántos hay,
-    // devolviendo el mismo formato que antes (semana, dia, cantidad) para no tocar el JS/vista
     public function getMatriz($idPerfil)
     {
         $acceso = $this->getByPerfilId($idPerfil);
@@ -143,7 +135,6 @@ class PerfilAccesoModelo
 
         $eventos = $this->parsearData($acceso['tbperfilaccesosemanaldata']);
 
-        // Agrupa: clave "semana|dia" -> cantidad de eventos
         $conteo = [];
         foreach ($eventos as $evento) {
             $clave = $evento['semana'] . '|' . $evento['dia'];

@@ -4,15 +4,9 @@ require_once __DIR__ . '/../../Configuracion/basedatos.php';
 
 class PerfilUbicacionModelo
 {
-    // Tipos permitidos para el histórico (cualquier otro valor se rechaza)
     const TIPO_AUTOMATICA = 'AUTOMATICA';
     const TIPO_MANUAL = 'MANUAL';
 
-    // Tolerancia (en metros) para considerar que una ubicación automática es
-    // "la misma" que la última registrada y NO crear un histórico duplicado.
-    // El error típico del GPS en móviles es de ±10-30 m, así que 50 m evita
-    // registros repetidos al iniciar sesión varias veces en el mismo lugar,
-    // pero sí registra movimientos reales (~media cuadra o más).
     const TOLERANCIA_METROS = 50;
 
     private $conexion;
@@ -22,8 +16,6 @@ class PerfilUbicacionModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    // Valida que tbperfilid exista y el perfil esté activo (relación lógica
-    // con tbperfil validada desde PHP, sin FOREIGN KEY en la base de datos)
     public function existePerfilActivo($perfilId)
     {
         $sql = "SELECT COUNT(*) AS total FROM tbperfil
@@ -36,9 +28,6 @@ class PerfilUbicacionModelo
         return $fila !== false && (int) $fila['total'] > 0;
     }
 
-    // Construye la cadena inmutable del histórico:
-    // PROVINCIA-CANTON-DISTRITO-LATITUD-LONGITUD-FECHA-HORA-TIPO
-    // Ejemplo: San José-Desamparados-Desamparados-9.12345678--84.12345678-2026-08-23-18:40:00-AUTOMATICA
     public function construirData($provincia, $canton, $distrito, $latitud, $longitud, $fecha, $hora, $tipo)
     {
         return implode('-', [
@@ -53,9 +42,6 @@ class PerfilUbicacionModelo
         ]);
     }
 
-    // Parsea la cadena del histórico de vuelta a sus componentes.
-    // La longitud negativa genera doble guion ("9.12--84.12"), por eso el
-    // patrón ancla latitud/longitud/fecha/hora/tipo al final de la cadena.
     public function parsearData($data)
     {
         $patron = '/^(.+)-(.+)-(.+)-(-?\d+(?:\.\d+)?)-(-?\d+(?:\.\d+)?)-(\d{4}-\d{2}-\d{2})-(\d{2}:\d{2}:\d{2})-(AUTOMATICA|MANUAL)$/';
@@ -76,21 +62,16 @@ class PerfilUbicacionModelo
         ];
     }
 
-    // Inserta un registro de histórico NUEVO. Los históricos nunca se
-    // actualizan ni se eliminan: cada cambio de ubicación crea una fila nueva.
     public function insertar($perfilId, $data, $tipo)
     {
-        // Validación del tipo: solo AUTOMATICA o MANUAL
         if ($tipo !== self::TIPO_AUTOMATICA && $tipo !== self::TIPO_MANUAL) {
             return false;
         }
 
-        // Validación de la relación lógica con tbperfil
         if (!$this->existePerfilActivo($perfilId)) {
             return false;
         }
 
-        // Validación del formato fecha/hora incluido en el data
         if (!$this->validarFechaHoraEnData($data)) {
             return false;
         }
@@ -120,7 +101,6 @@ class PerfilUbicacionModelo
         return $fecha !== false && $hora !== false;
     }
 
-    // Último registro histórico del perfil (para comparaciones anti-duplicado)
     public function getUltimo($perfilId)
     {
         $sql = "SELECT tbperfilubicacionid, tbperfilid, tbperfilubicaciondata, tbperfilubicacionestado
@@ -136,8 +116,6 @@ class PerfilUbicacionModelo
         return $fila ?: null;
     }
 
-    // Indica si la coordenada dada está prácticamente en el mismo punto que la
-    // última ubicación registrada (comparación hecha desde PHP, en metros).
     public function esSimilarAUltima($perfilId, $latitud, $longitud)
     {
         $ultimo = $this->getUltimo($perfilId);
@@ -160,7 +138,6 @@ class PerfilUbicacionModelo
         return $distancia <= self::TOLERANCIA_METROS;
     }
 
-    // Fórmula de Haversine: distancia en metros entre dos coordenadas
     private function distanciaMetros($lat1, $lng1, $lat2, $lng2)
     {
         $radioTierra = 6371000;
@@ -177,8 +154,6 @@ class PerfilUbicacionModelo
         return $radioTierra * $c;
     }
 
-    // Devuelve TODO el histórico del perfil, del más reciente al más antiguo,
-    // con cada registro ya parseado para mostrarlo en pantalla.
     public function getListPorPerfil($perfilId)
     {
         $sql = "SELECT tbperfilubicacionid, tbperfilid, tbperfilubicaciondata, tbperfilubicacionestado

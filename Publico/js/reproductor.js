@@ -9,7 +9,7 @@ function onYouTubeIframeAPIReady() {
         height: '220',
         width: '100%',
         playerVars: {
-            controls: 1  // asegura que se vean los controles nativos, incluido el botón de repetir al terminar
+            controls: 1 
         },
         events: {
             onStateChange: onPlayerStateChange
@@ -69,8 +69,6 @@ function reproducirCancion(cancion, videoId) {
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
 
-        // Cuenta como nueva reproducción solo si es la primera vez,
-        // o si el video ya había llegado al final y el usuario le dio "reproducir otra vez" (nativo de YouTube)
         if (!yaContadaEstaReproduccion) {
             registrarReproduccion();
             yaContadaEstaReproduccion = true;
@@ -80,11 +78,9 @@ function onPlayerStateChange(event) {
 
     } else if (event.data === YT.PlayerState.ENDED) {
         detenerTracking();
-        // Habilita que el próximo PLAYING (originado por el botón nativo de repetir) cuente de nuevo
         yaContadaEstaReproduccion = false;
 
     } else {
-        // Pausa u otro estado intermedio: no afecta el contador, solo detiene el tiempo
         detenerTracking();
     }
 }

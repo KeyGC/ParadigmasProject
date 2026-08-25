@@ -43,10 +43,9 @@ function seccion($titulo)
 $sufijo = substr(bin2hex(random_bytes(4)), 0, 6);
 $nombrePrueba  = "prueba_$sufijo";
 $correoPrueba  = "prueba_$sufijo@test.com";
-$contraPrueba  = "abcd1234"; // cumple: 8-16 chars, sin vocales... (ojo: tiene vocal 'a')
-// Nota: la regla real prohíbe vocales, usamos algo que la cumpla:
-$contraPrueba  = "bcdfgh12"; // sin vocales, 4 letras, 2 numeros -> ajustar si hace falta 4 numeros
-$contraPrueba  = "bcdf1234"; // 4 letras, 4 numeros, sin vocales, sin repetidos consecutivos
+$contraPrueba  = "abcd1234"; 
+$contraPrueba  = "bcdfgh12"; 
+$contraPrueba  = "bcdf1234"; 
 
 $ubicacionModelo = new UbicacionModelo();
 $perfilModelo    = new PerfilModelo();

@@ -53,7 +53,6 @@ class ReproduccionModelo
         return $dataActual . "\n" . $nuevaLinea;
     }
 
-    // Busca la fila de tbreproduccion para este perfil+canción; si no existe, la crea junto con su registro semanal
     private function obtenerOCrearFila($perfilId, $cancionId)
     {
         $sql = "SELECT r.tbreproduccionid, r.tbreproduccionsemanalid, r.tbreproducciontiempo,
@@ -71,7 +70,6 @@ class ReproduccionModelo
             return $fila;
         }
 
-        // No existe: crea el registro semanal vacío y la fila de reproducción
         $sqlSemanal = "INSERT INTO tbreproduccionsemanal (tbreproduccionsemanaldata) VALUES ('')";
         $this->conexion->prepare($sqlSemanal)->execute();
         $idSemanal = $this->conexion->lastInsertId();
@@ -104,7 +102,6 @@ class ReproduccionModelo
         return $stmt->execute();
     }
 
-    // Agrega una línea semana|dia|fecha cada vez que se reproduce (reemplaza al viejo contador)
     public function incrementarContador($perfilId, $cancionId)
     {
         $ahora = date('Y-m-d H:i:s');
@@ -148,8 +145,6 @@ class ReproduccionModelo
         return $stmt->execute();
     }
 
-    // Devuelve las mismas columnas que antes (tbreproduccioncontador incluido),
-    // pero ahora calculado contando líneas del string en vez de leer una columna
     public function getPorPerfil($perfilId)
     {
         $sql = "SELECT r.tbreproduccionid, c.tbcancionnombre, c.tbcancionartista,

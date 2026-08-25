@@ -69,7 +69,6 @@ class PerfilRegistrosModelo
         return $stmt->fetch();
     }
 
-    // Se llama al crear el perfil: crea la fila y guarda la primera línea de cada campo
     public function crearRegistro($idPerfil, $contra, $correo, $nombre)
     {
         $ahora = date('Y-m-d H:i:s');

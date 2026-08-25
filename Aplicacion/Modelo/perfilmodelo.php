@@ -1,5 +1,4 @@
 <?php
-// Aplicacion/Modelo/PerfilModelo.php
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/perfil.php';
 
@@ -115,8 +114,6 @@ class PerfilModelo
         return $stmt->execute();
     }
 
-    // Actualiza la ubicación ACTUAL del perfil (tbubicacionid es una relación
-    // lógica hacia tbubicacion, validada desde PHP sin FOREIGN KEY)
     public function setUbicacion($perfilId, $ubicacionId)
     {
         $sql = "UPDATE tbperfil SET tbubicacionid = :ubicacionId WHERE tbperfilid = :perfilId";

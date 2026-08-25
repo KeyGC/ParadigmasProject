@@ -7,17 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function validarContra(contra) {
 
-    // Entre 8 y 16 caracteres
     if (contra.length < 8 || contra.length > 16) {
         return "La contraseña debe tener entre 8 y 16 caracteres";
     }
 
-    // No puede contener vocales
     if (/[aeiouAEIOU]/.test(contra)) {
         return "La contraseña no puede contener vocales";
     }
-
-    // Mínimo 4 letras
     const letras = contra.match(/[a-zA-Z]/g);
 
     if (!letras || letras.length < 4) {
@@ -25,7 +21,6 @@ function validarContra(contra) {
     }
 
 
-    // Mínimo 4 números
     const numeros = contra.match(/[0-9]/g);
 
     if (!numeros || numeros.length < 4) {
@@ -33,7 +28,6 @@ function validarContra(contra) {
     }
 
 
-    // No permitir caracteres consecutivos repetidos
     if (/(.)\1/.test(contra)) {
         return "No puede tener letras o números repetidos consecutivamente";
     }

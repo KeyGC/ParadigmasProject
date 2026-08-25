@@ -235,8 +235,6 @@ function cargarDistritos(cantonId) {
 
 }
 
-//  GUARDAR UBICACIÓN 
-
 function guardarUbicacion(e) {
     e.preventDefault();
 

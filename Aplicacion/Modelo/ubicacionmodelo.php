@@ -37,7 +37,6 @@ class UbicacionModelo
         return $stmt->fetchAll();
     }
 
-    // Crea una ubicación nueva e independiente, devuelve su id (se usa al registrar un perfil)
     public function insert($provinciaId, $cantonId, $distritoId, $lat, $lng)
     {
         $sql = "INSERT INTO tbubicacion
@@ -106,11 +105,6 @@ class UbicacionModelo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Devuelve los nombres de provincia/cantón/distrito SOLO si los tres IDs
-    // existen, están activos y respetan la jerarquía (el cantón pertenece a la
-    // provincia y el distrito al cantón). Si no, devuelve null.
-    // La integridad referencial se valida aquí (PHP) porque las tablas no
-    // tienen FOREIGN KEY entre sí.
     public function getNombresPorIds($provinciaId, $cantonId, $distritoId)
     {
         $sql = "SELECT p.tbprovincianombre AS provincia,
