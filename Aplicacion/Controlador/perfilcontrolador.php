@@ -5,6 +5,7 @@ require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
 require_once __DIR__ . '/../Modelo/perfilaccesomodelo.php';
+require_once __DIR__ . '/../Modelo/perfilregistrosmodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -104,6 +105,9 @@ switch ($accion) {
                 $accesoModelo = new PerfilAccesoModelo();
                 $accesoModelo->crearRegistroAcceso($id);
 
+                $registrosModelo = new PerfilRegistrosModelo();
+                $registrosModelo->crearRegistro($id, $contraTemporal, $correo, $nombre);
+
                 $correoEnviado = enviarContrasenaTemporal($correo, $nombre, $contraTemporal);
 
                 echo json_encode([
@@ -155,6 +159,9 @@ switch ($accion) {
                 $accesoModelo = new PerfilAccesoModelo();
                 $accesoModelo->crearRegistroAcceso($id);
 
+                $registrosModelo = new PerfilRegistrosModelo();
+                $registrosModelo->crearRegistro($id, $contra, $correo, $nombre);
+
                 echo json_encode(["exito" => true, "mensaje" => "Perfil creado correctamente", "id" => $id]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
@@ -202,6 +209,17 @@ switch ($accion) {
         }
 
         if ($actualizado) {
+            $registrosModelo = new PerfilRegistrosModelo();
+            if ($perfilActual['tbperfilnombre'] !== $nombre) {
+                $registrosModelo->registrarCambio($id, 'nombre', $nombre);
+            }
+            if ($perfilActual['tbperfilcontra'] !== $contra) {
+                $registrosModelo->registrarCambio($id, 'contra', $contra);
+            }
+            if ($perfilActual['tbperfilcorreo'] !== $correo) {
+                $registrosModelo->registrarCambio($id, 'correo', $correo);
+            }
+
             echo json_encode(["exito" => true, "mensaje" => "Perfil actualizado correctamente"]);
         } else {
             echo json_encode(["exito" => false, "mensaje" => "Error al actualizar el perfil"]);
@@ -290,8 +308,12 @@ switch ($accion) {
 
         if ($modelo->update($perfil)) {
             $_SESSION['perfil'] = $perfil->toArray();
+
+            $registrosModelo = new PerfilRegistrosModelo();
+            $registrosModelo->registrarCambio($id, 'contra', $contra);
+
             echo json_encode(["exito" => true, "mensaje" => "Contraseña actualizada correctamente"]);
-        } else {
+        }else {
             echo json_encode(["exito" => false, "mensaje" => "Error al actualizar la contraseña"]);
         }
 
@@ -344,6 +366,18 @@ switch ($accion) {
         try {
             if ($modelo->update($perfil)) {
                 $_SESSION['perfil'] = $perfil->toArray();
+
+                $registrosModelo = new PerfilRegistrosModelo();
+                if ($perfilActual['tbperfilnombre'] !== $nombre) {
+                    $registrosModelo->registrarCambio($id, 'nombre', $nombre);
+                }
+                if ($perfilActual['tbperfilcontra'] !== $contra) {
+                    $registrosModelo->registrarCambio($id, 'contra', $contra);
+                }
+                if ($perfilActual['tbperfilcorreo'] !== $correo) {
+                    $registrosModelo->registrarCambio($id, 'correo', $correo);
+                }
+
                 echo json_encode(["exito" => true, "mensaje" => "Perfil actualizado correctamente"]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al actualizar el perfil"]);

@@ -832,3 +832,13 @@ CREATE TABLE IF NOT EXISTS `tbperfilubicacion` (
   `tbperfilubicacionestado` BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbperfilubicacionid`)
 );
+
+CREATE TABLE IF NOT EXISTS `tbperfilregistrossemanal` (
+  `tbperfilregistrossemanalid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbperfilregistroscontradata` TEXT NOT NULL DEFAULT '',
+  `tbperfilregistroscorreodata` TEXT NOT NULL DEFAULT '',
+  `tbperfilregistrosnombredata` TEXT NOT NULL DEFAULT '',
+  PRIMARY KEY (`tbperfilregistrossemanalid`),
+  UNIQUE KEY `uq_perfilregistrossemanal_perfil` (`tbperfilid`)
+);
