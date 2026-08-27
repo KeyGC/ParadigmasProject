@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const idPerfil = document.getElementById('idPerfil').value;
-    generarPerfilado(idPerfil);
+    const idPerfil   = document.getElementById('idPerfil').value;
+    const tipoPerfil = document.getElementById('tipoPerfil').value;
+    generarPerfilado(idPerfil, tipoPerfil);
 });
 
-function generarPerfilado(idPerfil) {
-    fetch(`apiperfilmusical.php?accion=getPerfilado&perfilId=${idPerfil}`)
+function generarPerfilado(idPerfil, tipo) {
+    fetch(`apiperfilado.php?accion=getPerfilado&perfilId=${idPerfil}&tipo=${encodeURIComponent(tipo)}`)
         .then(res => res.json())
         .then(res => {
             document.getElementById('contenedorCargando').style.display = 'none';
@@ -12,44 +13,57 @@ function generarPerfilado(idPerfil) {
             if (!res.exito) {
                 const contenedor = document.getElementById('contenedorSinDatos');
                 contenedor.style.display = 'block';
-                contenedor.textContent = res.mensaje;
+                contenedor.textContent   = res.mensaje;
                 return;
             }
 
             document.getElementById('contenedorResultados').style.display = 'block';
+
             const contenedorTarjetas = document.getElementById('tarjetasResultado');
             contenedorTarjetas.innerHTML = '';
 
-            const colores = ['#db2777', '#9d174d', '#831843'];
-
             const etiquetasTipo = {
-                'especifico': '📍 Patrón específico (día y hora)',
-                'franja': '🕐 Patrón por franja horaria',
-                'dia': '📅 Patrón por día de la semana'
+                'especifico': 'Patron especifico (dia y hora)',
+                'franja':     'Patron por franja horaria',
+                'dia':        'Patron por dia de la semana'
             };
+
+            const bordes = [
+                'var(--color-dorado)',
+                'var(--color-oscuro)',
+                'var(--color-oscuro-suave)'
+            ];
 
             res.resultados.forEach((r, i) => {
                 const col = document.createElement('div');
-                col.className = 'col-md-4 mb-3';
+                col.className = 'col-md-4';
                 col.innerHTML = `
-                    <div class="card h-100" style="border-top: 4px solid ${colores[i] || '#db2777'};">
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">${etiquetasTipo[r.tipo] || ''}</span>
-                            <h5 class="card-title">Resultado ${i + 1}</h5>
-                            <p class="card-text">${r.texto}.</p>
-                            <p class="text-muted small">
-                                Confianza: ${r.confianza}%<br>
-                                Basado en ${r.soporte} reproducciones
-                            </p>
-                        </div>
+                    <div class="tarjeta-panel h-100"
+                         style="border-top: 4px solid ${bordes[i] || 'var(--color-dorado)'};">
+                        <span class="badge-estado activo mb-2 d-inline-block"
+                              style="background: rgba(184,137,47,0.13);
+                                     color: var(--color-dorado);">
+                            ${etiquetasTipo[r.tipo] || r.tipo}
+                        </span>
+                        <h5 class="titulo-tarjeta">Resultado ${i + 1}</h5>
+                        <p>${r.texto}.</p>
+                        <p class="subtitulo-pagina mb-0" style="font-size:0.85rem;">
+                            Confianza: <strong>${r.confianza}%</strong><br>
+                            Basado en <strong>${r.soporte}</strong> registros
+                        </p>
                     </div>
                 `;
                 contenedorTarjetas.appendChild(col);
             });
-            const nota = document.createElement('p');
-            nota.className = 'text-secondary mt-3';
-            nota.textContent = `Modelo entrenado con ${res.totalEventos} eventos de reproducción en total.`;
-            document.getElementById('contenedorResultados').appendChild(nota);
+
+            document.getElementById('notaEventos').textContent =
+                `Modelo entrenado con ${res.totalEventos} eventos registrados en total.`;
         })
-        .catch(err => console.error('Error al generar el perfilado:', err));
+        .catch(err => {
+            document.getElementById('contenedorCargando').style.display = 'none';
+            const contenedor = document.getElementById('contenedorSinDatos');
+            contenedor.style.display = 'block';
+            contenedor.textContent   = 'Error al conectar con el servidor.';
+            console.error('Error al generar el perfilado:', err);
+        });
 }

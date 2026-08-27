@@ -5,45 +5,96 @@ if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin
 }
 
 $idPerfil = $_GET['id'] ?? null;
+$tipo     = $_GET['tipo'] ?? 'musical';
+
 if (!$idPerfil) {
     header('Location: index.php?vista=perfiles');
     exit;
 }
+
+$tiposDisponibles = [
+    'musical'      => ['label' => 'Perfilado Musical'],
+    'gastronomico' => ['label' => 'Perfilado Gastronomico'],
+    'deportes'     => ['label' => 'Perfilado Deportivo'],
+];
+
+if (!array_key_exists($tipo, $tiposDisponibles)) {
+    $tipo = 'musical';
+}
+
+$labelTipo = $tiposDisponibles[$tipo]['label'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Perfilado Musical</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title><?= htmlspecialchars($labelTipo) ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
-<body>
+<body class="cuerpoAdmin">
 
     <?php require_once APP_PATH . '/Vista/Componentes/navbaradmin.php'; ?>
 
-    <div class="container-fluid bg-light text-primary p-5 text-center" id="contenedorPrincipal">
-        <div class="container">
-            <a href="index.php?vista=perfiles" class="btn btn-secondary mb-3">Volver a Perfiles</a>
-            <h1 id="tituloPerfil">Perfilado Musical</h1>
-            <p class="text-secondary">Generado mediante una red neuronal entrenada con el historial de reproducciones de este perfil.</p>
+    <div class="container-fluid fondo-panel" id="contenedorPrincipal">
+        <div class="container contenedor-panel">
 
-            <div id="contenedorCargando" class="my-4">
-                <div class="spinner-border text-primary" role="status"></div>
-                <p>Entrenando el modelo, un momento...</p>
+            <div class="encabezado-panel d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <a href="index.php?vista=perfiles" class="btn btn-secondary btn-sm mb-2">
+                        &larr; Volver a Perfiles
+                    </a>
+                    <h1 class="titulo-pagina" id="tituloPerfil">
+                        <?= htmlspecialchars($labelTipo) ?>
+                    </h1>
+                    <p class="subtitulo-pagina">
+                        Generado mediante una red neuronal entrenada con el historial de este perfil.
+                    </p>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap">
+                    <?php foreach ($tiposDisponibles as $clave => $info): ?>
+                        <a href="index.php?vista=perfilado&tipo=<?= $clave ?>&id=<?= htmlspecialchars($idPerfil) ?>"
+                        class="btn btn-sm"
+                        style="<?= $clave === $tipo
+                            ? 'background:var(--color-dorado);border-color:var(--color-dorado);color:#fff;'
+                            : 'background:transparent;border-color:var(--color-oscuro-borde);color:var(--color-texto);' ?>">
+                            <?= htmlspecialchars($info['label']) ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
 
+            <!-- Cargando -->
+            <div class="tarjeta-panel" id="contenedorCargando">
+                <div class="text-center py-4">
+                    <div class="spinner-border" role="status"
+                        style="color: var(--color-dorado);"></div>
+                    <p class="mt-2 subtitulo-pagina">Entrenando el modelo, un momento...</p>
+                </div>
+            </div>
+
+            <!-- Sin datos -->
+            <div class="alert alert-warning" id="contenedorSinDatos" style="display:none;"></div>
+
+            <!-- Resultados -->
             <div id="contenedorResultados" style="display:none;">
-                <div class="row justify-content-center" id="tarjetasResultado"></div>
+                <div class="tarjeta-panel">
+                    <div class="row g-3" id="tarjetasResultado"></div>
+                    <p class="subtitulo-pagina mt-3 small" id="notaEventos"></p>
+                </div>
             </div>
 
-            <div id="contenedorSinDatos" class="alert alert-warning" style="display:none;"></div>
         </div>
     </div>
 
     <?php require_once APP_PATH . '/Vista/Componentes/footeradmin.php'; ?>
 
-    <input type="hidden" id="idPerfil" value="<?php echo htmlspecialchars($idPerfil); ?>">
+    <input type="hidden" id="idPerfil" value="<?= htmlspecialchars($idPerfil) ?>">
+    <input type="hidden" id="tipoPerfil" value="<?= htmlspecialchars($tipo) ?>">
     <script src="js/perfilado.js"></script>
 </body>
 </html>
