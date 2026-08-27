@@ -14,57 +14,80 @@ exigirRol(['admin']);
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 
-<body>
+<body class="cuerpoAdmin">
 
     <?php require_once APP_PATH . '/Vista/Componentes/navbaradmin.php'; ?>
 
-    <div class="container-fluid bg-light text-primary p-5 text-center" id="contenedorPrincipal">
-        <div class="container">
+    <div class="container-fluid fondo-panel" id="contenedorPrincipal">
+        <div class="container contenedor-panel">
 
-            <div id="contenedorBotonNuevo">
-                <button class="btn btn-success mb-3" id="btnNuevo">
-                    + Nuevo
-                </button>
+            <div class="encabezado-panel d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <h1 class="titulo-pagina">Gestión de Canciones</h1>
+                    <p class="subtitulo-pagina">Administra el catálogo musical disponible para los usuarios.</p>
+                </div>
+                <div id="contenedorBotonNuevo">
+                    <button class="btn btn-accion" id="btnNuevo">
+                        + Nueva
+                    </button>
+                </div>
             </div>
 
-            <div class="container mb-5" id="contenedorFormulario" style="display: none;">
-                <h1>Form</h1>
+            <div class="tarjeta-panel" id="contenedorFormulario" style="display: none;">
+                <h2 class="titulo-tarjeta">Nuevo registro</h2>
 
                 <form id="formCancion">
                     <input type="hidden" id="cancionId" value="">
 
-                    <select id="generoId" class="form-control mb-2" required>
-                        <option value="">Seleccione un género</option>
-                    </select>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <select id="generoId" class="form-select" required>
+                                <option value="">Seleccione un género</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="nombre" class="form-control" placeholder="Nombre de la canción" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="artista" class="form-control" placeholder="Artista" required>
+                        </div>
 
-                    <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre de la canción" required>
-                    <input type="text" id="artista" class="form-control mb-2" placeholder="Artista" required>
-                    <input type="text" id="url" class="form-control mb-2" placeholder="URL de YouTube" required>
+                        <div class="col-12">
+                            <input type="text" id="url" class="form-control" placeholder="URL de YouTube" required>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary mb-2" id="btnGuardar">Guardar</button>
-                    <button type="button" class="btn btn-secondary" id="btnCancelar" style="display:none;">Cancelar edición</button>
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                            <button type="button" class="btn btn-secondary" id="btnCancelar" style="display:none;">Cancelar edición</button>
+                        </div>
+                    </div>
                 </form>
 
             </div>
 
-            <div class="container">
+            <div class="tarjeta-panel">
 
-                <input type="text" id="buscador" placeholder="Buscar por nombre..." class="form-control mb-3">
+                <div class="busqueda">
+                    <span>🔍</span>
+                    <input type="text" id="buscador" placeholder="Buscar por nombre o artista..." class="form-control">
+                </div>
 
-                <table class="table" id="tablaCanciones">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Artista</th>
-                            <th>Género</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpoTabla">
-                        <!-- AJAX -->
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table tabla-panel cabecera-oscura" id="tablaCanciones">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Artista</th>
+                                <th>Género</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla">
+                            <!-- AJAX -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>

@@ -24,13 +24,15 @@ function cargarReproducciones(idPerfil) {
                 const activo = r.tbreproduccionestado == 1;
                 cuerpo.innerHTML += `
                     <tr>
-                        <td>${r.tbcancionnombre}</td>
+                        <td class="fw-medium">${r.tbcancionnombre}</td>
                         <td>${r.tbcancionartista}</td>
-                        <td>${r.tbreproducciontiempo}</td>
-                        <td>${r.tbreproduccioncontador}</td>
-                        <td>${activo ? 'Activo' : 'Inactivo'}</td>
+                        <td class="text-center">${r.tbreproducciontiempo}</td>
+                        <td class="text-center">${r.tbreproduccioncontador}</td>
+                        <td class="estado-celda">
+                            <span class="badge-estado ${activo ? 'activo' : 'inactivo'}">${activo ? 'Activo' : 'Inactivo'}</span>
+                        </td>
                         <td>
-                            <button onclick="toggleEstado(${r.tbreproduccionid}, '${idPerfil}')" style="margin: 5px; padding: 5px 10px; color: white; background-color: ${activo ? '#DC3545' : '#28A745'}; border: none; cursor: pointer;">
+                            <button class="accion-tabla ${activo ? 'accion-desactivar' : 'accion-activar'}" onclick="toggleEstado(${r.tbreproduccionid}, '${idPerfil}')">
                                 ${activo ? 'Desactivar' : 'Activar'}
                             </button>
                         </td>

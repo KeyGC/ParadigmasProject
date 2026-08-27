@@ -18,33 +18,41 @@ if (!$idPerfil) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
-<body>
+<body class="cuerpoAdmin">
 
     <?php require_once APP_PATH . '/Vista/Componentes/navbaradmin.php'; ?>
 
-    <div class="container-fluid bg-light text-primary p-5 text-center" id="contenedorPrincipal">
-        <div class="container">
-            <a href="index.php?vista=perfiles" class="btn btn-secondary mb-3">Volver a Perfiles</a>
-            <h1 id="tituloPerfil">Histórico de Ubicaciones</h1>
-            <p id="resumenHistorico" class="text-secondary"></p>
+    <div class="container-fluid fondo-panel" id="contenedorPrincipal">
+        <div class="container contenedor-panel">
 
-            <table class="table table-bordered" id="tablaUbicaciones">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Tipo</th>
-                        <th>Provincia</th>
-                        <th>Cantón</th>
-                        <th>Distrito</th>
-                        <th>Latitud</th>
-                        <th>Longitud</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpoUbicaciones">
-                    <!-- AJAX -->
-                </tbody>
-            </table>
+            <div class="encabezado-panel">
+                <a href="index.php?vista=perfiles" class="btn btn-secondary btn-sm mb-2">&larr; Volver a Perfiles</a>
+                <h1 class="titulo-pagina" id="tituloPerfil">Histórico de Ubicaciones</h1>
+                <p class="subtitulo-pagina" id="resumenHistorico"></p>
+            </div>
+
+            <div class="tarjeta-panel">
+                <div class="table-responsive">
+                    <table class="table table-bordered tabla-panel cabecera-oscura" id="tablaUbicaciones">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Tipo</th>
+                                <th>Provincia</th>
+                                <th>Cantón</th>
+                                <th>Distrito</th>
+                                <th>Latitud</th>
+                                <th>Longitud</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoUbicaciones">
+                            <!-- AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 

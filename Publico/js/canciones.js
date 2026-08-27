@@ -68,7 +68,7 @@ function pintarTabla(canciones) {
     cuerpo.innerHTML = '';
 
     if (canciones.length === 0) {
-        cuerpo.innerHTML = `<tr><td colspan="6" style="text-align:center;">No se encontraron resultados</td></tr>`;
+        cuerpo.innerHTML = `<tr><td colspan="6" class="text-center">No se encontraron resultados</td></tr>`;
         return;
     }
 
@@ -76,13 +76,15 @@ function pintarTabla(canciones) {
         const activo = c.tbcancionactivo == 1;
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td>${c.tbcancionnombre}</td>
+            <td class="fw-medium">${c.tbcancionnombre}</td>
             <td>${c.tbcancionartista}</td>
             <td>${c.tbgeneronombre}</td>
-            <td>${activo ? 'Activa' : 'Inactiva'}</td>
+            <td class="estado-celda">
+                <span class="badge-estado ${activo ? 'activo' : 'inactivo'}">${activo ? 'Activa' : 'Inactiva'}</span>
+            </td>
             <td>
-                <button onclick="editarCancion(${c.tbcancionid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #2C5F8A; border: none; cursor: pointer;">Editar</button>
-                <button onclick="toggleEstado(${c.tbcancionid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: ${activo ? '#DC3545' : '#28A745'}; border: none; cursor: pointer;">
+                <button class="accion-tabla" onclick="editarCancion(${c.tbcancionid})">Editar</button>
+                <button class="accion-tabla ${activo ? 'accion-desactivar' : 'accion-activar'}" onclick="toggleEstado(${c.tbcancionid})">
                     ${activo ? 'Desactivar' : 'Activar'}
                 </button>
             </td>

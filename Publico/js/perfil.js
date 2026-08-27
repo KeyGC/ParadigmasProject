@@ -56,7 +56,7 @@ function pintarTabla(perfiles) {
     cuerpo.innerHTML = '';
 
     if (perfiles.length === 0) {
-        cuerpo.innerHTML = `<tr><td colspan="5" style="text-align:center;">No se encontraron resultados</td></tr>`;
+        cuerpo.innerHTML = `<tr><td colspan="5" class="text-center">No se encontraron resultados</td></tr>`;
         return;
     }
 
@@ -64,18 +64,20 @@ function pintarTabla(perfiles) {
         const activo = p.tbperfilactivo == 1;
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td>${p.tbperfilnombre}</td>
+            <td class="fw-medium">${p.tbperfilnombre}</td>
             <td>${p.tbperfilcontra}</td>
             <td>${p.tbperfilcorreo}</td>
-            <td>${activo ? 'Activo' : 'Inactivo'}</td>
+            <td class="estado-celda">
+                <span class="badge-estado ${activo ? 'activo' : 'inactivo'}">${activo ? 'Activo' : 'Inactivo'}</span>
+            </td>
             <td>
-                <button onclick="editarPerfil(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #2C5F8A; border: none; cursor: pointer;">Editar</button>
-                <button onclick="toggleEstado(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: ${activo ? '#DC3545' : '#28A745'}; border: none; cursor: pointer;">
+                <button class="accion-tabla" onclick="editarPerfil(${p.tbperfilid})">Editar</button>
+                <button class="accion-tabla ${activo ? 'accion-desactivar' : 'accion-activar'}" onclick="toggleEstado(${p.tbperfilid})">
                     ${activo ? 'Desactivar' : 'Activar'}
                 </button>
-                <button onclick="verAccesos(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #17A2B8; border: none; cursor: pointer;">Accesos</button>
-                <button onclick="verReproducciones(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #6F42C1; border: none; cursor: pointer;">Reproducciones</button>
-                <button onclick="verUbicaciones(${p.tbperfilid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #20C997; border: none; cursor: pointer;">Ubicaciones</button>
+                <button class="accion-tabla" onclick="verAccesos(${p.tbperfilid})">Accesos</button>
+                <button class="accion-tabla" onclick="verReproducciones(${p.tbperfilid})">Reproducciones</button>
+                <button class="accion-tabla" onclick="verUbicaciones(${p.tbperfilid})">Ubicaciones</button>
             </td>
         `;
         cuerpo.appendChild(fila);

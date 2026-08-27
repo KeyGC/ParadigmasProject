@@ -17,62 +17,87 @@ if (!isset($_SESSION['perfil'])) {
 
 </head>
 
-<body>
+<body class="cuerpoAdmin">
 
     <?php require_once APP_PATH . '/Vista/Componentes/navbaradmin.php'; ?>
 
-    <div class="container-fluid bg-light text-primary p-5 text-center" id="contenedorPrincipal">
-        <div class="container">
+    <div class="container-fluid fondo-panel" id="contenedorPrincipal">
+        <div class="container contenedor-panel">
 
-            <div id="contenedorBotonNuevo">
-                <button class="btn btn-success mb-3" id="btnNuevo">
-                    + Nuevo
-                </button>
+            <div class="encabezado-panel d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <h1 class="titulo-pagina">Gestión de Perfiles</h1>
+                    <p class="subtitulo-pagina">Administra los usuarios registrados en la plataforma.</p>
+                </div>
+                <div id="contenedorBotonNuevo">
+                    <button class="btn btn-accion" id="btnNuevo">
+                        + Nuevo
+                    </button>
+                </div>
             </div>
 
-            <div class="container mb-5" id="contenedorFormulario" style="display: none;">
-                <h1>Form</h1>
+            <div class="tarjeta-panel" id="contenedorFormulario" style="display: none;">
+                <h2 class="titulo-tarjeta">Nuevo registro</h2>
 
                 <form id="formPerfil">
                     <input type="hidden" id="perfilId" value="">
-                    <input type="text" id="nombre" class="form-control mb-2" placeholder="Sobrenombre" required>
-                    <input type="text" id="contra" class="form-control mb-2" placeholder="Contraseña" required>
-                    <div class="input-group mb-2">
-                        <span class="input-group-text" id="basic-addon1">@</span>
-                        <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" id="nombre" class="form-control" placeholder="Sobrenombre" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="contra" class="form-control" placeholder="Contraseña" required>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">@</span>
+                                <input type="email" id="correo" class="form-control" placeholder="Correo Electrónico" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="ubicacionEstado" class="form-select">
+                                <option value="1">Ubicación: Activa</option>
+                                <option value="0">Ubicación: Inactiva</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                            <button type="button" class="btn btn-secondary" id="btnCancelar" style="display:none;">Cancelar edición</button>
+                        </div>
                     </div>
-                    <select id="ubicacionEstado" class="form-control mb-2">
-                        <option value="1">Ubicación: Activa</option>
-                        <option value="0">Ubicación: Inactiva</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary mb-2" id="btnGuardar">Guardar</button>
-                    <button type="button" class="btn btn-secondary" id="btnCancelar" style="display:none;">Cancelar edición</button>
                 </form>
 
             </div>
 
-            <div class="container">
+            <div class="tarjeta-panel">
 
-                <input type="text" id="buscador" placeholder="Buscar por nombre..." class="form-control mb-3">
+                <div class="busqueda">
+                    <span>🔍</span>
+                    <input type="text" id="buscador" placeholder="Buscar por nombre..." class="form-control">
+                </div>
 
-                <table class="table" id="tablaPerfiles">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Contraseña</th>
-                            <th>Correo</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpoTabla">
-                        <!-- AJAX -->
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table tabla-panel cabecera-oscura" id="tablaPerfiles">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Contraseña</th>
+                                <th>Correo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla">
+                            <!-- AJAX -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
-
     </div>
 
     <?php require_once APP_PATH . '/Vista/Componentes/footeradmin.php'; ?>

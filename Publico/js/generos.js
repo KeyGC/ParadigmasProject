@@ -53,7 +53,7 @@ function pintarTabla(generos) {
     cuerpo.innerHTML = '';
 
     if (generos.length === 0) {
-        cuerpo.innerHTML = `<tr><td colspan="4" style="text-align:center;">No se encontraron resultados</td></tr>`;
+        cuerpo.innerHTML = `<tr><td colspan="4" class="text-center">No se encontraron resultados</td></tr>`;
         return;
     }
 
@@ -61,11 +61,13 @@ function pintarTabla(generos) {
         const activo = g.tbgeneroestado == 1;
         const fila = document.createElement('tr');
         fila.innerHTML = `
-            <td>${g.tbgeneronombre}</td>
-            <td>${activo ? 'Activo' : 'Inactivo'}</td>
+            <td class="fw-medium">${g.tbgeneronombre}</td>
+            <td class="estado-celda">
+                <span class="badge-estado ${activo ? 'activo' : 'inactivo'}">${activo ? 'Activo' : 'Inactivo'}</span>
+            </td>
             <td>
-                <button onclick="editarGenero(${g.tbgeneroid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: #2C5F8A; border: none; cursor: pointer;">Editar</button>
-                <button onclick="toggleEstado(${g.tbgeneroid})" style="margin: 5px; padding: 5px 10px; color: white; background-color: ${activo ? '#DC3545' : '#28A745'}; border: none; cursor: pointer;">
+                <button class="accion-tabla" onclick="editarGenero(${g.tbgeneroid})">Editar</button>
+                <button class="accion-tabla ${activo ? 'accion-desactivar' : 'accion-activar'}" onclick="toggleEstado(${g.tbgeneroid})">
                     ${activo ? 'Desactivar' : 'Activar'}
                 </button>
             </td>

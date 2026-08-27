@@ -1,6 +1,6 @@
 <?php
 
 ?>
-<footer class="container-fluid text-light text-center mt-auto" id="footerCliente" style="background-color: #db2777;">
-    <p>&copy; 2026 UnaMatch. Todos los derechos reservados.</p>
+<footer id="footerCliente">
+    <p>UnaMatch &copy; 2026 &middot; Hecho con <span class="corazoncito">&hearts;</span> para encontrar el amor verdadero.</p>
 </footer>
