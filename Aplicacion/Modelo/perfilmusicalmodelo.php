@@ -82,12 +82,12 @@ class PerfilMusicalModelo
 
     private function obtenerEventos($perfilId)
     {
-        $sql = "SELECT c.tbgeneroid, g.tbgeneronombre, s.tbreproduccionsemanaldata
+        $sql = "SELECT c.tbgeneroid, g.tbgeneronombre, r.tbreproducciontiempo, s.tbreproduccionsemanaldata
                 FROM tbreproduccion r
                 INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
                 INNER JOIN tbgenero g ON c.tbgeneroid = g.tbgeneroid
                 INNER JOIN tbreproduccionsemanal s ON r.tbreproduccionsemanalid = s.tbreproduccionsemanalid
-                WHERE r.tbperfilid = :perfilId AND r.tbreproduccionestado = 1";
+                WHERE r.tbperfilid = :perfilId";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->execute();
@@ -96,12 +96,19 @@ class PerfilMusicalModelo
         $eventos = [];
         foreach ($filas as $fila) {
             $lineas = $this->parsearData($fila['tbreproduccionsemanaldata']);
+            $numEventosCancion = count($lineas);
+            if ($numEventosCancion === 0) continue;
+
+            // Tiempo promedio real de escucha por cada reproducción registrada de esta canción
+            $tiempoPromedioPorEvento = $fila['tbreproducciontiempo'] / $numEventosCancion;
+
             foreach ($lineas as $linea) {
                 $hora = (int) date('H', strtotime($linea['fecha']));
                 $eventos[] = [
                     'dia' => $linea['dia'],
                     'franja' => $this->obtenerFranja($hora),
-                    'genero' => $fila['tbgeneronombre']
+                    'genero' => $fila['tbgeneronombre'],
+                    'peso' => $tiempoPromedioPorEvento
                 ];
             }
         }
@@ -132,14 +139,14 @@ class PerfilMusicalModelo
     }
 
     // Candidatos tipo "específico": una combinación exacta de día + franja
-    private function generarCandidatosEspecificos($probPorCombo, $soportePorCombo)
+    private function generarCandidatosEspecificos($probPorCombo, $conteoPorCombo, $pesoPorCombo)
     {
         $candidatos = [];
         foreach ($this->diasSemana as $dia) {
             foreach ($this->franjas as $franja) {
                 $clave = $dia . '|' . $franja;
-                $soporte = $soportePorCombo[$clave] ?? 0;
-                if ($soporte < 1) continue;
+                $conteo = $conteoPorCombo[$clave] ?? 0;
+                if ($conteo < 1) continue;
 
                 $probs = $probPorCombo[$clave];
                 arsort($probs);
@@ -152,8 +159,8 @@ class PerfilMusicalModelo
                     'franja' => $franja,
                     'genero' => $genero,
                     'confianza' => $confianza,
-                    'soporte' => $soporte,
-                    'texto' => "Le gusta escuchar {$genero} los {$this->diasNombreCompleto[$dia]} en {$this->franjasNombre[$franja]}"
+                    'soporte' => $pesoPorCombo[$clave] ?? 0,
+                    'texto' => "Me gusta escuchar {$genero} los {$this->diasNombreCompleto[$dia]} en {$this->franjasNombre[$franja]}"
                 ];
             }
         }
@@ -161,28 +168,29 @@ class PerfilMusicalModelo
     }
 
     // Candidatos tipo "por franja": ignora el día, salvo que un solo día concentre el patrón
-    private function generarCandidatosPorFranja($probPorCombo, $soportePorCombo, $especificos)
+    private function generarCandidatosPorFranja($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos)
     {
         $candidatos = [];
         foreach ($this->franjas as $franja) {
             $pesoTotal = 0;
             $acumulado = [];
-            $soportePorDia = [];
+            $pesoPorDia = [];
 
             foreach ($this->diasSemana as $dia) {
                 $clave = $dia . '|' . $franja;
-                $soporte = $soportePorCombo[$clave] ?? 0;
-                if ($soporte < 1) continue;
+                $conteo = $conteoPorCombo[$clave] ?? 0;
+                if ($conteo < 1) continue;
 
-                $soportePorDia[$dia] = $soporte;
-                $pesoTotal += $soporte;
+                $peso = $pesoPorCombo[$clave] ?? 0;
+                $pesoPorDia[$dia] = $peso;
+                $pesoTotal += $peso;
 
                 foreach ($probPorCombo[$clave] as $genero => $prob) {
-                    $acumulado[$genero] = ($acumulado[$genero] ?? 0) + $prob * $soporte;
+                    $acumulado[$genero] = ($acumulado[$genero] ?? 0) + $prob * $peso;
                 }
             }
 
-            if ($pesoTotal < 1) continue;
+            if ($pesoTotal <= 0) continue;
 
             foreach ($acumulado as $genero => $suma) {
                 $acumulado[$genero] = $suma / $pesoTotal;
@@ -191,13 +199,11 @@ class PerfilMusicalModelo
             $genero = array_key_first($acumulado);
             $confianza = $acumulado[$genero];
 
-            $soporteMaxDia = !empty($soportePorDia) ? max($soportePorDia) : 0;
-            $concentracion = $pesoTotal > 0 ? $soporteMaxDia / $pesoTotal : 0;
+            $pesoMaxDia = !empty($pesoPorDia) ? max($pesoPorDia) : 0;
+            $concentracion = $pesoTotal > 0 ? $pesoMaxDia / $pesoTotal : 0;
 
             if ($concentracion >= $this->umbralConcentracion) {
-                // El patrón depende de verdad de un día específico dentro de esta franja:
-                // se usa la versión específica en su lugar
-                $diaConcentrado = array_search($soporteMaxDia, $soportePorDia);
+                $diaConcentrado = array_search($pesoMaxDia, $pesoPorDia);
                 foreach ($especificos as $c) {
                     if ($c['dia'] === $diaConcentrado && $c['franja'] === $franja) {
                         $candidatos[] = $c;
@@ -214,35 +220,36 @@ class PerfilMusicalModelo
                 'genero' => $genero,
                 'confianza' => $confianza,
                 'soporte' => $pesoTotal,
-                'texto' => "Le gusta escuchar {$genero} en {$this->franjasNombre[$franja]}, sin importar el día"
+                'texto' => "Me gusta escuchar {$genero} en {$this->franjasNombre[$franja]}, sin importar el día"
             ];
         }
         return $candidatos;
     }
 
     // Candidatos tipo "por día": ignora la franja, salvo que una sola franja concentre el patrón
-    private function generarCandidatosPorDia($probPorCombo, $soportePorCombo, $especificos)
+    private function generarCandidatosPorDia($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos)
     {
         $candidatos = [];
         foreach ($this->diasSemana as $dia) {
             $pesoTotal = 0;
             $acumulado = [];
-            $soportePorFranja = [];
+            $pesoPorFranja = [];
 
             foreach ($this->franjas as $franja) {
                 $clave = $dia . '|' . $franja;
-                $soporte = $soportePorCombo[$clave] ?? 0;
-                if ($soporte < 1) continue;
+                $conteo = $conteoPorCombo[$clave] ?? 0;
+                if ($conteo < 1) continue;
 
-                $soportePorFranja[$franja] = $soporte;
-                $pesoTotal += $soporte;
+                $peso = $pesoPorCombo[$clave] ?? 0;
+                $pesoPorFranja[$franja] = $peso;
+                $pesoTotal += $peso;
 
                 foreach ($probPorCombo[$clave] as $genero => $prob) {
-                    $acumulado[$genero] = ($acumulado[$genero] ?? 0) + $prob * $soporte;
+                    $acumulado[$genero] = ($acumulado[$genero] ?? 0) + $prob * $peso;
                 }
             }
 
-            if ($pesoTotal < 1) continue;
+            if ($pesoTotal <= 0) continue;
 
             foreach ($acumulado as $genero => $suma) {
                 $acumulado[$genero] = $suma / $pesoTotal;
@@ -251,11 +258,11 @@ class PerfilMusicalModelo
             $genero = array_key_first($acumulado);
             $confianza = $acumulado[$genero];
 
-            $soporteMaxFranja = !empty($soportePorFranja) ? max($soportePorFranja) : 0;
-            $concentracion = $pesoTotal > 0 ? $soporteMaxFranja / $pesoTotal : 0;
+            $pesoMaxFranja = !empty($pesoPorFranja) ? max($pesoPorFranja) : 0;
+            $concentracion = $pesoTotal > 0 ? $pesoMaxFranja / $pesoTotal : 0;
 
             if ($concentracion >= $this->umbralConcentracion) {
-                $franjaConcentrada = array_search($soporteMaxFranja, $soportePorFranja);
+                $franjaConcentrada = array_search($pesoMaxFranja, $pesoPorFranja);
                 foreach ($especificos as $c) {
                     if ($c['dia'] === $dia && $c['franja'] === $franjaConcentrada) {
                         $candidatos[] = $c;
@@ -272,7 +279,7 @@ class PerfilMusicalModelo
                 'genero' => $genero,
                 'confianza' => $confianza,
                 'soporte' => $pesoTotal,
-                'texto' => "Le gusta escuchar {$genero} los {$this->diasNombreCompleto[$dia]}, sin importar la hora"
+                'texto' => "Me gusta escuchar {$genero} los {$this->diasNombreCompleto[$dia]}, sin importar la hora"
             ];
         }
         return $candidatos;
@@ -291,21 +298,47 @@ class PerfilMusicalModelo
             ];
         }
 
+        // Si no hay tiempo real registrado todavía (perfil muy nuevo), usamos peso uniforme
+        // para no perder toda la señal de entrenamiento
+        $sumaTiempos = array_sum(array_column($eventos, 'peso'));
+        $usarPesoUniforme = $sumaTiempos <= 0;
+        $pesoPromedio = $usarPesoUniforme ? 1 : ($sumaTiempos / $totalEventos);
+
         $samples = [];
         $labels = [];
-        $soportePorCombo = [];
+        $conteoPorCombo = [];
+        $pesoPorCombo = [];
+        $pesoPorGenero = [];
+        $pesoTotalGeneral = 0;
 
         foreach ($eventos as $evento) {
-            $samples[] = $this->vectorizar($evento['dia'], $evento['franja']);
-            $labels[] = $evento['genero'];
+            $peso = $usarPesoUniforme ? 1 : $evento['peso'];
+
+            // El tiempo real de escucha se traduce en más repeticiones de este evento durante
+            // el entrenamiento, para que la red aprenda más de lo que la persona realmente
+            // escucha (no solo lo que reprodujo más veces). Tope de 5x para evitar que una
+            // canción con tiempo muy alto desbalancee todo el entrenamiento.
+            $repeticiones = max(1, min(5, (int) round($peso / $pesoPromedio)));
+            for ($i = 0; $i < $repeticiones; $i++) {
+                $samples[] = $this->vectorizar($evento['dia'], $evento['franja']);
+                $labels[] = $evento['genero'];
+            }
 
             $clave = $evento['dia'] . '|' . $evento['franja'];
-            $soportePorCombo[$clave] = ($soportePorCombo[$clave] ?? 0) + 1;
+            $conteoPorCombo[$clave] = ($conteoPorCombo[$clave] ?? 0) + 1;
+            $pesoPorCombo[$clave] = ($pesoPorCombo[$clave] ?? 0) + $peso;
+
+            $pesoPorGenero[$evento['genero']] = ($pesoPorGenero[$evento['genero']] ?? 0) + $peso;
+            $pesoTotalGeneral += $peso;
         }
 
         $dataset = new Labeled($samples, $labels);
 
-        $holdOut = $totalEventos >= 30 ? 0.1 : 0.0;
+        $holdOut = count($samples) >= 30 ? 0.1 : 0.0;
+
+        srand(42);
+        mt_srand(42);
+
         $estimator = new MultilayerPerceptron(
             [
                 new Dense(16),
@@ -334,13 +367,12 @@ class PerfilMusicalModelo
 
         $probPorCombo = $this->evaluarGrid($estimator);
 
-        $especificos = $this->generarCandidatosEspecificos($probPorCombo, $soportePorCombo);
-        $porFranja = $this->generarCandidatosPorFranja($probPorCombo, $soportePorCombo, $especificos);
-        $porDia = $this->generarCandidatosPorDia($probPorCombo, $soportePorCombo, $especificos);
+        $especificos = $this->generarCandidatosEspecificos($probPorCombo, $conteoPorCombo, $pesoPorCombo);
+        $porFranja = $this->generarCandidatosPorFranja($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos);
+        $porDia = $this->generarCandidatosPorDia($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos);
 
         $todos = array_merge($especificos, $porFranja, $porDia);
 
-        // Deduplicar candidatos idénticos (mismo tipo + día + franja + género)
         $vistos = [];
         $unicos = [];
         foreach ($todos as $c) {
@@ -350,8 +382,10 @@ class PerfilMusicalModelo
             $unicos[] = $c;
         }
 
-        // Puntaje final: confianza ponderada por soporte (log evita que el volumen bruto domine todo)
+        $priorGeneros = $this->calcularPriorGeneros($pesoPorGenero, $pesoTotalGeneral);
+
         foreach ($unicos as &$c) {
+            $c['confianza'] = $this->ajustarConfianza($c['confianza'], $c['soporte'], $c['genero'], $priorGeneros);
             $c['score'] = $c['confianza'] * (1 + log(1 + $c['soporte']));
         }
         unset($c);
@@ -372,4 +406,23 @@ class PerfilMusicalModelo
             'resultados' => $top3
         ];
     }
+
+    // Proporción real de cada género en todo el historial del perfil, ponderada por tiempo escuchado
+    private function calcularPriorGeneros($pesoPorGenero, $pesoTotalGeneral)
+    {
+        $prior = [];
+        foreach ($pesoPorGenero as $genero => $peso) {
+            $prior[$genero] = $pesoTotalGeneral > 0 ? $peso / $pesoTotalGeneral : 0;
+        }
+        return $prior;
+    }
+
+    // Suaviza la confianza cruda del modelo hacia el promedio general del género,
+    // evitando que un combo con muy poco soporte muestre 100% de confianza por sobreajuste
+    private function ajustarConfianza($confianza, $soporte, $genero, $priorGeneros, $k = 3)
+    {
+        $prior = $priorGeneros[$genero] ?? 0;
+        return (($confianza * $soporte) + ($prior * $k)) / ($soporte + $k);
+    }
 }
+

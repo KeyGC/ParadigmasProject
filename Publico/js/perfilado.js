@@ -40,11 +40,6 @@ function generarPerfilado(idPerfil, tipo) {
                 col.innerHTML = `
                     <div class="tarjeta-panel h-100"
                          style="border-top: 4px solid ${bordes[i] || 'var(--color-dorado)'};">
-                        <span class="badge-estado activo mb-2 d-inline-block"
-                              style="background: rgba(184,137,47,0.13);
-                                     color: var(--color-dorado);">
-                            ${etiquetasTipo[r.tipo] || r.tipo}
-                        </span>
                         <h5 class="titulo-tarjeta">Resultado ${i + 1}</h5>
                         <p>${r.texto}.</p>
                         <p class="subtitulo-pagina mb-0" style="font-size:0.85rem;">

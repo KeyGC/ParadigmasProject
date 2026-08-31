@@ -19,15 +19,14 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                 <li class="nav-item">
                     <a class="nav-link <?= $vistaActual === 'cliente' ? 'activo' : '' ?>" href="index.php?vista=cliente">Inicio</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'perfil' ? 'activo' : '' ?>" href="index.php?vista=perfil">Perfil</a>
-                </li>
             </ul>
 
             <?php if ($usuarioActivo): ?>
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <li class="nav-item">
-                        <span class="usuario-pill"><?= htmlspecialchars($usuarioActivo) ?></span>
+                        <a class="usuario-pill" href="index.php?vista=miperfil" style="text-decoration:none;">
+                            <?= htmlspecialchars($usuarioActivo) ?>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-cerrar-cliente" href="index.php?vista=logout">Cerrar sesión</a>
