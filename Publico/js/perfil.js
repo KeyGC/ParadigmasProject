@@ -78,6 +78,8 @@ function pintarTabla(perfiles) {
                 <button class="accion-tabla" onclick="verAccesos(${p.tbperfilid})">Accesos</button>
                 <button class="accion-tabla" onclick="verReproducciones(${p.tbperfilid})">Reproducciones</button>
                 <button class="accion-tabla" onclick="verUbicaciones(${p.tbperfilid})">Ubicaciones</button>
+                <button class="accion-tabla" onclick="verPerfilado(${p.tbperfilid})">Perfilado</button>
+                
             </td>
         `;
         cuerpo.appendChild(fila);
@@ -180,4 +182,8 @@ function verReproducciones(id) {
 
 function verUbicaciones(id) {
     window.location.href = `index.php?vista=perfilubicaciones&id=${id}`;
+}
+
+function verPerfilado(id) {
+    window.location.href = `index.php?vista=perfilado&tipo=musical&id=${id}`;
 }

@@ -6,5 +6,23 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zephir\\Optimizers\\FunctionCall\\' => array($vendorDir . '/rubix/tensor/optimizers'),
+    'Wamania\\Snowball\\' => array($vendorDir . '/wamania/php-stemmer/src'),
+    'Tensor\\' => array($vendorDir . '/rubix/tensor/src'),
+    'Symfony\\Polyfill\\Php83\\' => array($vendorDir . '/symfony/polyfill-php83'),
+    'Symfony\\Polyfill\\Php82\\' => array($vendorDir . '/symfony/polyfill-php82'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Rubix\\ML\\' => array($vendorDir . '/rubix/ml/src'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'OkBloomer\\' => array($vendorDir . '/andrewdalpino/okbloomer/src'),
+    'Joomla\\String\\' => array($vendorDir . '/joomla/string/src'),
+    'Amp\\Sync\\' => array($vendorDir . '/amphp/sync/src'),
+    'Amp\\Serialization\\' => array($vendorDir . '/amphp/serialization/src'),
+    'Amp\\Process\\' => array($vendorDir . '/amphp/process/lib'),
+    'Amp\\Parser\\' => array($vendorDir . '/amphp/parser/src'),
+    'Amp\\Parallel\\' => array($vendorDir . '/amphp/parallel/lib'),
+    'Amp\\ByteStream\\' => array($vendorDir . '/amphp/byte-stream/lib'),
+    'Amp\\' => array($vendorDir . '/amphp/amp/lib'),
 );
