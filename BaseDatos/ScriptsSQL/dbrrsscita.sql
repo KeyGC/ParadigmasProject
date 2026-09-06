@@ -837,3 +837,37 @@ CREATE TABLE IF NOT EXISTS `tbperfilregistrossemanal` (
   PRIMARY KEY (`tbperfilregistrossemanalid`),
   UNIQUE KEY `uq_perfilregistrossemanal_perfil` (`tbperfilid`)
 );
+
+
+-- semana 7
+-- Módulo Conciertos
+
+USE `dbrrsscita`;
+
+CREATE TABLE IF NOT EXISTS `tbconcierto` (
+  `tbconciertoid` int NOT NULL AUTO_INCREMENT,
+  `tbgeneroid` int NOT NULL,
+  `tbconciertonombre` varchar(150) NOT NULL,
+  `tbconciertoartista` varchar(150) NOT NULL,
+  `tbconciertoubicacion` varchar(200) NOT NULL,
+  `tbconciertolatitud` decimal(10,8) NOT NULL,
+  `tbconciertolongitud` decimal(10,8) NOT NULL,
+  `tbconciertofecha` date NOT NULL,
+  `tbconciertohora` time NOT NULL,
+  `tbconciertoestado` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbconciertoid`),
+  FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbconciertoasistencia` (
+  `tbconciertoasistenciaid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbconciertoid` int NOT NULL,
+  `tbconciertoasistenciafechahora` datetime NOT NULL,
+  `tbconciertoasistencialatitud` decimal(10,8) NOT NULL,
+  `tbconciertoasistencialongitud` decimal(10,8) NOT NULL,
+  `tbconciertoasistenciacoincide` boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`tbconciertoasistenciaid`),
+  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
+  FOREIGN KEY (`tbconciertoid`) REFERENCES `tbconcierto`(`tbconciertoid`)
+);

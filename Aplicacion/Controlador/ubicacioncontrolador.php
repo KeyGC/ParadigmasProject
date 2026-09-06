@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilmodelo.php';
+require_once __DIR__ . '/../Modelo/conciertomodelo.php';
 require_once __DIR__ . '/../Utilidades/geolocalizacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -342,6 +343,22 @@ switch ($accion) {
             // Refresca la sesión para que el resto de vistas use la ubicación nueva
             $_SESSION['perfil']['tbubicacionid'] = (int) $nuevoUbicacionId;
 
+            // Comparación contra conciertos activos del día (no crítico: si falla,
+            // no debe afectar el guardado de ubicación que ya se confirmó arriba)
+            $coincidencias = [];
+            try {
+                $conciertoModelo = new ConciertoModelo();
+                $fechaHoraCaptura = date('Y-m-d H:i:s');
+                $coincidencias = $conciertoModelo->registrarPosibleAsistencia(
+                    $perfilId,
+                    $coordenadas['lat'],
+                    $coordenadas['lng'],
+                    $fechaHoraCaptura
+                );
+            } catch (Exception $e) {
+                error_log("registrarPosibleAsistencia: " . $e->getMessage());
+            }
+
             echo json_encode([
                 "exito" => true,
                 "guardado" => true,
@@ -352,7 +369,8 @@ switch ($accion) {
                     "provincia" => $ubicacion['provincia'],
                     "canton" => $ubicacion['canton'],
                     "distrito" => $ubicacion['distrito'],
-                    "origen" => $ubicacion['origen']
+                    "origen" => $ubicacion['origen'],
+                    "conciertosCoincidentes" => $coincidencias
                 ]
             ]);
         } catch (Exception $e) {
