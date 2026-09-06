@@ -29,8 +29,6 @@ class PerfilMusicalModelo
 
     private $minimoEventos = 8;
 
-    // Si un día (o franja) concentra esta proporción o más del total, se considera un patrón "específico"
-    // en vez de un patrón general. 0.45 = mucho más que el reparto parejo esperado (1/7 ≈ 14%, 1/4 = 25%)
     private $umbralConcentracion = 0.45;
 
     public function __construct()
@@ -99,7 +97,6 @@ class PerfilMusicalModelo
             $numEventosCancion = count($lineas);
             if ($numEventosCancion === 0) continue;
 
-            // Tiempo promedio real de escucha por cada reproducción registrada de esta canción
             $tiempoPromedioPorEvento = $fila['tbreproducciontiempo'] / $numEventosCancion;
 
             foreach ($lineas as $linea) {
@@ -115,7 +112,7 @@ class PerfilMusicalModelo
         return $eventos;
     }
 
-    // Evalúa el modelo entrenado sobre las 28 combinaciones día×franja, indexado por "dia|franja"
+    // Evalúa el modelo entrenado sobre las 28 combinaciones día×franja"
     private function evaluarGrid($estimator)
     {
         $combos = [];
@@ -138,7 +135,6 @@ class PerfilMusicalModelo
         return $probPorCombo;
     }
 
-    // Candidatos tipo "específico": una combinación exacta de día + franja
     private function generarCandidatosEspecificos($probPorCombo, $conteoPorCombo, $pesoPorCombo)
     {
         $candidatos = [];
@@ -167,7 +163,6 @@ class PerfilMusicalModelo
         return $candidatos;
     }
 
-    // Candidatos tipo "por franja": ignora el día, salvo que un solo día concentre el patrón
     private function generarCandidatosPorFranja($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos)
     {
         $candidatos = [];
@@ -226,7 +221,6 @@ class PerfilMusicalModelo
         return $candidatos;
     }
 
-    // Candidatos tipo "por día": ignora la franja, salvo que una sola franja concentre el patrón
     private function generarCandidatosPorDia($probPorCombo, $conteoPorCombo, $pesoPorCombo, $especificos)
     {
         $candidatos = [];
@@ -298,8 +292,6 @@ class PerfilMusicalModelo
             ];
         }
 
-        // Si no hay tiempo real registrado todavía (perfil muy nuevo), usamos peso uniforme
-        // para no perder toda la señal de entrenamiento
         $sumaTiempos = array_sum(array_column($eventos, 'peso'));
         $usarPesoUniforme = $sumaTiempos <= 0;
         $pesoPromedio = $usarPesoUniforme ? 1 : ($sumaTiempos / $totalEventos);
@@ -314,10 +306,6 @@ class PerfilMusicalModelo
         foreach ($eventos as $evento) {
             $peso = $usarPesoUniforme ? 1 : $evento['peso'];
 
-            // El tiempo real de escucha se traduce en más repeticiones de este evento durante
-            // el entrenamiento, para que la red aprenda más de lo que la persona realmente
-            // escucha (no solo lo que reprodujo más veces). Tope de 5x para evitar que una
-            // canción con tiempo muy alto desbalancee todo el entrenamiento.
             $repeticiones = max(1, min(5, (int) round($peso / $pesoPromedio)));
             for ($i = 0; $i < $repeticiones; $i++) {
                 $samples[] = $this->vectorizar($evento['dia'], $evento['franja']);
@@ -407,7 +395,6 @@ class PerfilMusicalModelo
         ];
     }
 
-    // Proporción real de cada género en todo el historial del perfil, ponderada por tiempo escuchado
     private function calcularPriorGeneros($pesoPorGenero, $pesoTotalGeneral)
     {
         $prior = [];
@@ -417,8 +404,6 @@ class PerfilMusicalModelo
         return $prior;
     }
 
-    // Suaviza la confianza cruda del modelo hacia el promedio general del género,
-    // evitando que un combo con muy poco soporte muestre 100% de confianza por sobreajuste
     private function ajustarConfianza($confianza, $soporte, $genero, $priorGeneros, $k = 3)
     {
         $prior = $priorGeneros[$genero] ?? 0;
