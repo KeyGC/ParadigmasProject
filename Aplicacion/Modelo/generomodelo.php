@@ -11,9 +11,9 @@ class GeneroModelo
         $this->conexion = Basedatos::conectar();
     }
 
-    private function mapearFila($fila)
+   private function mapearFila($fila)
     {
-        return (new Genero($fila['tbgeneroid'], $fila['tbgeneronombre']))->toArray();
+        return (new Genero($fila['tbgeneroid'], $fila['tbgeneronombre'], $fila['tbgeneroestado']))->toArray();
     }
 
     public function getList()
