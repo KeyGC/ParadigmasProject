@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
+require_once __DIR__ . '/../Utilidades/feriados.php';
+require_once __DIR__ . '/perfilaccesomodelo.php';
 
 use Rubix\ML\Datasets\Labeled;
 use Rubix\ML\Datasets\Unlabeled;
@@ -27,6 +29,10 @@ class PerfilMusicalModelo
         'Tarde' => 'la tarde', 'Noche' => 'la noche'
     ];
 
+    private $franjasHoliday = ['madrugada' => 2, 'manana' => 8, 'tarde' => 14, 'noche' => 20];
+
+    private $franjasDefault = ['madrugada' => 0, 'manana' => 6, 'tarde' => 12, 'noche' => 18];
+
     private $minimoEventos = 8;
 
     private $umbralConcentracion = 0.45;
@@ -34,14 +40,6 @@ class PerfilMusicalModelo
     public function __construct()
     {
         $this->conexion = Basedatos::conectar();
-    }
-
-    private function obtenerFranja($hora)
-    {
-        if ($hora >= 0 && $hora <= 5) return 'Madrugada';
-        if ($hora >= 6 && $hora <= 11) return 'Manana';
-        if ($hora >= 12 && $hora <= 17) return 'Tarde';
-        return 'Noche';
     }
 
     private function parsearData($data)
@@ -80,12 +78,17 @@ class PerfilMusicalModelo
 
     private function obtenerEventos($perfilId)
     {
-        $sql = "SELECT c.tbgeneroid, g.tbgeneronombre, r.tbreproducciontiempo, s.tbreproduccionsemanaldata
+        $franjasPersonalizadas = $this->calcularFranjasPersonalizadas($perfilId);
+        $this->guardarFranjas($perfilId, $franjasPersonalizadas);
+
+        refrescarFeriados((int) date('Y'));
+
+        $sql = "SELECT c.tbgeneroid, g.tbgeneronombre, s.tbreproduccionsemanaldata, r.tbreproducciontiempo
                 FROM tbreproduccion r
                 INNER JOIN tbcancion c ON r.tbcancionid = c.tbcancionid
                 INNER JOIN tbgenero g ON c.tbgeneroid = g.tbgeneroid
                 INNER JOIN tbreproduccionsemanal s ON r.tbreproduccionsemanalid = s.tbreproduccionsemanalid
-                WHERE r.tbperfilid = :perfilId";
+                WHERE r.tbperfilid = :perfilId AND r.tbreproduccionestado = 1";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
         $stmt->execute();
@@ -94,25 +97,25 @@ class PerfilMusicalModelo
         $eventos = [];
         foreach ($filas as $fila) {
             $lineas = $this->parsearData($fila['tbreproduccionsemanaldata']);
-            $numEventosCancion = count($lineas);
-            if ($numEventosCancion === 0) continue;
+            $contador = count($lineas);
 
-            $tiempoPromedioPorEvento = $fila['tbreproducciontiempo'] / $numEventosCancion;
+            $pesoPorEvento = $contador > 0 ? ($fila['tbreproducciontiempo'] / $contador) : 1;
 
             foreach ($lineas as $linea) {
                 $hora = (int) date('H', strtotime($linea['fecha']));
+                $franjasAUsar = esFeriado($linea['fecha']) ? $this->franjasHoliday : $franjasPersonalizadas;
+
                 $eventos[] = [
                     'dia' => $linea['dia'],
-                    'franja' => $this->obtenerFranja($hora),
+                    'franja' => $this->clasificarHora($hora, $franjasAUsar),
                     'genero' => $fila['tbgeneronombre'],
-                    'peso' => $tiempoPromedioPorEvento
+                    'peso' => $pesoPorEvento > 0 ? $pesoPorEvento : 1
                 ];
             }
         }
         return $eventos;
     }
 
-    // Evalúa el modelo entrenado sobre las 28 combinaciones día×franja"
     private function evaluarGrid($estimator)
     {
         $combos = [];
@@ -408,6 +411,98 @@ class PerfilMusicalModelo
     {
         $prior = $priorGeneros[$genero] ?? 0;
         return (($confianza * $soporte) + ($prior * $k)) / ($soporte + $k);
+    }
+
+    private function calcularFranjasPersonalizadas($perfilId)
+    {
+        $accesoModelo = new PerfilAccesoModelo();
+        $fechas = $accesoModelo->getFechasAcceso($perfilId);
+
+        if (count($fechas) < 6) {
+            return $this->franjasDefault; 
+        }
+
+        $timestamps = array_map('strtotime', $fechas);
+        sort($timestamps);
+
+        $sueños = []; 
+        for ($i = 0; $i < count($timestamps) - 1; $i++) {
+            $gapHoras = ($timestamps[$i + 1] - $timestamps[$i]) / 3600;
+
+            if ($gapHoras >= 6 && $gapHoras <= 11) {
+                $sueños[] = [
+                    'inicio' => (int) date('G', $timestamps[$i]),
+                    'fin' => (int) date('G', $timestamps[$i + 1])
+                ];
+            }
+        }
+
+        if (count($sueños) < 3) {
+            return $this->franjasDefault; 
+        }
+
+        $promedioInicio = round(array_sum(array_column($sueños, 'inicio')) / count($sueños));
+        $promedioFin = round(array_sum(array_column($sueños, 'fin')) / count($sueños));
+
+        $despertar = $promedioFin % 24;
+        $dormir = $promedioInicio % 24;
+
+        return [
+            'madrugada' => $dormir,
+            'manana' => $despertar,
+            'tarde' => ($despertar + 6) % 24,
+            'noche' => ($despertar + 12) % 24
+        ];
+    }
+
+    private function guardarFranjas($perfilId, $franjas)
+    {
+        $ahora = date('Y-m-d H:i:s');
+        $sql = "INSERT INTO tbperfilfranjas
+                (tbperfilid, tbperfilfranjasmadrugadainicio, tbperfilfranjasmananainicio,
+                tbperfilfranjastardeinicio, tbperfilfranjasnocheinicio, tbperfilfranjasfechacalculo)
+                VALUES (:perfilId, :madrugada, :manana, :tarde, :noche, :ahora)
+                ON DUPLICATE KEY UPDATE
+                    tbperfilfranjasmadrugadainicio = :madrugada2,
+                    tbperfilfranjasmananainicio = :manana2,
+                    tbperfilfranjastardeinicio = :tarde2,
+                    tbperfilfranjasnocheinicio = :noche2,
+                    tbperfilfranjasfechacalculo = :ahora2";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->bindValue(':madrugada', $franjas['madrugada'], PDO::PARAM_INT);
+        $stmt->bindValue(':manana', $franjas['manana'], PDO::PARAM_INT);
+        $stmt->bindValue(':tarde', $franjas['tarde'], PDO::PARAM_INT);
+        $stmt->bindValue(':noche', $franjas['noche'], PDO::PARAM_INT);
+        $stmt->bindValue(':ahora', $ahora);
+        $stmt->bindValue(':madrugada2', $franjas['madrugada'], PDO::PARAM_INT);
+        $stmt->bindValue(':manana2', $franjas['manana'], PDO::PARAM_INT);
+        $stmt->bindValue(':tarde2', $franjas['tarde'], PDO::PARAM_INT);
+        $stmt->bindValue(':noche2', $franjas['noche'], PDO::PARAM_INT);
+        $stmt->bindValue(':ahora2', $ahora);
+        $stmt->execute();
+    }
+
+    private function clasificarHora($hora, $franjas)
+    {
+        $orden = [
+            'Madrugada' => $franjas['madrugada'],
+            'Manana' => $franjas['manana'],
+            'Tarde' => $franjas['tarde'],
+            'Noche' => $franjas['noche']
+        ];
+
+        asort($orden);
+        $nombres = array_keys($orden);
+        $inicios = array_values($orden);
+
+        $resultado = end($nombres); 
+        for ($i = 0; $i < count($inicios); $i++) {
+            if ($hora >= $inicios[$i]) {
+                $resultado = $nombres[$i];
+            }
+        }
+        return $resultado;
     }
 }
 

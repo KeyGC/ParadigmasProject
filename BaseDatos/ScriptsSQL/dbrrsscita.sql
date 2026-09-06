@@ -842,32 +842,85 @@ CREATE TABLE IF NOT EXISTS `tbperfilregistrossemanal` (
 -- semana 7
 -- Módulo Conciertos
 
-    USE `dbrrsscita`;
+USE `dbrrsscita`;
 
-    CREATE TABLE IF NOT EXISTS `tbconcierto` (
-      `tbconciertoid` int NOT NULL AUTO_INCREMENT,
-      `tbgeneroid` int NOT NULL,
-      `tbconciertonombre` varchar(150) NOT NULL,
-      `tbconciertoartista` varchar(150) NOT NULL,
-      `tbconciertoubicacion` varchar(200) NOT NULL,
-      `tbconciertolatitud` decimal(10,8) NOT NULL,
-      `tbconciertolongitud` decimal(10,8) NOT NULL,
-      `tbconciertofecha` date NOT NULL,
-      `tbconciertohora` time NOT NULL,
-      `tbconciertoestado` boolean NOT NULL DEFAULT TRUE,
-      PRIMARY KEY (`tbconciertoid`),
-      FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
-    );
+CREATE TABLE IF NOT EXISTS `tbconcierto` (
+  `tbconciertoid` int NOT NULL AUTO_INCREMENT,
+  `tbgeneroid` int NOT NULL,
+  `tbconciertonombre` varchar(150) NOT NULL,
+  `tbconciertoartista` varchar(150) NOT NULL,
+  `tbconciertoubicacion` varchar(200) NOT NULL,
+  `tbconciertolatitud` decimal(10,8) NOT NULL,
+  `tbconciertolongitud` decimal(10,8) NOT NULL,
+  `tbconciertofecha` date NOT NULL,
+  `tbconciertohora` time NOT NULL,
+  `tbconciertoestado` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbconciertoid`),
+  FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
+);
 
-      CREATE TABLE IF NOT EXISTS `tbconciertoasistencia` (
-      `tbconciertoasistenciaid` int NOT NULL AUTO_INCREMENT,
-      `tbperfilid` int NOT NULL,
-      `tbconciertoid` int NOT NULL,
-      `tbconciertoasistenciafechahora` datetime NOT NULL,
-      `tbconciertoasistencialatitud` decimal(10,8) NOT NULL,
-      `tbconciertoasistencialongitud` decimal(10,8) NOT NULL,
-      `tbconciertoasistenciacoincide` boolean NOT NULL DEFAULT FALSE,
-      PRIMARY KEY (`tbconciertoasistenciaid`),
-      FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
-      FOREIGN KEY (`tbconciertoid`) REFERENCES `tbconcierto`(`tbconciertoid`)
-    );
+INSERT INTO tbconcierto
+(tbgeneroid, tbconciertonombre, tbconciertoartista, tbconciertoubicacion,
+tbconciertolatitud, tbconciertolongitud, tbconciertofecha, tbconciertohora)
+VALUES
+(3, 'Wisin en Costa Rica', 'Wisin', 'Estadio Nacional, San José',
+9.93500000, -84.10670000, '2026-09-12', '19:00:00'),
+
+(3, 'Arcángel - La 8va Maravilla', 'Arcángel', 'Parque Viva, Alajuela',
+10.00040000, -84.25800000, '2026-09-26', '19:00:00'),
+
+(2, 'Noche de Rock', 'Rock Fest CR', 'Estadio Nacional, San José',
+9.93500000, -84.10670000, '2026-10-03', '18:00:00'),
+
+(4, 'Festival de Salsa', 'Salsa Costa Rica', 'Centro de Eventos Pedregal, Heredia',
+9.99810000, -84.16150000, '2026-10-10', '19:00:00'),
+
+(5, 'Electronic Night', 'DJ Martin Garrix', 'Parque Viva, Alajuela',
+10.00040000, -84.25800000, '2026-10-17', '20:00:00'),
+
+(14, 'Noche de Bachata', 'Romeo Santos', 'Estadio Nacional, San José',
+9.93500000, -84.10670000, '2026-10-24', '20:00:00'),
+
+(1, 'Pop Night Costa Rica', 'Greeicy', 'Estadio Nacional, San José',
+9.93500000, -84.10670000, '2026-10-31', '20:00:00'),
+
+(7, 'Hip Hop Fest', 'Trueno', 'Centro de Eventos Pedregal, Heredia',
+9.99810000, -84.16150000, '2026-11-07', '19:00:00');
+
+CREATE TABLE IF NOT EXISTS `tbconciertoasistencia` (
+  `tbconciertoasistenciaid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbconciertoid` int NOT NULL,
+  `tbconciertoasistenciafechahora` datetime NOT NULL,
+  `tbconciertoasistencialatitud` decimal(10,8) NOT NULL,
+  `tbconciertoasistencialongitud` decimal(10,8) NOT NULL,
+  `tbconciertoasistenciacoincide` boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`tbconciertoasistenciaid`),
+  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
+  FOREIGN KEY (`tbconciertoid`) REFERENCES `tbconcierto`(`tbconciertoid`)
+);
+
+--FRANJAS HORARIAS PERSONALIZADAS
+
+-- Guarda las franjas personalizadas calculadas para cada perfil (se sobreescribe cada vez que se genera el perfilado)
+CREATE TABLE IF NOT EXISTS `tbperfilfranjas` (
+  `tbperfilfranjasid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbperfilfranjasmadrugadainicio` TINYINT NOT NULL DEFAULT 0,
+  `tbperfilfranjasmananainicio` TINYINT NOT NULL DEFAULT 6,
+  `tbperfilfranjastardeinicio` TINYINT NOT NULL DEFAULT 12,
+  `tbperfilfranjasnocheinicio` TINYINT NOT NULL DEFAULT 18,
+  `tbperfilfranjasfechacalculo` datetime NOT NULL,
+  PRIMARY KEY (`tbperfilfranjasid`),
+  UNIQUE KEY `uq_perfilfranjas_perfil` (`tbperfilid`)
+);
+
+-- Caché de feriados de Costa Rica (se refresca una vez por año desde el web service)
+CREATE TABLE IF NOT EXISTS `tbferiados` (
+  `tbferiadosid` int NOT NULL AUTO_INCREMENT,
+  `tbferiadosfecha` date NOT NULL,
+  `tbferiadosnombre` varchar(150) NOT NULL,
+  `tbferiadosanio` int NOT NULL,
+  PRIMARY KEY (`tbferiadosid`),
+  UNIQUE KEY `uq_feriados_fecha` (`tbferiadosfecha`)
+);

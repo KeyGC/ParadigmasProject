@@ -166,4 +166,17 @@ class PerfilAccesoModelo
         $stmt->bindValue(':idPerfil', $idPerfil, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getFechasAcceso($idPerfil)
+    {
+        $registro = $this->getByPerfilId($idPerfil);
+        if (!$registro) {
+            return [];
+        }
+
+        $eventos = $this->parsearData($registro['tbperfilaccesosemanaldata']);
+        $fechas = array_map(fn($e) => $e['fecha'], $eventos);
+        sort($fechas);
+        return $fechas;
+    }
 }
