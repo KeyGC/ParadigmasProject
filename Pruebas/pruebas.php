@@ -1,10 +1,13 @@
 <?php
 // COMPILAR: php pruebas.php
 
-require_once __DIR__ . '/Configuracion/Configuracion.php';
-require_once APP_PATH . '/Modelo/PerfilModelo.php';
-require_once APP_PATH . '/Modelo/UbicacionModelo.php';
-require_once APP_PATH . '/Modelo/Perfil.php';
+require_once __DIR__ . '/../Configuracion/configuracion.php';
+require_once APP_PATH . '/Modelo/perfilmodelo.php';
+require_once APP_PATH . '/Modelo/ubicacionmodelo.php';
+require_once APP_PATH . '/Modelo/perfil.php';
+require_once APP_PATH . '/Utilidades/qdrantcliente.php';
+require_once APP_PATH . '/Modelo/perfilmusicalmodelo.php';
+require_once APP_PATH . '/Modelo/reproduccionmodelo.php';
 
 header('Content-Type: text/plain; charset=utf-8');
 
@@ -36,6 +39,190 @@ function assertEquals($esperado, $actual, $mensaje)
 function seccion($titulo)
 {
     echo "\n=== $titulo ===\n";
+}
+
+
+
+class QdrantClienteFalso
+{
+    public $punto = null;
+    public $contadorGuardar = 0;
+    public $contadorCrearColeccion = 0;
+
+    public function crearColeccionSiNoExiste($tamanioVector)
+    {
+        $this->contadorCrearColeccion++;
+        return true;
+    }
+
+    public function guardarVector($tbperfilid, array $vector, $hashdatos, array $payloadExtra = [])
+    {
+        $this->contadorGuardar++;
+        return true;
+    }
+
+    public function obtenerPunto($tbperfilid)
+    {
+        if ($this->punto === null || (int) $tbperfilid !== (int) ($this->punto['id'] ?? null)) {
+            return null;
+        }
+
+        return $this->punto;
+    }
+
+    public function buscarSimilares($vector, $limite = 5)
+    {
+        return [];
+    }
+}
+
+class PerfilMusicalModeloPrueba extends PerfilMusicalModelo
+{
+    public $qdrantPrueba;
+
+    protected function crearQdrantCliente()
+    {
+        return $this->qdrantPrueba;
+    }
+
+    public function calcularHashDatosPublico($perfilId)
+    {
+        return $this->calcularHashDatos($perfilId);
+    }
+}
+
+
+
+function probarCalcularHashDatos($perfilModelo)
+{
+    seccion('PerfilMusicalModelo::calcularHashDatos');
+
+    $conexion = Basedatos::conectar();
+
+    $stmtC = $conexion->prepare("SELECT tbcancionid FROM tbcancion WHERE tbcancionactivo = 1 ORDER BY tbcancionid LIMIT 1");
+    $stmtC->execute();
+    $cancionId = (int) $stmtC->fetchColumn();
+
+    $stmtU = $conexion->prepare("SELECT tbubicacionid FROM tbubicacion ORDER BY tbubicacionid LIMIT 1");
+    $stmtU->execute();
+    $ubicacionId = (int) $stmtU->fetchColumn();
+
+    $sufijo = substr(bin2hex(random_bytes(4)), 0, 6);
+    $perfil = new Perfil(null, "hash_{$sufijo}", 'bcdf1234', "hash_{$sufijo}@test.com", 0, $ubicacionId, 'cliente', true);
+    $perfilId = $perfilModelo->insert($perfil);
+
+    assertTrue($perfilId !== false && $perfilId > 0, 'Precondición: se crea un perfil de prueba');
+
+    $reproduccionModelo = new ReproduccionModelo();
+    $reproduccionModelo->acumularTiempo($perfilId, $cancionId, 10);
+
+    $modelo = new PerfilMusicalModeloPrueba();
+
+    $h1 = $modelo->calcularHashDatosPublico($perfilId);
+    assertTrue(is_string($h1) && strlen($h1) === 64, 'calcularHashDatos() devuelve un sha256 (64 caracteres hex)');
+    assertEquals($h1, $modelo->calcularHashDatosPublico($perfilId), 'calcularHashDatos() es determinista: mismos datos reproducen el mismo hash');
+
+    $reproduccionModelo->acumularTiempo($perfilId, $cancionId, 5);
+    $h2 = $modelo->calcularHashDatosPublico($perfilId);
+    assertTrue($h1 !== $h2, 'calcularHashDatos() cambia el hash al modificar tbreproducciontiempo');
+
+    $reproduccionModelo->incrementarContador($perfilId, $cancionId);
+    $h3 = $modelo->calcularHashDatosPublico($perfilId);
+    assertTrue($h3 !== $h1 && $h3 !== $h2, 'calcularHashDatos() cambia el hash al cambiar la data semanal');
+
+    $stmtSem = $conexion->prepare("SELECT tbreproduccionsemanalid FROM tbreproduccion WHERE tbperfilid = :perfilId");
+    $stmtSem->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+    $stmtSem->execute();
+    $idsSemanal = $stmtSem->fetchAll(PDO::FETCH_COLUMN);
+
+    $reproduccionModelo->deleteByPerfilId($perfilId);
+
+    foreach ($idsSemanal as $idSemanal) {
+        $stmtDel = $conexion->prepare("DELETE FROM tbreproduccionsemanal WHERE tbreproduccionsemanalid = :id");
+        $stmtDel->bindValue(':id', (int) $idSemanal, PDO::PARAM_INT);
+        $stmtDel->execute();
+    }
+
+    $perfilModelo->delete($perfilId);
+
+    echo "  Limpieza: reproducciones y perfil de prueba (id {$perfilId}) eliminados.\n";
+}
+
+function probarGenerarPerfiladoCache()
+{
+    seccion('PerfilMusicalModelo::generarPerfilado (hit de caché en Qdrant)');
+
+    $conexion = Basedatos::conectar();
+
+    $stmtP = $conexion->prepare("SELECT tbperfilid FROM tbperfil WHERE tbperfilactivo = 1 ORDER BY tbperfilid LIMIT 1");
+    $stmtP->execute();
+    $perfilId = (int) $stmtP->fetchColumn();
+
+    assertTrue($perfilId > 0, 'Precondición: existe al menos un perfil activo en la BD');
+
+    $resultadosGuardados = [
+        [
+            'tipo' => 'especifico',
+            'dia' => 'Lun',
+            'franja' => 'Noche',
+            'genero' => 'Pop',
+            'confianza' => 92.5,
+            'soporte' => 10,
+            'texto' => 'Me gusta escuchar Pop los lunes en la noche'
+        ]
+    ];
+
+    $modelo = new PerfilMusicalModeloPrueba();
+    $hash = $modelo->calcularHashDatosPublico($perfilId);
+
+    $falso = new QdrantClienteFalso();
+    $falso->punto = [
+        'id' => $perfilId,
+        'vector' => [0.9, 0.1, 0.0],
+        'payload' => [
+            'hashdatos' => $hash,
+            'totalEventos' => 12,
+            'resultados' => $resultadosGuardados
+        ]
+    ];
+    $modelo->qdrantPrueba = $falso;
+
+    $res = $modelo->generarPerfilado($perfilId);
+
+    assertTrue(($res['exito'] ?? false) === true, 'generarPerfilado() con hash coincidente responde exito = true');
+    assertTrue(($res['desdeCache'] ?? false) === true, 'generarPerfilado() entrega desdeCache = true sin reentrenar');
+    assertEquals(12, ($res['totalEventos'] ?? null), 'generarPerfilado() reusa el totalEventos guardado en Qdrant');
+    assertEquals(count($resultadosGuardados), count($res['resultados'] ?? []), 'generarPerfilado() devuelve los resultados guardados en Qdrant');
+    assertEquals(0, $falso->contadorGuardar, 'generarPerfilado() no volvió a entrenar (guardarVector no fue llamado)');
+    assertEquals(0, $falso->contadorCrearColeccion, 'generarPerfilado() no volvió a crear la colección');
+}
+
+function probarQdrantClienteApagado()
+{
+    seccion('QdrantCliente con servicio apagado');
+
+    $archivoLog = tempnam(sys_get_temp_dir(), 'qdrant_prueba_');
+    ini_set('error_log', $archivoLog);
+
+    $cliente = new QdrantCliente('127.0.0.1', 1);
+
+    $guardado = $cliente->guardarVector(999, [1.0, 0.0], 'hashdeprueba');
+    assertTrue($guardado === false, 'guardarVector() devuelve false sin lanzar excepción cuando Qdrant no responde');
+
+    $punto = $cliente->obtenerPunto(999);
+    assertTrue($punto === null, 'obtenerPunto() devuelve null sin lanzar excepción cuando Qdrant no responde');
+
+    $similares = $cliente->buscarSimilares([1.0, 0.0]);
+    assertTrue($similares === null, 'buscarSimilares() devuelve null sin lanzar excepción cuando Qdrant no responde');
+
+    $coleccion = $cliente->crearColeccionSiNoExiste(2);
+    assertTrue($coleccion === false, 'crearColeccionSiNoExiste() devuelve false sin lanzar excepción cuando Qdrant no responde');
+
+    $contenidoLog = file_get_contents($archivoLog);
+    assertTrue(strpos($contenidoLog, 'Qdrant') !== false, 'el error queda registrado vía error_log()');
+
+    ini_restore('error_log');
+    @unlink($archivoLog);
 }
 
 
@@ -304,6 +491,10 @@ try {
     } else {
         echo "\n[AVISO] No se pudo crear una ubicación de prueba (revisa que existan provincias/cantones/distritos en la BD). Se omiten las pruebas de PerfilModelo.\n";
     }
+
+    probarCalcularHashDatos($perfilModelo);
+    probarGenerarPerfiladoCache();
+    probarQdrantClienteApagado();
 
 } catch (Throwable $e) {
     $totalFallos++;

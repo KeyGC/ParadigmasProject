@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/../Utilidades/feriados.php';
+require_once __DIR__ . '/../Utilidades/qdrantcliente.php';
 require_once __DIR__ . '/perfilaccesomodelo.php';
 
 use Rubix\ML\Datasets\Labeled;
@@ -284,6 +285,21 @@ class PerfilMusicalModelo
 
     public function generarPerfilado($perfilId)
     {
+        $qdrant = $this->crearQdrantCliente();
+        $hashdatos = $this->calcularHashDatos($perfilId);
+
+        $punto = $qdrant->obtenerPunto((int) $perfilId);
+        if ($punto !== null
+            && isset($punto['payload']['hashdatos'], $punto['payload']['resultados'])
+            && $punto['payload']['hashdatos'] === $hashdatos) {
+            return [
+                'exito' => true,
+                'desdeCache' => true,
+                'totalEventos' => $punto['payload']['totalEventos'] ?? 0,
+                'resultados' => $punto['payload']['resultados']
+            ];
+        }
+
         $eventos = $this->obtenerEventos($perfilId);
         $totalEventos = count($eventos);
 
@@ -391,11 +407,79 @@ class PerfilMusicalModelo
         }
         unset($r);
 
+        $vector = $this->construirVectorPerfil($probPorCombo, $pesoPorCombo);
+
+        if (!$qdrant->crearColeccionSiNoExiste(count($vector))) {
+            error_log("Qdrant: no se pudo garantizar la colección perfiles");
+        }
+
+        $guardado = $qdrant->guardarVector((int) $perfilId, $vector, $hashdatos, [
+            'resultados' => $top3,
+            'totalEventos' => $totalEventos
+        ]);
+
+        if (!$guardado) {
+            error_log("Qdrant: no se pudo guardar el vector del perfil {$perfilId}");
+        }
+
         return [
             'exito' => true,
             'totalEventos' => $totalEventos,
             'resultados' => $top3
         ];
+    }
+
+    protected function crearQdrantCliente()
+    {
+        return new QdrantCliente();
+    }
+
+    protected function calcularHashDatos($perfilId)
+    {
+        $sql = "SELECT r.tbcancionid, r.tbreproducciontiempo, r.tbreproduccionestado,
+                       s.tbreproduccionsemanaldata
+                FROM tbreproduccion r
+                INNER JOIN tbreproduccionsemanal s ON r.tbreproduccionsemanalid = s.tbreproduccionsemanalid
+                WHERE r.tbperfilid = :perfilId
+                ORDER BY r.tbreproduccionid";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':perfilId', $perfilId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return hash('sha256', serialize($stmt->fetchAll()));
+    }
+
+    private function construirVectorPerfil(array $probPorCombo, array $pesoPorCombo)
+    {
+        $sql = "SELECT tbgeneroid, tbgeneronombre FROM tbgenero WHERE tbgeneroestado = 1 ORDER BY tbgeneroid";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $generosActivos = $stmt->fetchAll();
+
+        $indice = [];
+        $vector = [];
+        foreach ($generosActivos as $i => $genero) {
+            $indice[$genero['tbgeneronombre']] = (int) $i;
+            $vector[$i] = 0.0;
+        }
+
+        foreach ($probPorCombo as $clave => $probs) {
+            $pesoCombo = $pesoPorCombo[$clave] ?? 1.0;
+            foreach ($probs as $genero => $probabilidad) {
+                if (isset($indice[$genero])) {
+                    $vector[$indice[$genero]] += $probabilidad * $pesoCombo;
+                }
+            }
+        }
+
+        $norma = sqrt(array_sum(array_map(fn($v) => $v * $v, $vector)));
+        if ($norma > 0) {
+            $vector = array_map(fn($v) => $v / $norma, $vector);
+        } else {
+            $vector[0] = 1.0;
+        }
+
+        return array_values($vector);
     }
 
     private function calcularPriorGeneros($pesoPorGenero, $pesoTotalGeneral)

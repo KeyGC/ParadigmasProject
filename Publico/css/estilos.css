@@ -587,6 +587,50 @@ body {
     color: var(--color-texto-suave);
 }
 
+.grid-generos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.tarjeta-genero {
+    position: relative;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--acento) 16%, #fff) 0%, #fff 55%);
+    border: 1px solid var(--color-borde);
+    border-left: 6px solid var(--acento);
+    border-radius: var(--radio-tarjeta);
+    padding: 1.6rem 1.2rem 1.3rem;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--sombra-tarjeta);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tarjeta-genero:hover {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--acento) 45%, transparent), var(--sombra-flotante);
+}
+
+.tarjeta-genero .icono-genero {
+    font-size: 2.8rem;
+    line-height: 1;
+    margin-bottom: 0.7rem;
+    filter: drop-shadow(0 3px 6px color-mix(in srgb, var(--acento) 35%, transparent));
+}
+
+.tarjeta-genero .nombre-genero {
+    font-family: var(--fuente-titulo);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-texto);
+    margin-bottom: 0.25rem;
+}
+
+.tarjeta-genero .conteo-canciones {
+    font-size: 0.82rem;
+    color: var(--color-texto-suave);
+}
+
 /* ---------- Perfil cliente ---------- */
 
 #contenedorPPerfil {

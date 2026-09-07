@@ -119,6 +119,29 @@ switch ($accion) {
         }
         break;
 
+    case 'getGenerosConConteo':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
+            break;
+        }
+        $generos = $cancionModelo->getGenerosConConteo();
+        echo json_encode(["exito" => true, "data" => $generos]);
+        break;
+
+    case 'getPlaylistPorGenero':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
+            break;
+        }
+        $tbgeneroid = $_REQUEST['tbgeneroid'] ?? null;
+        if (!$tbgeneroid) {
+            echo json_encode(["exito" => false, "mensaje" => "Género no proporcionado"]);
+            break;
+        }
+        $canciones = $cancionModelo->getCancionesPorGenero((int) $tbgeneroid);
+        echo json_encode(["exito" => true, "data" => $canciones]);
+        break;
+
     case 'getGenerosDisponibles':
         exigirRol(['admin']);
         $generoModelo = new GeneroModelo();

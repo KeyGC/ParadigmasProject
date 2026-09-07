@@ -114,6 +114,15 @@ class PerfilModelo
         return $stmt->execute();
     }
 
+    public function delete($id)
+    {
+        $sql = "DELETE FROM tbperfil WHERE tbperfilid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     public function setUbicacion($perfilId, $ubicacionId)
     {
         $sql = "UPDATE tbperfil SET tbubicacionid = :ubicacionId WHERE tbperfilid = :perfilId";
@@ -134,5 +143,37 @@ class PerfilModelo
         $fila = $stmt->fetch();
 
         return $fila ? $this->mapearFila($fila) : null;
+    }
+
+    public function getCoincidencias(array $ids, $excluirId)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+
+        $marcadores = [];
+        foreach ($ids as $i => $id) {
+            $marcadores[] = ':id' . $i;
+        }
+
+        $sql = "SELECT p.tbperfilid, p.tbperfilnombre, p.tbperfilcorreo, p.tbperfilrol,
+                       u.tbubicacionprovincia, u.tbubicacioncanton, u.tbubicaciondistrito,
+                       u.tbubicacionlatitud, u.tbubicacionlongitud
+                FROM tbperfil p
+                LEFT JOIN tbubicacion u ON p.tbubicacionid = u.tbubicacionid
+                WHERE p.tbperfilactivo = TRUE
+                  AND p.tbperfilid IN (" . implode(',', $marcadores) . ")
+                  AND p.tbperfilid <> :excluirId
+                ORDER BY p.tbperfilnombre";
+        $stmt = $this->conexion->prepare($sql);
+        foreach ($ids as $i => $id) {
+            $stmt->bindValue(':id' . $i, $id, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

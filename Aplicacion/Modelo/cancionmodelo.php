@@ -121,6 +121,25 @@ class CancionModelo
         return $stmt->execute();
     }
 
+    public function getGenerosConConteo()
+    {
+        $sql = "SELECT g.tbgeneroid, g.tbgeneronombre, COUNT(c.tbcancionid) AS total
+                FROM tbgenero g
+                INNER JOIN tbcancion c ON c.tbgeneroid = g.tbgeneroid
+                WHERE g.tbgeneroestado = 1 AND c.tbcancionactivo = 1
+                GROUP BY g.tbgeneroid, g.tbgeneronombre
+                ORDER BY g.tbgeneronombre ASC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCancionesPorGenero($tbgeneroid)
+    {
+        return $this->getPorGenero($tbgeneroid);
+    }
+
     public function toggleEstado($id)
     {
         $sql = "UPDATE tbcancion SET tbcancionactivo = NOT tbcancionactivo WHERE tbcancionid = :id";

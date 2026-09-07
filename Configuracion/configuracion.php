@@ -28,5 +28,8 @@ ini_set('display_errors', 1);
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/Aplicacion');
 
+define('QDRANT_HOST', 'localhost');
+define('QDRANT_PORT', 6333);
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';

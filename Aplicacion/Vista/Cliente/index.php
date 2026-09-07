@@ -31,11 +31,19 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? 'Hola';
         <section class="musica-seccion" id="seccionMusica">
             <div class="musica-cabecera">
                 <h3>La banda sonora de tu próxima cita</h3>
-                <p>Haz clic en una canción para escucharla y haz que marque el momento.</p>
+                <p>Haz clic en un género para explorar sus canciones.</p>
             </div>
 
-            <div class="carrusel-canciones" id="carruselCanciones">
-                <!-- Las tarjetas de canciones se insertan aquí vía JS -->
+            <div id="contenedorGeneros" class="grid-generos">
+                <!-- Tarjetas de género se insertan aquí vía JS -->
+            </div>
+
+            <div id="contenedorPlaylist" style="display:none;">
+                <button id="btnVolverGeneros" class="btn btn-sm btn-outline-secondary mb-3" onclick="volverGeneros()">← Volver a géneros</button>
+                <h4 id="tituloPlaylist" class="mb-3"></h4>
+                <div class="carrusel-canciones" id="carruselCanciones">
+                    <!-- Tarjetas de canciones del género seleccionado -->
+                </div>
             </div>
         </section>
     </main>

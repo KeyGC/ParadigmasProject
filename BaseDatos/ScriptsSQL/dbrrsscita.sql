@@ -782,7 +782,149 @@ INSERT INTO `tbcancion`
 (19, 'American Idiot', 'Green Day', 'https://www.youtube.com/watch?v=Ee_uujKuJMI'),
 
 -- 20. Indie
-(20, 'Do I Wanna Know?', 'Arctic Monkeys', 'https://www.youtube.com/watch?v=bpOSxM0rNPM');
+(20, 'Do I Wanna Know?', 'Arctic Monkeys', 'https://www.youtube.com/watch?v=bpOSxM0rNPM'),
+
+-- ===== CANCIONES ADICIONALES POR GÉNERO (5 × 20 = 100) =====
+
+-- 1. Pop
+(1, 'Blinding Lights', 'The Weeknd', 'https://www.youtube.com/watch?v=4NRXx6U8ABQ'),
+(1, 'Shape of You', 'Ed Sheeran', 'https://www.youtube.com/watch?v=JGwWNGJdvx8'),
+(1, 'Bad Guy', 'Billie Eilish', 'https://www.youtube.com/watch?v=DyDfgMOUjCI'),
+(1, 'Watermelon Sugar', 'Harry Styles', 'https://www.youtube.com/watch?v=E07s5ZYygMg'),
+(1, 'Flowers', 'Miley Cyrus', 'https://www.youtube.com/watch?v=G7KNmW9a75Y'),
+
+-- 2. Rock
+(2, 'Bohemian Rhapsody', 'Queen', 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ'),
+(2, 'Back in Black', 'AC/DC', 'https://www.youtube.com/watch?v=pAgnJDJN4VA'),
+(2, 'Smells Like Teen Spirit', 'Nirvana', 'https://www.youtube.com/watch?v=hTWKbfoikeg'),
+(2, 'Sweet Child O'' Mine', 'Guns N'' Roses', 'https://www.youtube.com/watch?v=1w7OgIMMRc4'),
+(2, 'Wonderwall', 'Oasis', 'https://www.youtube.com/watch?v=bx1Bh8ZvH84'),
+
+-- 3. Reggaetón
+(3, 'Gasolina', 'Daddy Yankee', 'https://www.youtube.com/watch?v=CCF1_jI8Prk'),
+(3, 'Dákiti', 'Bad Bunny & Jhay Cortez', 'https://www.youtube.com/watch?v=TmKh7lAwnBI'),
+(3, 'Con Calma', 'Daddy Yankee & Snow', 'https://www.youtube.com/watch?v=DiItGE3eAyQ'),
+(3, 'Provenza', 'Karol G', 'https://www.youtube.com/watch?v=ca48oMV59LU'),
+(3, 'Tití Me Preguntó', 'Bad Bunny', 'https://www.youtube.com/watch?v=Cr8K88UcO0s'),
+
+-- 4. Salsa
+(4, 'La Vida Es Un Carnaval', 'Celia Cruz', 'https://www.youtube.com/watch?v=7Ho86ggAVrY'),
+(4, 'Quimbara', 'Celia Cruz', 'https://www.youtube.com/watch?v=nlGzLj8ZVfw'),
+(4, 'El Gran Varón', 'Willie Colón', 'https://www.youtube.com/watch?v=Qy0GworETbU'),
+(4, 'Llorarás', 'Oscar D''León', 'https://www.youtube.com/watch?v=gxlB1B9emDc'),
+(4, 'Cumbia Sampuesana', 'Aniceto Molina', 'https://www.youtube.com/watch?v=z-moPjEOsV4'),
+
+-- 5. Electrónica
+(5, 'Wake Me Up', 'Avicii', 'https://www.youtube.com/watch?v=IcrbM1l_BoI'),
+(5, 'Faded', 'Alan Walker', 'https://www.youtube.com/watch?v=60ItHLz5WEA'),
+(5, 'Lean On', 'Major Lazer & DJ Snake', 'https://www.youtube.com/watch?v=YqeW9_5kURI'),
+(5, 'Animals', 'Martin Garrix', 'https://www.youtube.com/watch?v=gCYcHz2k5x0'),
+(5, 'Clarity', 'Zedd ft. Foxes', 'https://www.youtube.com/watch?v=IxxstCcJlsc'),
+
+-- 6. Jazz
+(6, 'Take Five', 'Dave Brubeck', 'https://www.youtube.com/watch?v=i-r9-DC93J0'),
+(6, 'So What', 'Miles Davis', 'https://www.youtube.com/watch?v=zqNTltOGh5c'),
+(6, 'Take the A Train', 'Duke Ellington', 'https://www.youtube.com/watch?v=D6mFGy4g_n8'),
+(6, 'Fly Me to the Moon', 'Frank Sinatra', 'https://www.youtube.com/watch?v=Y2rDb4Ur2dw'),
+(6, 'My Funny Valentine', 'Chet Baker', 'https://www.youtube.com/watch?v=UOEIQKczRPY'),
+
+-- 7. Hip Hop
+(7, 'HUMBLE.', 'Kendrick Lamar', 'https://www.youtube.com/watch?v=tvTRZJ-4EyI'),
+(7, 'In Da Club', '50 Cent', 'https://www.youtube.com/watch?v=5qm8PH4xAss'),
+(7, 'Juicy', 'The Notorious B.I.G.', 'https://www.youtube.com/watch?v=_JZom_gVfuw'),
+(7, 'Alright', 'Kendrick Lamar', 'https://www.youtube.com/watch?v=Z-48u_uWMHY'),
+(7, 'Nuthin'' But a G Thang', 'Dr. Dre & Snoop Dogg', 'https://www.youtube.com/watch?v=8GliyDgAGQI'),
+
+-- 8. Rap
+(8, 'Mockingbird', 'Eminem', 'https://www.youtube.com/watch?v=S9bCLPwzSC0'),
+(8, 'Rap God', 'Eminem', 'https://www.youtube.com/watch?v=XbGs_qK2PQA'),
+(8, 'Not Afraid', 'Eminem', 'https://www.youtube.com/watch?v=j5-yKhDd64s'),
+(8, 'Sing for the Moment', 'Eminem', 'https://www.youtube.com/watch?v=D4hAVemuQXY'),
+(8, 'Stan', 'Eminem ft. Dido', 'https://www.youtube.com/watch?v=gOMhN-hfMtY'),
+
+-- 9. Trap
+(9, 'XO Tour Llif3', 'Lil Uzi Vert', 'https://www.youtube.com/watch?v=WrsFXgQk5UI'),
+(9, 'Rockstar', 'Post Malone ft. 21 Savage', 'https://www.youtube.com/watch?v=UceaB4D0jpo'),
+(9, 'Me Gusta', 'Anitta ft. Cardi B & Myke Towers', 'https://www.youtube.com/watch?v=kIbjHtE4fd8'),
+(9, 'Lucid Dreams', 'Juice WRLD', 'https://www.youtube.com/watch?v=mzB1VGEGcSU'),
+(9, 'Whoopty', 'CJ', 'https://www.youtube.com/watch?v=2xWkATdMQms'),
+
+-- 10. R&B
+(10, 'Earned It', 'The Weeknd', 'https://www.youtube.com/watch?v=waU75jdUnYw'),
+(10, 'No Guidance', 'Chris Brown ft. Drake', 'https://www.youtube.com/watch?v=6L_k74BOLag'),
+(10, 'Cranes in the Sky', 'Solange', 'https://www.youtube.com/watch?v=S0qrinhNnOM'),
+(10, 'Adorn', 'Miguel', 'https://www.youtube.com/watch?v=8dM5QYdTo08'),
+(10, 'Best Part', 'Daniel Caesar ft. H.E.R.', 'https://www.youtube.com/watch?v=hKgl5-lkT8U'),
+
+-- 11. Reggae
+(11, 'No Woman, No Cry', 'Bob Marley', 'https://www.youtube.com/watch?v=IT8XvzIfi4U'),
+(11, 'Redemption Song', 'Bob Marley', 'https://www.youtube.com/watch?v=yv5xonFSC4c'),
+(11, 'Could You Be Loved', 'Bob Marley', 'https://www.youtube.com/watch?v=1ti2YCFgCoI'),
+(11, '54-46 Was My Number', 'Toots & The Maytals', 'https://www.youtube.com/watch?v=UhH1Lxv-8sA'),
+(11, 'The Israelites', 'Desmond Dekker', 'https://www.youtube.com/watch?v=HA1ZRIQuHy4'),
+
+-- 12. Country
+(12, 'Jolene', 'Dolly Parton', 'https://www.youtube.com/watch?v=5m71Jbi7NkU'),
+(12, 'Ring of Fire', 'Johnny Cash', 'https://www.youtube.com/watch?v=5WyLhwYFgmk'),
+(12, 'Friends in Low Places', 'Garth Brooks', 'https://www.youtube.com/watch?v=0e_HtjZS8SQ'),
+(12, 'Before He Cheats', 'Carrie Underwood', 'https://www.youtube.com/watch?v=WaSy8yy-mr8'),
+(12, 'Cruise', 'Florida Georgia Line', 'https://www.youtube.com/watch?v=8PvebsWcpto'),
+
+-- 13. Metal
+(13, 'Master of Puppets', 'Metallica', 'https://www.youtube.com/watch?v=E0ozmU9cJDg'),
+(13, 'Paranoid', 'Black Sabbath', 'https://www.youtube.com/watch?v=0qanF-91aJo'),
+(13, 'Ace of Spades', 'Motörhead', 'https://www.youtube.com/watch?v=3mbvWn1EY6g'),
+(13, 'Raining Blood', 'Slayer', 'https://www.youtube.com/watch?v=d3-ITn0e00U'),
+(13, 'The Trooper', 'Iron Maiden', 'https://www.youtube.com/watch?v=X4bgXH3sJ2Q'),
+
+-- 14. Bachata
+(14, 'Obsesión', 'Aventura', 'https://www.youtube.com/watch?v=8_QY5gFQUTg'),
+(14, 'Bachata Rosa', 'Juan Luis Guerra', 'https://www.youtube.com/watch?v=_9Gct2IK02Y'),
+(14, 'Darte un Beso', 'Prince Royce', 'https://www.youtube.com/watch?v=bdOXnTbyk0g'),
+(14, 'La Carretera', 'Prince Royce', 'https://www.youtube.com/watch?v=OdaIbTUGmHM'),
+(14, 'Corazón Sin Cara', 'Prince Royce', 'https://www.youtube.com/watch?v=XNGWDH-6yv8'),
+
+-- 15. Merengue
+(15, 'La Bilirrubina', 'Juan Luis Guerra', 'https://www.youtube.com/watch?v=x3G4VFThbEg'),
+(15, 'Ojalá Que Llueva Café', 'Juan Luis Guerra', 'https://www.youtube.com/watch?v=suQC8d-YkeU'),
+(15, 'Burbujas de Amor', 'Juan Luis Guerra', 'https://www.youtube.com/watch?v=eaBk4-UT53U'),
+(15, 'Rosalía', 'Juan Luis Guerra', 'https://www.youtube.com/watch?v=81p_KumYYt8'),
+(15, 'La Dueña del Swing', 'Los Hermanos Rosario', 'https://www.youtube.com/watch?v=QCcBiAwp9nc'),
+
+-- 16. Cumbia
+(16, 'Nunca Es Suficiente', 'Los Ángeles Azules ft. Natalia Lafourcade', 'https://www.youtube.com/watch?v=k76BgIb89-s'),
+(16, 'Cumbia Sobre el Rio', 'Celso Piña', 'https://www.youtube.com/watch?v=4ba1Yc6lkQc'),
+(16, 'Mis Sentimientos', 'Los Ángeles Azules', 'https://www.youtube.com/watch?v=BokdSWC2R68'),
+(16, 'Como Te Voy a Olvidar', 'Los Ángeles Azules', 'https://www.youtube.com/watch?v=nxXvOEPsE0s'),
+(16, 'Locura de Amor', 'Agua Marina', 'https://www.youtube.com/watch?v=UiEKd6C4wbQ'),
+
+-- 17. Clásica
+(17, 'Clair de Lune', 'Claude Debussy', 'https://www.youtube.com/watch?v=WNcsUNKlAKw'),
+(17, 'Canon en D', 'Johann Pachelbel', 'https://www.youtube.com/watch?v=NlprozGcs80'),
+(17, 'Las Cuatro Estaciones', 'Antonio Vivaldi', 'https://www.youtube.com/watch?v=4rgSzQwe5DQ'),
+(17, 'Concierto de Aranjuez', 'Joaquín Rodrigo', 'https://www.youtube.com/watch?v=Idsb6gk6j_U'),
+(17, 'Sinfonía No. 5', 'Ludwig van Beethoven', 'https://www.youtube.com/watch?v=a9UApyClFKA'),
+
+-- 18. Funk
+(18, 'Superstition', 'Stevie Wonder', 'https://www.youtube.com/watch?v=ftdZ363R9kQ'),
+(18, 'September', 'Earth, Wind & Fire', 'https://www.youtube.com/watch?v=Gs069dndIYk'),
+(18, 'Give Up the Funk', 'Parliament', 'https://www.youtube.com/watch?v=xNpNTkSkrU8'),
+(18, 'Brick House', 'Commodores', 'https://www.youtube.com/watch?v=ZdJmXeod0RE'),
+(18, 'Play That Funky Music', 'Wild Cherry', 'https://www.youtube.com/watch?v=BHcYFxU4fMo'),
+
+-- 19. Punk
+(19, 'Basket Case', 'Green Day', 'https://www.youtube.com/watch?v=NUTGr5t3MoY'),
+(19, 'Blitzkrieg Bop', 'Ramones', 'https://www.youtube.com/watch?v=268C3N2dDYk'),
+(19, 'Smash It Up', 'The Damned', 'https://www.youtube.com/watch?v=-FFx68qSAuY'),
+(19, 'London Calling', 'The Clash', 'https://www.youtube.com/watch?v=EfK-WX2pa8c'),
+(19, 'Everlong', 'Foo Fighters', 'https://www.youtube.com/watch?v=eBG7P-K-r1Y'),
+
+-- 20. Indie
+(20, 'The Less I Know the Better', 'Tame Impala', 'https://www.youtube.com/watch?v=sBzrzS1Ag_g'),
+(20, 'Somebody Else', 'The 1975', 'https://www.youtube.com/watch?v=Bimd2nZirT4'),
+(20, 'Sweater Weather', 'The Neighbourhood', 'https://www.youtube.com/watch?v=GCdwKhTtNNw'),
+(20, 'Heat Waves', 'Glass Animals', 'https://www.youtube.com/watch?v=mRD0-GxqHVo'),
+(20, 'Electric Feel', 'MGMT', 'https://www.youtube.com/watch?v=MmZexg8sxyk');
 
 -- Semana 4
 
