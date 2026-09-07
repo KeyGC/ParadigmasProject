@@ -683,7 +683,7 @@ CREATE TABLE IF NOT EXISTS `tbcancion` (
 
 CREATE TABLE IF NOT EXISTS `tbreproduccionsemanal` (
   `tbreproduccionsemanalid` int NOT NULL AUTO_INCREMENT,
-  `tbreproduccionsemanaldata` TEXT NOT NULL DEFAULT '',
+  `tbreproduccionsemanaldata` TEXT NOT NULL,
   PRIMARY KEY (`tbreproduccionsemanalid`)
 );
 
@@ -932,7 +932,7 @@ USE `dbrrsscita`;
 
 CREATE TABLE IF NOT EXISTS `tbperfilaccesosemanal` (
   `tbperfilaccesosemanalid` int NOT NULL AUTO_INCREMENT,
-  `tbperfilaccesosemanaldata` TEXT NOT NULL DEFAULT '',
+  `tbperfilaccesosemanaldata` TEXT NOT NULL,
   PRIMARY KEY (`tbperfilaccesosemanalid`)
 );
 
@@ -965,7 +965,7 @@ USE `dbrrsscita`;
 CREATE TABLE IF NOT EXISTS `tbperfilubicacion` (
   `tbperfilubicacionid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
-  `tbperfilubicaciondata` TEXT NOT NULL DEFAULT '',
+  `tbperfilubicaciondata` TEXT NOT NULL,
   `tbperfilubicacionestado` BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (`tbperfilubicacionid`)
 );
@@ -973,9 +973,9 @@ CREATE TABLE IF NOT EXISTS `tbperfilubicacion` (
 CREATE TABLE IF NOT EXISTS `tbperfilregistrossemanal` (
   `tbperfilregistrossemanalid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
-  `tbperfilregistroscontradata` TEXT NOT NULL DEFAULT '',
-  `tbperfilregistroscorreodata` TEXT NOT NULL DEFAULT '',
-  `tbperfilregistrosnombredata` TEXT NOT NULL DEFAULT '',
+  `tbperfilregistroscontradata` TEXT NOT NULL,
+  `tbperfilregistroscorreodata` TEXT NOT NULL,
+  `tbperfilregistrosnombredata` TEXT NOT NULL,
   PRIMARY KEY (`tbperfilregistrossemanalid`),
   UNIQUE KEY `uq_perfilregistrossemanal_perfil` (`tbperfilid`)
 );

@@ -17,16 +17,21 @@ class QdrantCliente
 
     private function ejecutar($metodo, $ruta, $cuerpo = null)
     {
-        $cabeceras = ['Content-Type: application/json'];
+        $cabeceras = [
+            'Content-Type: application/json',
+            'api-key: ' . QDRANT_API_KEY
+        ];
 
-        $ch = curl_init("http://{$this->host}:{$this->port}{$ruta}");
+        $ch = curl_init("https://{$this->host}:{$this->port}{$ruta}");
 
         $opciones = [
             CURLOPT_CUSTOMREQUEST => $metodo,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => $this->tiempoConexion,
             CURLOPT_TIMEOUT => $this->tiempoPeticion,
-            CURLOPT_HTTPHEADER => $cabeceras
+            CURLOPT_HTTPHEADER => $cabeceras,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2
         ];
 
         if ($cuerpo !== null) {
@@ -63,7 +68,21 @@ class QdrantCliente
         }
 
         if (!empty($existe['datos']['result'])) {
-            return true;
+            $tamanoActual = $existe['datos']['result']['vectors']['size']
+                ?? $existe['datos']['result']['config']['params']['vectors']['size']
+                ?? null;
+
+            if ($tamanoActual !== null && (int) $tamanoActual === (int) $tamanioVector) {
+                return true;
+            }
+
+            $borrado = $this->ejecutar('DELETE', '/collections/perfiles');
+
+            if ($borrado['error']
+                || (($borrado['datos']['result'] ?? false) !== true
+                    && ($borrado['datos']['status'] ?? '') !== 'ok')) {
+                return false;
+            }
         }
 
         $cuerpo = [

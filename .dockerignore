@@ -1,0 +1,15 @@
+# Control de versiones
+.git
+.gitattributes
+
+# Dependencias (se instalan en el build con Composer)
+vendor
+
+# Configuración y artefactos locales que no deben ir al contenedor
+_config.yml
+cookies.txt
+Comando para Compilar.txt
+
+# Pruebas y documentación (solo desarrollo/local)
+Pruebas
+Documentación
