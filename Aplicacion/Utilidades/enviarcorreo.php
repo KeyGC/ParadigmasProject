@@ -14,14 +14,14 @@ function enviarContrasenaTemporal($correoDestino, $nombre, $contraTemporal) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'paradigmasproject@gmail.com';      
-        $mail->Password   = 'teoh psbc ffph eboc'; 
+        $mail->Username   = 'matchloveweb@gmail.com';      
+        $mail->Password   = 'kyjt oubf djvg afej'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
 
         // Remitente y destinatario
-        $mail->setFrom('paradigmasproject@gmail.com', 'Sistema de Perfiles');
+        $mail->setFrom('matchloveweb@gmail.com', 'Sistema de Perfiles');
         $mail->addAddress($correoDestino, $nombre);
 
         // Contenido
