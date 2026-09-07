@@ -15,7 +15,6 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Rubix\\ML\\' => array($vendorDir . '/rubix/ml/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
-    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'OkBloomer\\' => array($vendorDir . '/andrewdalpino/okbloomer/src'),
     'Joomla\\String\\' => array($vendorDir . '/joomla/string/src'),
     'Amp\\Sync\\' => array($vendorDir . '/amphp/sync/src'),

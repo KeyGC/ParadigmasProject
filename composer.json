@@ -1,6 +1,5 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^7.1",
         "rubix/ml": "^2.5"
     }
 }

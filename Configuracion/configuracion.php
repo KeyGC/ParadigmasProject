@@ -32,5 +32,7 @@ define('QDRANT_HOST', getenv('QDRANT_HOST') ?: 'c3023b3b-8305-41f6-bce5-61f701db
 define('QDRANT_PORT', getenv('QDRANT_PORT') ?: 6333);
 define('QDRANT_API_KEY', getenv('QDRANT_API_KEY') ?: 'CAMBIAR_EN_ENV');
 
+define('BREVO_API_KEY', getenv('BREVO_API_KEY') ?: '');
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';

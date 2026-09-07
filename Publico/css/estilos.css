@@ -362,6 +362,51 @@ body {
     color: var(--color-oscuro);
 }
 
+@media (max-width: 991.98px) {
+    .navbar-cliente .navbar-collapse,
+    .navbar-admin .navbar-collapse {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 0.75rem;
+        right: 0.75rem;
+        z-index: 1040;
+        border-radius: 16px;
+        padding: 0.75rem;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-cliente .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid var(--color-borde);
+    }
+
+    .navbar-admin .navbar-collapse {
+        background: var(--color-oscuro);
+        border: 1px solid var(--color-oscuro-borde);
+    }
+
+    .navbar-cliente .navbar-collapse .navbar-nav,
+    .navbar-admin .navbar-collapse .navbar-nav {
+        gap: 0.4rem;
+    }
+
+    .navbar-cliente .navbar-collapse .usuario-pill,
+    .navbar-admin .navbar-collapse .usuario-pill {
+        margin: 0.25rem 0;
+    }
+
+    .navbar-cliente .navbar-collapse .btn-cerrar-cliente,
+    .navbar-admin .navbar-collapse .btn-cerrar {
+        display: inline-block;
+        margin-top: 0.35rem;
+    }
+
+    .navbar-cliente .nav-link,
+    .navbar-admin .nav-link {
+        padding: 0.6rem 0.9rem;
+    }
+}
+
 /* ---------- Footers ---------- */
 
 #footerCliente {
@@ -369,6 +414,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 1.5rem;
+    padding: 1.25rem 1rem;
     background: rgba(255, 255, 255, 0.95);
     border-top: 1px solid var(--color-borde);
 }
@@ -388,6 +435,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 1.5rem;
+    padding: 1.25rem 1rem;
     background: var(--color-oscuro);
     border-top: 1px solid var(--color-oscuro-borde);
 }
@@ -927,6 +976,35 @@ body {
 @media (max-width: 575.98px) {
     .musica-seccion {
         padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .bienvenida {
+        padding: 2rem 1rem;
+    }
+
+    .bienvenida h2 {
+        font-size: 1.6rem;
+    }
+
+    .grid-generos {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 14px;
+    }
+
+    .tarjeta-genero {
+        padding: 1.2rem 0.9rem 1.1rem;
+    }
+
+    .tarjeta-genero .icono-genero {
+        font-size: 2.2rem;
+    }
+
+    .tarjeta-genero .nombre-genero {
+        font-size: 1rem;
+    }
+
+    .tarjeta-genero .conteo-canciones {
+        font-size: 0.78rem;
     }
 
     .contenedorFormulario {
