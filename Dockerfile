@@ -1,11 +1,3 @@
-# =============================================================================
-# DBRRScita — Despliegue en Render.com (PHP 8.3 + Apache)
-# =============================================================================
-# Requisitos del proyecto (composer.lock):
-#   - PHP: rubix/ml >=7.4, phpmailer >=5.5, amphp >=7.1  => 8.3 cumple.
-#   - ext-json / ctype / filter / hash son built-in en la imagen oficial.
-#   - El código usa PDO MySQL, cURL (Qdrant Cloud) y mb_* (nativo).
-# =============================================================================
 
 FROM php:8.3-apache
 
