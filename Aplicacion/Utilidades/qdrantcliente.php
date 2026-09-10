@@ -5,14 +5,17 @@ class QdrantCliente
     private $host;
     private $port;
 
+    private $coleccion;
+
     private $tiempoConexion = 4;
 
     private $tiempoPeticion = 8;
 
-    public function __construct($host = null, $port = null)
+    public function __construct($host = null, $port = null, $coleccion = 'perfiles')
     {
         $this->host = $host ?: QDRANT_HOST;
         $this->port = $port ?: QDRANT_PORT;
+        $this->coleccion = $coleccion;
     }
 
     private function ejecutar($metodo, $ruta, $cuerpo = null)
@@ -61,7 +64,7 @@ class QdrantCliente
 
     public function crearColeccionSiNoExiste($tamanioVector)
     {
-        $existe = $this->ejecutar('GET', '/collections/perfiles');
+        $existe = $this->ejecutar('GET', '/collections/' . $this->coleccion);
 
         if ($existe['error']) {
             return false;
@@ -76,7 +79,7 @@ class QdrantCliente
                 return true;
             }
 
-            $borrado = $this->ejecutar('DELETE', '/collections/perfiles');
+            $borrado = $this->ejecutar('DELETE', '/collections/' . $this->coleccion);
 
             if ($borrado['error']
                 || (($borrado['datos']['result'] ?? false) !== true
@@ -92,14 +95,14 @@ class QdrantCliente
             ]
         ];
 
-        $crear = $this->ejecutar('PUT', '/collections/perfiles', $cuerpo);
+        $crear = $this->ejecutar('PUT', '/collections/' . $this->coleccion, $cuerpo);
 
         if ($crear['error']) {
             return false;
         }
 
         if (($crear['datos']['status'] ?? '') === 'error') {
-            $verificar = $this->ejecutar('GET', '/collections/perfiles');
+            $verificar = $this->ejecutar('GET', '/collections/' . $this->coleccion);
 
             return !$verificar['error'] && !empty($verificar['datos']['result']);
         }
@@ -117,14 +120,21 @@ class QdrantCliente
             ]]
         ];
 
-        $respuesta = $this->ejecutar('PUT', '/collections/perfiles/points', $cuerpo);
+        $respuesta = $this->ejecutar('PUT', '/collections/' . $this->coleccion . '/points', $cuerpo);
 
-        return !$respuesta['error'] && ($respuesta['datos']['status'] ?? '') !== 'error';
+        $status = $respuesta['datos']['status'] ?? null;
+
+        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al guardar vector en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+            return false;
+        }
+
+        return true;
     }
 
     public function obtenerPunto($tbperfilid)
     {
-        $respuesta = $this->ejecutar('GET', '/collections/perfiles/points/' . (int) $tbperfilid);
+        $respuesta = $this->ejecutar('GET', '/collections/' . $this->coleccion . '/points/' . (int) $tbperfilid);
 
         if ($respuesta['error']) {
             return null;
@@ -138,7 +148,7 @@ class QdrantCliente
         return $resultado;
     }
 
-    public function buscarSimilares($vector, $limite = 5)
+    public function buscarSimilares($vector, $limite = 5, $scoreThreshold = null)
     {
         $cuerpo = [
             'vector' => array_values(array_map('floatval', $vector)),
@@ -147,9 +157,16 @@ class QdrantCliente
             'with_vectors' => false
         ];
 
-        $respuesta = $this->ejecutar('POST', '/collections/perfiles/points/search', $cuerpo);
+        if ($scoreThreshold !== null) {
+            $cuerpo['score_threshold'] = (float) $scoreThreshold;
+        }
 
-        if ($respuesta['error'] || ($respuesta['datos']['status'] ?? '') === 'error') {
+        $respuesta = $this->ejecutar('POST', '/collections/' . $this->coleccion . '/points/search', $cuerpo);
+
+        $status = $respuesta['datos']['status'] ?? null;
+
+        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al buscar en '{$this->coleccion}' (status=" . json_encode($status) . ")");
             return null;
         }
 

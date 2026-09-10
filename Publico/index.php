@@ -18,7 +18,7 @@ $vistasPublicas = ['login', 'registro'];
 $vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'conciertos'];
 
 // Vistas exclusivas de cliente
-$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra'];
+$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte'];
 
 if (!in_array($vista, $vistasPublicas, true)) {
 
@@ -77,6 +77,12 @@ switch ($vista) {
         break;
     case 'miperfil':
         require_once APP_PATH . '/Vista/Cliente/miperfil.php';
+        break;
+    case 'descubrircomida':
+        require_once APP_PATH . '/Vista/Cliente/descubrircomida.php';
+        break;
+    case 'descubrirdeporte':
+        require_once APP_PATH . '/Vista/Cliente/descubrirdeporte.php';
         break;
     case 'canciones':
         require_once APP_PATH . '/Vista/Admin/canciones.php';

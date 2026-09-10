@@ -34,5 +34,7 @@ define('QDRANT_API_KEY', getenv('QDRANT_API_KEY') ?: 'CAMBIAR_EN_ENV');
 
 define('BREVO_API_KEY', getenv('BREVO_API_KEY') ?: '');
 
+define('BIOMETRIA_UMBRAL', (float) (getenv('BIOMETRIA_UMBRAL') ?: 0.85));
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';

@@ -26,10 +26,30 @@
                         <a href="index.php?vista=registro" class="btn btn-link p-0">¿Aún no tienes cuenta? Regístrate</a>
                     </div>
                 </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-primary" id="btnLoginRostro">Iniciar sesión con rostro</button>
+                </div>
+
+                <div id="panelBiometria" class="panel-biometria d-none mt-3">
+                    <p class="text-center mb-2 fw-semibold">Posiciona tu rostro frente a la cámara</p>
+                    <video id="videoCamara" class="camara-biometria" playsinline autoplay muted></video>
+                    <canvas id="canvasBiometria" class="d-none"></canvas>
+                    <div id="mensajeBiometria" class="text-center mt-2"></div>
+                    <div class="d-flex gap-2 justify-content-center mt-3">
+                        <button type="button" class="btn btn-primary" id="btnCapturarRostro">Capturar</button>
+                        <button type="button" class="btn btn-outline-secondary d-none" id="btnReintentarRostro">Reintentar</button>
+                        <button type="button" class="btn btn-outline-danger" id="btnCancelarBiometria">Cancelar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     <script src="js/login.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script src="js/biometria.js"></script>
 </body>
 
 </html>

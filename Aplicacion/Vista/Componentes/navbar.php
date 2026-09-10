@@ -19,6 +19,12 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                 <li class="nav-item">
                     <a class="nav-link <?= $vistaActual === 'cliente' ? 'activo' : '' ?>" href="index.php?vista=cliente">Inicio</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'descubrircomida' ? 'activo' : '' ?>" href="index.php?vista=descubrircomida">Comida</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'descubrirdeporte' ? 'activo' : '' ?>" href="index.php?vista=descubrirdeporte">Deporte</a>
+                </li>
             </ul>
 
             <?php if ($usuarioActivo): ?>

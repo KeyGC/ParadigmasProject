@@ -942,6 +942,22 @@ body {
     opacity: 0.6;
 }
 
+/* ---------- Biometría facial ---------- */
+
+.panel-biometria {
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+    padding: 1rem;
+}
+
+.camara-biometria {
+    width: 100%;
+    max-height: 300px;
+    border-radius: 12px;
+    background: #000000;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1199.98px) {
@@ -1038,4 +1054,244 @@ body {
     border-radius: 10px;
     padding: 0.75rem 1rem;
     color: var(--color-texto);
+}
+
+/* ===== Mini-juego de descubrimiento (comida y deporte) ===== */
+.juego-descubrir {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.juego-barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--color-primario-claro);
+    border-radius: 16px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .04);
+}
+
+.juego-categoria {
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+.juego-racha {
+    font-size: .9rem;
+    color: #6c757d;
+}
+
+.juego-progreso {
+    font-size: .9rem;
+    color: #6c757d;
+}
+
+.juego-tarjeta-holder {
+    position: relative;
+    height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.juego-tarjeta {
+    width: 100%;
+    max-width: 440px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-primario-claro), #fff);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.juego-tarjeta:active {
+    cursor: grabbing;
+}
+
+.juego-tarjeta-imagen {
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.juego-tarjeta-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.juego-tarjeta-info {
+    padding: 14px 16px;
+    background: #fff;
+}
+
+.juego-tarjeta-info h3 {
+    margin: 0 0 6px;
+    color: #333;
+    font-size: 1.25rem;
+}
+
+.juego-tipo {
+    display: inline-block;
+    background: var(--color-primario-claro);
+    color: var(--color-primario);
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.juego-sentido {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.juego-sentido.positivo {
+    color: #198754;
+    background: rgba(255, 255, 255, .85);
+    transform: rotate(-8deg);
+}
+
+.juego-sentido.negativo {
+    color: #dc3545;
+    background: rgba(255, 255, 255, .85);
+    transform: rotate(8deg);
+}
+
+.juego-vacio {
+    text-align: center;
+}
+
+.juego-botones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-juego-dislike,
+.btn-juego-like {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid;
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+.btn-juego-dislike {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-juego-dislike:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-juego-like {
+    color: #198754;
+    border-color: #198754;
+}
+
+.btn-juego-like:hover {
+    background: #198754;
+    color: #fff;
+}
+
+.juego-mensaje {
+    min-height: 24px;
+    font-weight: 600;
+    color: var(--color-primario);
+}
+
+.juego-resultado {
+    background: #fff;
+    border: 1px solid var(--color-primario-claro);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.juego-resultado h2 {
+    color: var(--color-primario);
+}
+
+.juego-resultado-puestos {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.juego-resultado-puestos li {
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.juego-resultado-puestos li:last-child {
+    border-bottom: none;
+}
+
+.coincidencias-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--color-primario-claro);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.coincidencias-lista li {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: .95rem;
+}
+
+.coincidencias-lista li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 480px) {
+    .juego-tarjeta-holder {
+        height: 380px;
+    }
+
+    .juego-tarjeta-imagen {
+        height: 300px;
+    }
+
+    .juego-botones {
+        gap: 10px;
+    }
+
+    .btn-juego-dislike,
+    .btn-juego-like {
+        width: 56px;
+        height: 56px;
+        font-size: 1.25rem;
+    }
 }

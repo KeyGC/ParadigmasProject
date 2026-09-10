@@ -6,6 +6,7 @@ require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
 require_once __DIR__ . '/../Modelo/perfilaccesomodelo.php';
 require_once __DIR__ . '/../Modelo/perfilregistrosmodelo.php';
+require_once __DIR__ . '/../Modelo/biometriamodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -115,7 +116,8 @@ switch ($accion) {
                     "mensaje" => $correoEnviado
                         ? "Registro exitoso. Revisa tu correo para ver tu contraseña temporal."
                         : "Registro exitoso, pero hubo un problema al enviar el correo.",
-                    "id" => $id
+                    "id" => $id,
+                    "tokenBiometria" => substr(hash('sha256', $id . $contraTemporal), 0, 32)
                 ]);
             } else {
                 echo json_encode(["exito" => false, "mensaje" => "Error al registrar"]);
@@ -265,6 +267,138 @@ switch ($accion) {
             }
         } else {
             echo json_encode(["exito" => false, "mensaje" => "Nombre o contraseña incorrectos"]);
+        }
+
+        break;
+
+    case 'guardarBiometria':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
+            break;
+        }
+
+        $datos = json_decode(file_get_contents('php://input'), true);
+        $vector = $datos['vector'] ?? null;
+
+        if (!is_array($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico no proporcionado"]);
+            break;
+        }
+
+        $biometriaModelo = new BiometriaModelo();
+
+        if (!$biometriaModelo->validarVector($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico inválido"]);
+            break;
+        }
+
+        $id = (int) $_SESSION['perfil']['tbperfilid'];
+
+        if ($biometriaModelo->guardarVectorPerfil($id, $vector)) {
+            echo json_encode(["exito" => true, "mensaje" => "Biometría configurada correctamente"]);
+        } else {
+            echo json_encode(["exito" => false, "mensaje" => "Error al guardar la biometría. Intente más tarde."]);
+        }
+
+        break;
+
+    case 'guardarBiometriaRegistro':
+        $datos = json_decode(file_get_contents('php://input'), true);
+        $id = (int) ($datos['tbperfilid'] ?? 0);
+        $token = trim((string) ($datos['token'] ?? ''));
+        $vector = $datos['vector'] ?? null;
+
+        if ($id <= 0 || $token === '') {
+            echo json_encode(["exito" => false, "mensaje" => "Solicitud de registro incompleta"]);
+            break;
+        }
+
+        if (!is_array($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico no proporcionado"]);
+            break;
+        }
+
+        $perfil = $modelo->getPerfil($id);
+
+        if (!$perfil) {
+            echo json_encode(["exito" => false, "mensaje" => "Perfil de registro no encontrado"]);
+            break;
+        }
+
+        $tokenEsperado = substr(hash('sha256', $id . $perfil['tbperfilcontra']), 0, 32);
+
+        if (!hash_equals($tokenEsperado, $token)) {
+            echo json_encode(["exito" => false, "mensaje" => "El enlace de registro caducó. Configura tu rostro desde Mi perfil."]);
+            break;
+        }
+
+        $biometriaModelo = new BiometriaModelo();
+
+        if (!$biometriaModelo->validarVector($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico inválido"]);
+            break;
+        }
+
+        if ($biometriaModelo->guardarVectorPerfil($id, $vector)) {
+            echo json_encode(["exito" => true, "mensaje" => "Biometría configurada correctamente"]);
+        } else {
+            echo json_encode(["exito" => false, "mensaje" => "Error al guardar la biometría. Podrás configurarla después en Mi perfil."]);
+        }
+
+        break;
+
+    case 'loginBiometrico':
+        $datos = json_decode(file_get_contents('php://input'), true);
+        $vector = $datos['vector'] ?? null;
+
+        if (!is_array($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico no proporcionado"]);
+            break;
+        }
+
+        $biometriaModelo = new BiometriaModelo();
+
+        if (!$biometriaModelo->validarVector($vector)) {
+            echo json_encode(["exito" => false, "mensaje" => "Vector biométrico inválido"]);
+            break;
+        }
+
+        $coincidencia = $biometriaModelo->buscarRostro($vector, BIOMETRIA_UMBRAL);
+
+        if ($coincidencia === null) {
+            echo json_encode(["exito" => false, "mensaje" => "Rostro no reconocido. Intenta de nuevo o usa tu usuario y contraseña."]);
+            break;
+        }
+
+        $perfil = $modelo->getPerfil($coincidencia['tbperfilid']);
+
+        if (!$perfil) {
+            echo json_encode(["exito" => false, "mensaje" => "Perfil asociado al rostro no encontrado"]);
+            break;
+        }
+
+        if (!$perfil['tbperfilactivo']) {
+            echo json_encode(["exito" => false, "mensaje" => "Su cuenta está inactiva. Contacte al administrador."]);
+            break;
+        }
+
+        $_SESSION['perfil'] = $perfil;
+
+        $accesoModelo = new PerfilAccesoModelo();
+        $accesoModelo->registrarAcceso($perfil['tbperfilid']);
+
+        if ($perfil['tbperfilcambiocontra'] == 0) {
+            echo json_encode([
+                "exito" => true,
+                "cambiarContra" => true,
+                "mensaje" => "Debe cambiar su contraseña temporal"
+            ]);
+        } else {
+            echo json_encode([
+                "exito" => true,
+                "cambiarContra" => false,
+                "mensaje" => "Login exitoso"
+            ]);
         }
 
         break;
