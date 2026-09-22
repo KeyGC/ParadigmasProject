@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/perfilmusicalmodelo.php';
-require_once __DIR__ . '/conciertomodelo.php';
+require_once __DIR__ . '/eventomodelo.php';
 require_once __DIR__ . '/generomodelo.php';
 
-class ConciertoPrioridadModelo
+class EventoAfinidadGeneroModelo
 {
     private $conexion;
 
@@ -34,8 +34,8 @@ class ConciertoPrioridadModelo
 
     private function obtenerSenalAsistenciaReal($perfilId)
     {
-        $conciertoModelo = new ConciertoModelo();
-        $asistencias = $conciertoModelo->getGenerosAsistidosPorPerfil($perfilId);
+        $eventoModelo = new EventoModelo();
+        $asistencias = $eventoModelo->getGenerosAsistidosPorPerfil($perfilId);
 
         $totalAsistencias = array_sum(array_column($asistencias, 'asistencias'));
 
@@ -48,7 +48,7 @@ class ConciertoPrioridadModelo
         return $porGenero;
     }
 
-    public function generarPrioridad($perfilId)
+    public function generarAfinidadGenero($perfilId)
     {
         $generoModelo = new GeneroModelo();
         $generosActivos = array_filter(
@@ -59,7 +59,7 @@ class ConciertoPrioridadModelo
         $patronPorGenero = $this->obtenerSenalPatronMusical($perfilId);
         $asistenciaPorGenero = $this->obtenerSenalAsistenciaReal($perfilId);
 
-        $prioridades = [];
+        $afinidades = [];
         foreach ($generosActivos as $g) {
             $nombre = $g['tbgeneronombre'];
 
@@ -69,26 +69,27 @@ class ConciertoPrioridadModelo
             $score = ($senalPatron * $this->pesoPatronMusical)
                    + ($senalAsistencia * $this->pesoAsistenciaReal);
 
-            $prioridades[] = [
+            $afinidades[] = [
                 'tbgeneroid' => (int) $g['tbgeneroid'],
                 'genero' => $nombre,
                 'patronMusical' => round($senalPatron, 4),
                 'asistenciaReal' => round($senalAsistencia, 4),
-                'prioridad' => round($score, 4)
+                'afinidad' => round($score, 4)
             ];
         }
 
-        usort($prioridades, fn($a, $b) => $b['prioridad'] <=> $a['prioridad']);
+        usort($afinidades, fn($a, $b) => $b['afinidad'] <=> $a['afinidad']);
 
         $vector = [];
-        foreach ($prioridades as $p) {
-            $vector[$p['tbgeneroid']] = $p['prioridad'];
+        foreach ($afinidades as $a) {
+            $vector[$a['tbgeneroid']] = $a['afinidad'];
         }
 
         return [
             'exito' => true,
             'perfilId' => (int) $perfilId,
-            'prioridades' => $prioridades,
+            'tipoAfinidad' => 'genero',
+            'afinidades' => $afinidades,
             'vector' => $vector
         ];
     }

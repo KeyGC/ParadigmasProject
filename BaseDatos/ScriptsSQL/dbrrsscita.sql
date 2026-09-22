@@ -982,28 +982,27 @@ CREATE TABLE IF NOT EXISTS `tbperfilregistrossemanal` (
 
 
 -- semana 7
--- Módulo Conciertos
+-- Módulo Eventos
 
 USE `dbrrsscita`;
 
-CREATE TABLE IF NOT EXISTS `tbconcierto` (
-  `tbconciertoid` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `tbevento` (
+  `tbeventoid` int NOT NULL AUTO_INCREMENT,
   `tbgeneroid` int NOT NULL,
-  `tbconciertonombre` varchar(150) NOT NULL,
-  `tbconciertoartista` varchar(150) NOT NULL,
-  `tbconciertoubicacion` varchar(200) NOT NULL,
-  `tbconciertolatitud` decimal(10,8) NOT NULL,
-  `tbconciertolongitud` decimal(10,8) NOT NULL,
-  `tbconciertofecha` date NOT NULL,
-  `tbconciertohora` time NOT NULL,
-  `tbconciertoestado` boolean NOT NULL DEFAULT TRUE,
-  PRIMARY KEY (`tbconciertoid`),
-  FOREIGN KEY (`tbgeneroid`) REFERENCES `tbgenero`(`tbgeneroid`)
+  `tbeventonombre` varchar(150) NOT NULL,
+  `tbeventoartista` varchar(150) NOT NULL,
+  `tbeventoubicaciongeneral` varchar(200) NOT NULL,
+  `tbeventolatitud` decimal(10,8) NOT NULL,
+  `tbeventolongitud` decimal(10,8) NOT NULL,
+  `tbeventofecha` date NOT NULL,
+  `tbeventohora` time NOT NULL,
+  `tbeventoestado` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbeventoid`)
 );
 
-INSERT INTO tbconcierto
-(tbgeneroid, tbconciertonombre, tbconciertoartista, tbconciertoubicacion,
-tbconciertolatitud, tbconciertolongitud, tbconciertofecha, tbconciertohora)
+INSERT INTO tbevento
+(tbgeneroid, tbeventonombre, tbeventoartista, tbeventoubicaciongeneral,
+tbeventolatitud, tbeventolongitud, tbeventofecha, tbeventohora)
 VALUES
 (3, 'Wisin en Costa Rica', 'Wisin', 'Estadio Nacional, San José',
 9.93500000, -84.10670000, '2026-09-12', '19:00:00'),
@@ -1029,18 +1028,37 @@ VALUES
 (7, 'Hip Hop Fest', 'Trueno', 'Centro de Eventos Pedregal, Heredia',
 9.99810000, -84.16150000, '2026-11-07', '19:00:00');
 
-CREATE TABLE IF NOT EXISTS `tbconciertoasistencia` (
-  `tbconciertoasistenciaid` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `tbeventoasistencia` (
+  `tbeventoasistenciaid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
-  `tbconciertoid` int NOT NULL,
-  `tbconciertoasistenciafechahora` datetime NOT NULL,
-  `tbconciertoasistencialatitud` decimal(10,8) NOT NULL,
-  `tbconciertoasistencialongitud` decimal(10,8) NOT NULL,
-  `tbconciertoasistenciacoincide` boolean NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (`tbconciertoasistenciaid`),
-  FOREIGN KEY (`tbperfilid`) REFERENCES `tbperfil`(`tbperfilid`),
-  FOREIGN KEY (`tbconciertoid`) REFERENCES `tbconcierto`(`tbconciertoid`)
+  `tbeventoid` int NOT NULL,
+  `tbeventoasistenciafechahora` datetime NOT NULL,
+  `tbeventoasistencialatitud` decimal(10,8) NOT NULL,
+  `tbeventoasistencialongitud` decimal(10,8) NOT NULL,
+  `tbeventoasistenciacoincide` boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`tbeventoasistenciaid`)
 );
+
+CREATE TABLE IF NOT EXISTS `tbeventoubicacion` (
+  `tbeventoubicacionid` int NOT NULL AUTO_INCREMENT,
+  `tbeventoid` int NOT NULL,
+  `tbeventoubicacioncategoria` varchar(50) NOT NULL,
+  `tbeventoubicacionreferenciaid` int NULL,
+  `tbeventoubicacionnombre` varchar(200) NOT NULL,
+  `tbeventoubicacionlatitud` decimal(10,8) NULL,
+  `tbeventoubicacionlongitud` decimal(10,8) NULL,
+  `tbeventoubicacionestado` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbeventoubicacionid`)
+);
+
+INSERT INTO tbeventoubicacion
+(tbeventoid, tbeventoubicacioncategoria, tbeventoubicacionreferenciaid, tbeventoubicacionnombre, tbeventoubicacionlatitud, tbeventoubicacionlongitud)
+VALUES
+(1, 'comida', 16, 'Soda Doña Rosa', 9.93510000, -84.10680000),
+(1, 'comida', 10, 'Puesto de hamburguesas', 9.93520000, -84.10650000),
+(2, 'comida', 1, 'Food truck de tacos', 10.00050000, -84.25790000),
+(4, 'comida', 14, 'Café Pedregal', 9.99800000, -84.16140000),
+(6, 'comida', 16, 'Casados El Estadio', 9.93490000, -84.10660000);
 
 --FRANJAS HORARIAS PERSONALIZADAS
 
@@ -1068,11 +1086,11 @@ CREATE TABLE IF NOT EXISTS `tbferiados` (
 );
 
 
+-- Semana 8
+
 USE `dbrrsscita`;
 
--- ============================================================
 -- MINERÍA IMPLÍCITA — COMIDA (perfilado por swipe, sin encuesta)
--- ============================================================
 
 CREATE TABLE IF NOT EXISTS `tbtipocomida` (
   `tbtipocomidaid` int NOT NULL AUTO_INCREMENT,
@@ -1218,9 +1236,7 @@ INSERT INTO `tbcomida` (`tbtipocomidaid`, `tbcomidanombre`, `tbcomidaimagenurl`)
 (16, 'Ceviche tico de corvina', 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=600&q=60');
 
 
--- ============================================================
 -- MINERÍA IMPLÍCITA — DEPORTE (perfilado por swipe, sin encuesta)
--- ============================================================
 
 CREATE TABLE IF NOT EXISTS `tbtipodeporte` (
   `tbtipodeporteid` int NOT NULL AUTO_INCREMENT,

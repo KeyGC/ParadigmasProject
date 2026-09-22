@@ -15,7 +15,7 @@ if ($vista === 'logout') {
 $vistasPublicas = ['login', 'registro'];
 
 // Vistas exclusivas de admin
-$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'conciertos'];
+$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos'];
 
 // Vistas exclusivas de cliente
 $vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte'];
@@ -90,7 +90,7 @@ switch ($vista) {
     case 'generos':
         require_once APP_PATH . '/Vista/Admin/generos.php';
         break;
-    case 'conciertos':
-        require_once APP_PATH . '/Vista/Admin/conciertos.php';
+    case 'eventos':
+        require_once APP_PATH . '/Vista/Admin/eventos.php';
         break;
 }

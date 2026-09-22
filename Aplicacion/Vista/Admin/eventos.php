@@ -9,7 +9,7 @@ exigirRol(['admin']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Conciertos</title>
+    <title>Gestión de Eventos</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/estilos.css">
@@ -24,8 +24,8 @@ exigirRol(['admin']);
 
             <div class="encabezado-panel d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
-                    <h1 class="titulo-pagina">Gestión de Conciertos</h1>
-                    <p class="subtitulo-pagina">Administra los conciertos disponibles en la plataforma.</p>
+                    <h1 class="titulo-pagina">Gestión de Eventos</h1>
+                    <p class="subtitulo-pagina">Administra los eventos disponibles en la plataforma.</p>
                 </div>
                 <div id="contenedorBotonNuevo">
                     <button class="btn btn-accion" id="btnNuevo">
@@ -37,13 +37,13 @@ exigirRol(['admin']);
             <div class="tarjeta-panel" id="contenedorFormulario" style="display: none;">
                 <h2 class="titulo-tarjeta">Nuevo registro</h2>
 
-                <form id="formConcierto">
-                    <input type="hidden" id="conciertoId" value="">
+                <form id="formEvento">
+                    <input type="hidden" id="eventoId" value="">
 
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Nombre del concierto</label>
-                            <input type="text" id="nombre" class="form-control" placeholder="Nombre del concierto" required>
+                            <label class="form-label">Nombre del evento</label>
+                            <input type="text" id="nombre" class="form-control" placeholder="Nombre del evento" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Artista</label>
@@ -95,7 +95,7 @@ exigirRol(['admin']);
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table tabla-panel cabecera-oscura" id="tablaConciertos">
+                    <table class="table tabla-panel cabecera-oscura" id="tablaEventos">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
@@ -120,7 +120,39 @@ exigirRol(['admin']);
 
     <?php require_once APP_PATH . '/Vista/Componentes/footeradmin.php'; ?>
 
-    <script src="js/conciertos.js"></script>
+    <div class="modal fade" id="modalUbicaciones" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Puestos de comida del evento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group mb-3" id="listaUbicaciones"></ul>
+
+                    <form id="formUbicacion">
+                        <input type="hidden" id="ubicacionEventoId" value="">
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <input type="text" id="ubicacionNombre" class="form-control" placeholder="Nombre del puesto (ej: Soda Doña Rosa)" required>
+                            </div>
+                            <div class="col-6">
+                                <input type="number" step="any" id="ubicacionLatitud" class="form-control" placeholder="Latitud">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" step="any" id="ubicacionLongitud" class="form-control" placeholder="Longitud">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100">Agregar puesto</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/eventos.js"></script>
 </body>
 
 </html>
