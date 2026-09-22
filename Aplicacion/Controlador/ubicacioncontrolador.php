@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilmodelo.php';
-require_once __DIR__ . '/../Modelo/conciertomodelo.php';
+require_once __DIR__ . '/../Modelo/eventomodelo.php';
 require_once __DIR__ . '/../Utilidades/geolocalizacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -347,9 +347,9 @@ switch ($accion) {
             // no debe afectar el guardado de ubicación que ya se confirmó arriba)
             $coincidencias = [];
             try {
-                $conciertoModelo = new ConciertoModelo();
+                $eventoModelo = new EventoModelo();
                 $fechaHoraCaptura = date('Y-m-d H:i:s');
-                $coincidencias = $conciertoModelo->registrarPosibleAsistencia(
+                $coincidencias = $eventoModelo->registrarPosibleAsistencia(
                     $perfilId,
                     $coordenadas['lat'],
                     $coordenadas['lng'],
@@ -370,7 +370,7 @@ switch ($accion) {
                     "canton" => $ubicacion['canton'],
                     "distrito" => $ubicacion['distrito'],
                     "origen" => $ubicacion['origen'],
-                    "conciertosCoincidentes" => $coincidencias
+                    "eventosCoincidentes" => $coincidencias
                 ]
             ]);
         } catch (Exception $e) {
