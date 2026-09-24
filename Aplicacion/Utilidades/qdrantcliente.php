@@ -11,6 +11,8 @@ class QdrantCliente
 
     private $tiempoPeticion = 8;
 
+    private static $handleCurl = null;
+
     public function __construct($host = null, $port = null, $coleccion = 'perfiles')
     {
         $this->host = $host ?: QDRANT_HOST;
@@ -18,35 +20,46 @@ class QdrantCliente
         $this->coleccion = $coleccion;
     }
 
+    private function obtenerHandle()
+    {
+        if (self::$handleCurl === null) {
+            $handle = curl_init();
+            curl_setopt_array($handle, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => $this->tiempoConexion,
+                CURLOPT_TIMEOUT => $this->tiempoPeticion,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'api-key: ' . QDRANT_API_KEY
+                ],
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_TCP_KEEPALIVE => 1
+            ]);
+            self::$handleCurl = $handle;
+        }
+        return self::$handleCurl;
+    }
+
+    public function cerrarConexion()
+    {
+        if (self::$handleCurl !== null) {
+            curl_close(self::$handleCurl);
+            self::$handleCurl = null;
+        }
+    }
+
     private function ejecutar($metodo, $ruta, $cuerpo = null)
     {
-        $cabeceras = [
-            'Content-Type: application/json',
-            'api-key: ' . QDRANT_API_KEY
-        ];
+        $ch = $this->obtenerHandle();
 
-        $ch = curl_init("https://{$this->host}:{$this->port}{$ruta}");
-
-        $opciones = [
-            CURLOPT_CUSTOMREQUEST => $metodo,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => $this->tiempoConexion,
-            CURLOPT_TIMEOUT => $this->tiempoPeticion,
-            CURLOPT_HTTPHEADER => $cabeceras,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2
-        ];
-
-        if ($cuerpo !== null) {
-            $opciones[CURLOPT_POSTFIELDS] = json_encode($cuerpo);
-        }
-
-        curl_setopt_array($ch, $opciones);
+        curl_setopt($ch, CURLOPT_URL, "https://{$this->host}:{$this->port}{$ruta}");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $metodo);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $cuerpo !== null ? json_encode($cuerpo) : null);
 
         $respuesta = curl_exec($ch);
         $errorCurl = curl_errno($ch);
         $codigoHttp = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        curl_close($ch);
 
         if ($respuesta === false || $errorCurl) {
             error_log("Qdrant: fallo cURL (errno={$errorCurl}, " . curl_strerror($errorCurl ?: 0) . ")");

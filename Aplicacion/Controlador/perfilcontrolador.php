@@ -365,7 +365,10 @@ switch ($accion) {
 
         $coincidencia = $biometriaModelo->buscarRostro($vector, BIOMETRIA_UMBRAL);
 
-        if ($coincidencia === null) {
+        $fallaCoincidencia = $coincidencia === null
+            || (($coincidencia['score'] ?? 0) < BIOMETRIA_UMBRAL);
+
+        if ($fallaCoincidencia) {
             echo json_encode(["exito" => false, "mensaje" => "Rostro no reconocido. Intenta de nuevo o usa tu usuario y contraseña."]);
             break;
         }

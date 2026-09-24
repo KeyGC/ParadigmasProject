@@ -126,7 +126,7 @@ async function capturarRostro() {
     mostrarMensaje('info', 'Procesando rostro...');
 
     try {
-        const deteccion = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224 }))
+        const deteccion = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 416 }))
             .withFaceLandmarks()
             .withFaceDescriptor();
 
