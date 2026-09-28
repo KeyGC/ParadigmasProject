@@ -59,7 +59,8 @@ switch ($accion) {
             break;
         }
 
-        $ok = $reproduccionModelo->incrementarContador($perfilId, (int)$cancionId);
+        $fechaLocal = $_POST['fechaLocal'] ?? null;
+        $ok = $reproduccionModelo->incrementarContador($perfilId, (int)$cancionId, $fechaLocal);
 
         echo $ok
             ? json_encode(["exito" => true, "mensaje" => "Reproducción registrada"])

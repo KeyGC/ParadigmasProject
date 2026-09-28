@@ -15,6 +15,8 @@ class ReproduccionModelo
         7 => 'Dom'
     ];
 
+    private $segundosGracia = 5;
+
     public function __construct()
     {
         $this->conexion = Basedatos::conectar();
@@ -31,20 +33,22 @@ class ReproduccionModelo
         $filas = explode("\n", $data);
         foreach ($filas as $fila) {
             $partes = explode("|", trim($fila));
-            if (count($partes) === 3) {
+            $n = count($partes);
+            if ($n === 3 || $n === 4) {
                 $lineas[] = [
                     'semana' => (int) $partes[0],
                     'dia' => $partes[1],
-                    'fecha' => $partes[2]
+                    'fecha' => $partes[2],
+                    'segundos' => $n === 4 ? (int) $partes[3] : 0
                 ];
             }
         }
         return $lineas;
     }
-
+    
     private function agregarLinea($dataActual, $semana, $dia, $fecha)
     {
-        $nuevaLinea = $semana . "|" . $dia . "|" . $fecha;
+        $nuevaLinea = $semana . "|" . $dia . "|" . $fecha . "|0";
         $dataActual = trim($dataActual ?? '');
 
         if ($dataActual === '') {
@@ -94,19 +98,89 @@ class ReproduccionModelo
     {
         $fila = $this->obtenerOCrearFila($perfilId, $cancionId);
 
-        $sql = "UPDATE tbreproduccion SET tbreproducciontiempo = tbreproducciontiempo + :segundos
-                WHERE tbreproduccionid = :id";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bindValue(':segundos', $segundos, PDO::PARAM_INT);
-        $stmt->bindValue(':id', $fila['tbreproduccionid'], PDO::PARAM_INT);
-        return $stmt->execute();
+        try {
+            $this->conexion->beginTransaction();
+
+            $stmt = $this->conexion->prepare(
+                "SELECT tbreproduccionsemanaldata FROM tbreproduccionsemanal
+                WHERE tbreproduccionsemanalid = :id FOR UPDATE"
+            );
+            $stmt->bindValue(':id', $fila['tbreproduccionsemanalid'], PDO::PARAM_INT);
+            $stmt->execute();
+            $data = trim((string) $stmt->fetchColumn());
+
+            $filas = $data === '' ? [] : explode("\n", $data);
+
+            if (empty($filas)) {
+                $filas[] = (int) date('W') . '|' . $this->diasSemana[(int) date('N')]
+                        . '|' . date('Y-m-d H:i:s') . '|0';
+            }
+
+            $i = count($filas) - 1;
+            $partes = explode('|', trim($filas[$i]));
+            $previo = count($partes) >= 4 ? (int) $partes[3] : 0;
+            $nuevo = $previo + $segundos;
+            $filas[$i] = implode('|', array_slice($partes, 0, 3)) . '|' . $nuevo;
+
+            $incremento = max(0, $nuevo - $this->segundosGracia)
+                        - max(0, $previo - $this->segundosGracia);
+
+            $upd = $this->conexion->prepare(
+                "UPDATE tbreproduccionsemanal SET tbreproduccionsemanaldata = :data
+                WHERE tbreproduccionsemanalid = :id"
+            );
+            $upd->bindValue(':data', implode("\n", $filas));
+            $upd->bindValue(':id', $fila['tbreproduccionsemanalid'], PDO::PARAM_INT);
+            if (!$upd->execute()) {
+                throw new RuntimeException('No se pudo actualizar la data semanal');
+            }
+
+            if ($incremento > 0) {
+                $tot = $this->conexion->prepare(
+                    "UPDATE tbreproduccion SET tbreproducciontiempo = tbreproducciontiempo + :inc
+                    WHERE tbreproduccionid = :id"
+                );
+                $tot->bindValue(':inc', $incremento, PDO::PARAM_INT);
+                $tot->bindValue(':id', $fila['tbreproduccionid'], PDO::PARAM_INT);
+                if (!$tot->execute()) {
+                    throw new RuntimeException('No se pudo actualizar el total');
+                }
+            }
+
+            $this->conexion->commit();
+            return true;
+        } catch (Throwable $e) {
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollBack();
+            }
+            error_log('acumularTiempo: ' . $e->getMessage());
+            return false;
+        }
     }
 
-    public function incrementarContador($perfilId, $cancionId)
+    private function resolverMomento($fechaLocal)
     {
-        $ahora = date('Y-m-d H:i:s');
-        $semanaActual = (int) date('W');
-        $diaActual = $this->diasSemana[(int) date('N')];
+        $servidor = new DateTime('now');
+
+        if ($fechaLocal) {
+            $cliente = DateTime::createFromFormat('Y-m-d H:i:s', $fechaLocal);
+            $errores = DateTime::getLastErrors();
+            $valida = $cliente && (!$errores ||
+                ($errores['warning_count'] == 0 && $errores['error_count'] == 0));
+
+            if ($valida && abs($cliente->getTimestamp() - $servidor->getTimestamp()) <= 27 * 3600) {
+                return $cliente;
+            }
+        }
+        return $servidor;
+    }
+
+    public function incrementarContador($perfilId, $cancionId, $fechaLocal = null)
+    {
+        $momento = $this->resolverMomento($fechaLocal);
+        $ahora = $momento->format('Y-m-d H:i:s');
+        $semanaActual = (int) $momento->format('W');
+        $diaActual = $this->diasSemana[(int) $momento->format('N')];
 
         $fila = $this->obtenerOCrearFila($perfilId, $cancionId);
 

@@ -54,7 +54,7 @@ class PerfilMusicalModelo
         $filas = explode("\n", $data);
         foreach ($filas as $fila) {
             $partes = explode("|", trim($fila));
-            if (count($partes) === 3) {
+            if (count($partes) === 3 || count($partes) === 4) {
                 $lineas[] = [
                     'semana' => (int) $partes[0],
                     'dia' => $partes[1],

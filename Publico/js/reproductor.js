@@ -135,11 +135,19 @@ function onPlayerStateChange(event) {
     }
 }
 
+function fechaLocalString() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ` +
+           `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+
 function registrarReproduccion() {
     if (!cancionActualId) return;
 
     const formData = new FormData();
     formData.append('cancionId', cancionActualId);
+    formData.append('fechaLocal', fechaLocalString());
 
     fetch('apicancion.php?accion=registrarReproduccion', {
         method: 'POST',
