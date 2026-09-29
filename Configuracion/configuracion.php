@@ -1,24 +1,6 @@
 <?php
 
-function obtenerTimezoneSistema()
-{
-    if (is_link('/etc/localtime')) {
-        $destino = readlink('/etc/localtime');
-        $partes = explode('/usr/share/zoneinfo/', $destino);
-
-        if (isset($partes[1])) {
-            return $partes[1];
-        }
-    }
-
-    return null;
-}
-
-$timezoneSistema = obtenerTimezoneSistema();
-
-if ($timezoneSistema) {
-    date_default_timezone_set($timezoneSistema);
-}
+date_default_timezone_set('America/Costa_Rica');
 
 session_start();
 

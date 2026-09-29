@@ -62,6 +62,7 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
             <div id="resultadoJuego" class="juego-resultado d-none mt-4">
                 <h2 class="h4 mb-1">Tu perfil de comida</h2>
                 <p class="text-secondary mb-3" id="resultadoSub"></p>
+                <p class="text-secondary small mb-3 d-none" id="resultadoNota"></p>
                 <ul class="juego-resultado-puestos" id="resultadoPuestos"></ul>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                     <button type="button" class="btn btn-primary" id="btnCoincidencias">Ver coincidencias</button>

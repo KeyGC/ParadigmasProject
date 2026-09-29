@@ -19,6 +19,7 @@
         resultado: document.getElementById('resultadoJuego'),
         resultadoSub: document.getElementById('resultadoSub'),
         resultadoPuestos: document.getElementById('resultadoPuestos'),
+        resultadoNota: document.getElementById('resultadoNota'),
         listaCoincidencias: document.getElementById('listaCoincidencias'),
         btnLike: document.getElementById('btnLike'),
         btnDislike: document.getElementById('btnDislike'),
@@ -263,15 +264,37 @@
                 (respuesta.desdeCache ? 'actualizado' : 'recién calculado');
         }
 
+        if (el.resultadoNota) {
+            el.resultadoNota.classList.toggle('d-none', respuesta.modoResultado !== 'basico');
+            if (respuesta.modoResultado === 'basico') {
+                el.resultadoNota.textContent = 'Sigue jugando para obtener insights más precisos.';
+            }
+        }
+
         if (el.resultadoPuestos) {
             el.resultadoPuestos.innerHTML = '';
             (respuesta.resultados || []).forEach(function (resultado, indice) {
                 var li = document.createElement('li');
-                li.textContent = '#' + (indice + 1) + ' ' + resultado.tipo;
-                var span = document.createElement('span');
-                span.className = 'text-secondary';
-                span.textContent = resultado.porcentaje + '%';
-                li.appendChild(span);
+
+                if (resultado.texto) {
+                    var parrafo = document.createElement('p');
+                    parrafo.className = 'mb-1';
+                    parrafo.textContent = resultado.texto + '.';
+                    li.appendChild(parrafo);
+
+                    var meta = document.createElement('span');
+                    meta.className = 'text-secondary';
+                    meta.textContent = 'Confianza ' + resultado.confianza + '% · basado en ' +
+                        (resultado.soporte || 0) + ' registros';
+                    li.appendChild(meta);
+                } else {
+                    li.textContent = '#' + (indice + 1) + ' ' + resultado.tipo;
+                    var porcentaje = document.createElement('span');
+                    porcentaje.className = 'text-secondary';
+                    porcentaje.textContent = (resultado.porcentaje !== undefined ? resultado.porcentaje + '%' : '');
+                    li.appendChild(porcentaje);
+                }
+
                 el.resultadoPuestos.appendChild(li);
             });
         }
