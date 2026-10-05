@@ -1105,8 +1105,7 @@ CREATE TABLE IF NOT EXISTS `tbcomida` (
   `tbcomidanombre` varchar(200) NOT NULL,
   `tbcomidaimagenurl` text,
   `tbcomidaactivo` boolean NOT NULL DEFAULT TRUE,
-  PRIMARY KEY (`tbcomidaid`),
-  FOREIGN KEY (`tbtipocomidaid`) REFERENCES `tbtipocomida`(`tbtipocomidaid`)
+  PRIMARY KEY (`tbcomidaid`)
 );
 
 CREATE TABLE IF NOT EXISTS `tbcomidaswipe` (
@@ -1251,8 +1250,7 @@ CREATE TABLE IF NOT EXISTS `tbdeporte` (
   `tbdeportenombre` varchar(200) NOT NULL,
   `tbdeporteimagenurl` text,
   `tbdeporteactivo` boolean NOT NULL DEFAULT TRUE,
-  PRIMARY KEY (`tbdeporteid`),
-  FOREIGN KEY (`tbtipodeporteid`) REFERENCES `tbtipodeporte`(`tbtipodeporteid`)
+  PRIMARY KEY (`tbdeporteid`)
 );
 
 CREATE TABLE IF NOT EXISTS `tbdeporteswipe` (
@@ -1380,3 +1378,26 @@ INSERT INTO `tbdeporte` (`tbtipodeporteid`, `tbdeportenombre`, `tbdeporteimagenu
 (16, 'Escalada indoor', 'https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=600&q=60'),
 (16, 'Multi-largo', 'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=600&q=60'),
 (16, 'Escalada libre', 'https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=600&q=60');
+
+
+-- CHAT 1-A-1 (polling, sin FKs: la integridad se valida en PHP con prepared statements)
+
+CREATE TABLE IF NOT EXISTS `tbconversacion` (
+  `tbconversacionid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid1` int NOT NULL,
+  `tbperfilid2` int NOT NULL,
+  `tbconversacionfechacreacion` datetime NOT NULL,
+  PRIMARY KEY (`tbconversacionid`),
+  UNIQUE KEY `uq_conversacion_perfiles` (`tbperfilid1`, `tbperfilid2`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbmensaje` (
+  `tbmensajeid` int NOT NULL AUTO_INCREMENT,
+  `tbconversacionid` int NOT NULL,
+  `tbperfilidemisor` int NOT NULL,
+  `tbmensajetexto` text NOT NULL,
+  `tbmensajefechahora` datetime NOT NULL,
+  `tbmensajeleido` boolean NOT NULL DEFAULT FALSE,
+  `tbmensajebloqueado` boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`tbmensajeid`)
+);

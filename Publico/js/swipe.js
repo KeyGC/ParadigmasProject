@@ -327,6 +327,13 @@
                 : 'Ubicación no definida';
             var afinidad = Math.round((coincidencia.score || 0) * 100);
             li.textContent = coincidencia.tbperfilnombre + ' · ' + ubicacion + ' · afinidad ' + afinidad + '%';
+
+            var boton = document.createElement('a');
+            boton.className = 'btn btn-outline-primary btn-sm mt-1';
+            boton.href = 'index.php?vista=chat&con=' + encodeURIComponent(coincidencia.tbperfilid);
+            boton.textContent = 'Enviar mensaje';
+            li.appendChild(boton);
+
             lista.appendChild(li);
         });
         el.listaCoincidencias.appendChild(lista);
