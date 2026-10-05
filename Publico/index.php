@@ -18,7 +18,7 @@ $vistasPublicas = ['login', 'registro'];
 $vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos'];
 
 // Vistas exclusivas de cliente
-$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat'];
+$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades'];
 
 if (!in_array($vista, $vistasPublicas, true)) {
 
@@ -86,6 +86,9 @@ switch ($vista) {
         break;
     case 'chat':
         require_once APP_PATH . '/Vista/Cliente/chat.php';
+        break;
+    case 'comunidades':
+        require_once APP_PATH . '/Vista/Cliente/comunidades.php';
         break;
     case 'canciones':
         require_once APP_PATH . '/Vista/Admin/canciones.php';

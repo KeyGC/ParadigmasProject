@@ -1401,3 +1401,91 @@ CREATE TABLE IF NOT EXISTS `tbmensaje` (
   `tbmensajebloqueado` boolean NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`tbmensajeid`)
 );
+
+
+-- =====================================================================
+-- COMUNIDADES DE CHAT GRUPAL POR INTERES
+-- tbcomunidadcategoria: 'genero' | 'comida' | 'deporte'
+-- tbcomunidadreferenciaid: referencia polimorfica a tbgeneroid /
+-- tbtipocomidaid / tbtipodeporteid segun la categoria.
+-- Sin FKs, mismo criterio que el resto del esquema: la integridad se
+-- valida en PHP con prepared statements (patron tbeventoubicacion).
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS `tbcomunidad` (
+  `tbcomunidadid` int NOT NULL AUTO_INCREMENT,
+  `tbcomunidadcategoria` varchar(20) NOT NULL,
+  `tbcomunidadreferenciaid` int NOT NULL,
+  `tbcomunidadnombre` varchar(150) NOT NULL,
+  `tbcomunidadestado` boolean NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (`tbcomunidadid`),
+  UNIQUE KEY `uq_comunidad_categoria_ref` (`tbcomunidadcategoria`, `tbcomunidadreferenciaid`)
+);
+
+CREATE TABLE IF NOT EXISTS `tbcomunidadmensaje` (
+  `tbcomunidadmensajeid` int NOT NULL AUTO_INCREMENT,
+  `tbcomunidadid` int NOT NULL,
+  `tbperfilidemisor` int NOT NULL,
+  `tbcomunidadmensajetexto` text NOT NULL,
+  `tbcomunidadmensajefechahora` datetime NOT NULL,
+  `tbcomunidadmensajebloqueado` boolean NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (`tbcomunidadmensajeid`)
+);
+
+-- Una comunidad por cada genero, tipo de comida y tipo de deporte activo.
+-- INSERT IGNORE para que esta seccion sea re-ejecutable sin duplicar.
+INSERT IGNORE INTO `tbcomunidad` (`tbcomunidadcategoria`, `tbcomunidadreferenciaid`, `tbcomunidadnombre`) VALUES
+-- SEED GENERADO: 52 comunidades
+('genero', 1, 'Comunidad de Pop'),
+('genero', 2, 'Comunidad de Rock'),
+('genero', 3, 'Comunidad de Reggaetón'),
+('genero', 4, 'Comunidad de Salsa'),
+('genero', 5, 'Comunidad de Electrónica'),
+('genero', 6, 'Comunidad de Jazz'),
+('genero', 7, 'Comunidad de Hip Hop'),
+('genero', 8, 'Comunidad de Rap'),
+('genero', 9, 'Comunidad de Trap'),
+('genero', 10, 'Comunidad de R&B'),
+('genero', 11, 'Comunidad de Reggae'),
+('genero', 12, 'Comunidad de Country'),
+('genero', 13, 'Comunidad de Metal'),
+('genero', 14, 'Comunidad de Bachata'),
+('genero', 15, 'Comunidad de Merengue'),
+('genero', 16, 'Comunidad de Cumbia'),
+('genero', 17, 'Comunidad de Clásica'),
+('genero', 18, 'Comunidad de Funk'),
+('genero', 19, 'Comunidad de Punk'),
+('genero', 20, 'Comunidad de Indie'),
+('comida', 1, 'Comunidad de Mexicana'),
+('comida', 2, 'Comunidad de Italiana'),
+('comida', 3, 'Comunidad de Japonesa'),
+('comida', 4, 'Comunidad de China'),
+('comida', 5, 'Comunidad de Tailandesa'),
+('comida', 6, 'Comunidad de India'),
+('comida', 7, 'Comunidad de Mediterránea'),
+('comida', 8, 'Comunidad de Vegana'),
+('comida', 9, 'Comunidad de Postres'),
+('comida', 10, 'Comunidad de Comida rápida'),
+('comida', 11, 'Comunidad de Mariscos'),
+('comida', 12, 'Comunidad de Parrilla'),
+('comida', 13, 'Comunidad de Pizza'),
+('comida', 14, 'Comunidad de Café y brunch'),
+('comida', 15, 'Comunidad de Saludable'),
+('comida', 16, 'Comunidad de Costarricense'),
+('deporte', 1, 'Comunidad de Fútbol'),
+('deporte', 2, 'Comunidad de Baloncesto'),
+('deporte', 3, 'Comunidad de Yoga'),
+('deporte', 4, 'Comunidad de Ciclismo'),
+('deporte', 5, 'Comunidad de Running'),
+('deporte', 6, 'Comunidad de Artes marciales'),
+('deporte', 7, 'Comunidad de Natación'),
+('deporte', 8, 'Comunidad de Crossfit'),
+('deporte', 9, 'Comunidad de Senderismo'),
+('deporte', 10, 'Comunidad de Tenis'),
+('deporte', 11, 'Comunidad de Voleibol'),
+('deporte', 12, 'Comunidad de Entrenamiento de fuerza'),
+('deporte', 13, 'Comunidad de Baile'),
+('deporte', 14, 'Comunidad de Skateboarding'),
+('deporte', 15, 'Comunidad de Surf'),
+('deporte', 16, 'Comunidad de Escalada');
+
