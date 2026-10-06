@@ -123,13 +123,13 @@ class QdrantCliente
         return true;
     }
 
-    public function guardarVector($tbperfilid, array $vector, $hashdatos, array $payloadExtra = [])
+    public function guardarPunto($id, array $vector, array $payload = [])
     {
         $cuerpo = [
             'points' => [[
-                'id' => (int) $tbperfilid,
+                'id' => (int) $id,
                 'vector' => array_values(array_map('floatval', $vector)),
-                'payload' => array_merge(['hashdatos' => $hashdatos], $payloadExtra)
+                'payload' => $payload
             ]]
         ];
 
@@ -138,11 +138,55 @@ class QdrantCliente
         $status = $respuesta['datos']['status'] ?? null;
 
         if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
-            error_log("Qdrant: error al guardar vector en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+            error_log("Qdrant: error al guardar punto en '{$this->coleccion}' (status=" . json_encode($status) . ")");
             return false;
         }
 
         return true;
+    }
+
+    public function guardarPuntos(array $puntos)
+    {
+        if (empty($puntos)) {
+            return true;
+        }
+
+        $cuerpo = ['points' => []];
+
+        foreach ($puntos as $punto) {
+            if (!isset($punto['id'], $punto['vector'])) {
+                continue;
+            }
+            $cuerpo['points'][] = [
+                'id' => (int) $punto['id'],
+                'vector' => array_values(array_map('floatval', $punto['vector'])),
+                'payload' => $punto['payload'] ?? []
+            ];
+        }
+
+        if (empty($cuerpo['points'])) {
+            return true;
+        }
+
+        $respuesta = $this->ejecutar('PUT', '/collections/' . $this->coleccion . '/points', $cuerpo);
+
+        $status = $respuesta['datos']['status'] ?? null;
+
+        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al guardar lote en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+            return false;
+        }
+
+        return true;
+    }
+
+    public function guardarVector($tbperfilid, array $vector, $hashdatos, array $payloadExtra = [])
+    {
+        return $this->guardarPunto(
+            $tbperfilid,
+            $vector,
+            array_merge(['hashdatos' => $hashdatos], $payloadExtra)
+        );
     }
 
     public function obtenerPunto($tbperfilid)
@@ -185,15 +229,29 @@ class QdrantCliente
 
         $resultados = $respuesta['datos']['result'] ?? [];
 
+        if (!is_array($resultados)) {
+            return [];
+        }
+
         $perfiles = [];
         foreach ($resultados as $r) {
             if (!isset($r['id'])) {
                 continue;
             }
-            $perfiles[] = [
+            $fila = [
                 'tbperfilid' => (int) $r['id'],
-                'score' => (float) ($r['score'] ?? 0)
+                'score' => (float) ($r['score'] ?? 0),
+                'payload' => is_array($r['payload'] ?? null) ? $r['payload'] : []
             ];
+
+            // Atajo para consumidores que solo esperan metadatos planos
+            foreach ($fila['payload'] as $clave => $valor) {
+                if (!array_key_exists($clave, $fila)) {
+                    $fila[$clave] = $valor;
+                }
+            }
+
+            $perfiles[] = $fila;
         }
 
         return $perfiles;

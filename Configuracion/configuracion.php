@@ -18,5 +18,14 @@ define('BREVO_API_KEY', getenv('BREVO_API_KEY') ?: '');
 
 define('BIOMETRIA_UMBRAL', (float) (getenv('BIOMETRIA_UMBRAL') ?: 0.93));
 
+// Moderacion de mensajes: similitud TF-IDF/Coseno contra el dataset semilla.
+// 0.75 solo alcanza para coincidencias casi literales (ver notas del reporte).
+define('MODERACION_UMBRAL', (float) (getenv('MODERACION_UMBRAL') ?: 0.75));
+
+// Solo los bloqueos con confianza alta alimentan el aprendizaje incremental.
+define('MODERACION_UMBRAL_APRENDIZAJE', (float) (getenv('MODERACION_UMBRAL_APRENDIZAJE') ?: 0.90));
+
+define('MODERACION_TEXTO_BLOQUEADO', '[Mensaje bloqueado por contenido inapropiado]');
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';

@@ -1399,6 +1399,8 @@ CREATE TABLE IF NOT EXISTS `tbmensaje` (
   `tbmensajefechahora` datetime NOT NULL,
   `tbmensajeleido` boolean NOT NULL DEFAULT FALSE,
   `tbmensajebloqueado` boolean NOT NULL DEFAULT FALSE,
+  `tbmensajecategoria` varchar(20) DEFAULT NULL,
+  `tbmensajescore` decimal(6,4) DEFAULT NULL,
   PRIMARY KEY (`tbmensajeid`)
 );
 
@@ -1429,8 +1431,81 @@ CREATE TABLE IF NOT EXISTS `tbcomunidadmensaje` (
   `tbcomunidadmensajetexto` text NOT NULL,
   `tbcomunidadmensajefechahora` datetime NOT NULL,
   `tbcomunidadmensajebloqueado` boolean NOT NULL DEFAULT FALSE,
+  `tbcomunidadmensajecategoria` varchar(20) DEFAULT NULL,
+  `tbcomunidadmensajescore` decimal(6,4) DEFAULT NULL,
   PRIMARY KEY (`tbcomunidadmensajeid`)
 );
+
+-- =====================================================================
+-- MIGRACION DE MODERACION (re-ejecutable, idempotente)
+-- Las columnas de metadatos ya forman parte de los CREATE TABLE de arriba
+-- (bases nuevas). Para bases donde las tablas ya existian, el bloque ALTER
+-- de abajo agrega las columnas si faltan; correrlo dos veces no rompe nada.
+-- MySQL 8 no admite ADD COLUMN IF NOT EXISTS, por eso cada ALTER se
+-- protege con information_schema + PREPARE/EXECUTE.
+--
+-- tbmensajetexto guarda el texto ENMASCARADO cuando va bloqueado; el
+-- original nunca se persiste en MySQL (solo en el payload de Qdrant).
+-- =====================================================================
+
+SET @col := (
+  SELECT COUNT(*) FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbmensaje'
+    AND COLUMN_NAME = 'tbmensajecategoria'
+);
+SET @sql := IF(@col = 0,
+  'ALTER TABLE `tbmensaje` ADD COLUMN `tbmensajecategoria` varchar(20) DEFAULT NULL AFTER `tbmensajebloqueado`',
+  'DO 0');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @col := (
+  SELECT COUNT(*) FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbmensaje'
+    AND COLUMN_NAME = 'tbmensajescore'
+);
+SET @sql := IF(@col = 0,
+  'ALTER TABLE `tbmensaje` ADD COLUMN `tbmensajescore` decimal(6,4) DEFAULT NULL AFTER `tbmensajecategoria`',
+  'DO 0');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @col := (
+  SELECT COUNT(*) FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbcomunidadmensaje'
+    AND COLUMN_NAME = 'tbcomunidadmensajecategoria'
+);
+SET @sql := IF(@col = 0,
+  'ALTER TABLE `tbcomunidadmensaje` ADD COLUMN `tbcomunidadmensajecategoria` varchar(20) DEFAULT NULL AFTER `tbcomunidadmensajebloqueado`',
+  'DO 0');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @col := (
+  SELECT COUNT(*) FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbcomunidadmensaje'
+    AND COLUMN_NAME = 'tbcomunidadmensajescore'
+);
+SET @sql := IF(@col = 0,
+  'ALTER TABLE `tbcomunidadmensaje` ADD COLUMN `tbcomunidadmensajescore` decimal(6,4) DEFAULT NULL AFTER `tbcomunidadmensajecategoria`',
+  'DO 0');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- Verificacion: lista las 4 columnas de moderacion (2 por tabla).
+SELECT TABLE_NAME, COLUMN_NAME, COLUMN_TYPE
+FROM information_schema.COLUMNS
+WHERE TABLE_SCHEMA = DATABASE()
+  AND TABLE_NAME IN ('tbmensaje', 'tbcomunidadmensaje')
+  AND COLUMN_NAME IN (
+    'tbmensajecategoria', 'tbmensajescore',
+    'tbcomunidadmensajecategoria', 'tbcomunidadmensajescore'
+  )
+ORDER BY TABLE_NAME, COLUMN_NAME;
 
 -- Una comunidad por cada genero, tipo de comida y tipo de deporte activo.
 -- INSERT IGNORE para que esta seccion sea re-ejecutable sin duplicar.

@@ -1,12 +1,15 @@
 <?php
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/comunidadmodelo.php';
+require_once __DIR__ . '/moderacionmodelo.php';
 
 class ComunidadMensajeModelo
 {
     private $conexion;
 
     private $comunidadModelo;
+
+    private $moderacionModelo;
 
     private $longitudMaxima = 1000;
 
@@ -16,6 +19,7 @@ class ComunidadMensajeModelo
     {
         $this->conexion = Basedatos::conectar();
         $this->comunidadModelo = new ComunidadModelo();
+        $this->moderacionModelo = new ModeracionModelo();
     }
 
     private function perfilExisteYActivo($perfilId)
@@ -55,17 +59,67 @@ class ComunidadMensajeModelo
             return ['exito' => false, 'mensaje' => 'El perfil no existe o está inactivo.'];
         }
 
+        // Moderacion antes de tocar la base de datos. Con fail-closed, si no hay
+        // veredicto el mensaje no se guarda: se registra bloqueado y enmascarado.
+        $moderacion = $this->moderacionModelo->evaluar($texto);
+
         $ahora = date('Y-m-d H:i:s');
+
+        if (!$moderacion['exito']) {
+            error_log('Moderacion: envio rechazado en comunidad ' . $comunidadId . ' - ' . $moderacion['mensaje']);
+
+            return [
+                'exito' => true,
+                'data' => [
+                    'tbcomunidadmensajeid' => null,
+                    'tbcomunidadid' => $comunidadId,
+                    'tbperfilidemisor' => $emisorId,
+                    'tbperfilnombre' => null,
+                    'tbcomunidadmensajetexto' => $moderacion['textoEnmascarado'],
+                    'tbcomunidadmensajefechahora' => $ahora,
+                    'tbcomunidadmensajebloqueado' => true,
+                    'tbcomunidadmensajecategoria' => $moderacion['categoria'],
+                    'tbcomunidadmensajescore' => $moderacion['score'],
+                    'moderacionDisponible' => false
+                ]
+            ];
+        }
+
+        $bloqueado = (bool) $moderacion['bloqueado'];
+        $categoria = $moderacion['categoria'];
+        $score = (float) $moderacion['score'];
+
+        // Solo los bloqueos con confianza alta alimentan el aprendizaje.
+        if ($bloqueado && $score > MODERACION_UMBRAL_APRENDIZAJE && $categoria !== null) {
+            $aprendido = $this->moderacionModelo->aprenderDeConfirmado($texto, $categoria);
+
+            if (!$aprendido['exito']) {
+                error_log('Moderacion: no se pudo aprender el bloqueado - ' . $aprendido['mensaje']);
+            }
+        }
+
+        $textoGuardado = $bloqueado ? $moderacion['textoEnmascarado'] : $texto;
+
+        // Categoria y score solo son significativos cuando la moderacion
+        // decidio el bloqueo; si no, se guardan NULL para no etiquetar
+        // mensajes legitimos con la categoria del vecino mas cercano.
+        $categoriaGuardada = $bloqueado ? $categoria : null;
+        $scoreGuardado = $bloqueado ? $score : null;
 
         $sql = "INSERT INTO tbcomunidadmensaje
                     (tbcomunidadid, tbperfilidemisor, tbcomunidadmensajetexto,
-                     tbcomunidadmensajefechahora, tbcomunidadmensajebloqueado)
-                VALUES (:comunidadId, :emisor, :texto, :fecha, FALSE)";
+                     tbcomunidadmensajefechahora, tbcomunidadmensajebloqueado,
+                     tbcomunidadmensajecategoria, tbcomunidadmensajescore)
+                VALUES (:comunidadId, :emisor, :texto, :fecha, :bloqueado, :categoria, :score)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':comunidadId', $comunidadId, PDO::PARAM_INT);
         $stmt->bindValue(':emisor', $emisorId, PDO::PARAM_INT);
-        $stmt->bindValue(':texto', $texto);
+        $stmt->bindValue(':texto', $textoGuardado);
         $stmt->bindValue(':fecha', $ahora);
+        $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
+        // Sin esto PDO emulado podria guardar '' en vez de NULL.
+        $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':score', $scoreGuardado);
 
         if (!$stmt->execute()) {
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
@@ -86,9 +140,11 @@ class ComunidadMensajeModelo
                 'tbcomunidadid' => $comunidadId,
                 'tbperfilidemisor' => $emisorId,
                 'tbperfilnombre' => $perfilNombre !== false ? $perfilNombre : null,
-                'tbcomunidadmensajetexto' => $texto,
+                'tbcomunidadmensajetexto' => $textoGuardado,
                 'tbcomunidadmensajefechahora' => $ahora,
-                'tbcomunidadmensajebloqueado' => false
+                'tbcomunidadmensajebloqueado' => $bloqueado,
+                'tbcomunidadmensajecategoria' => $categoriaGuardada,
+                'tbcomunidadmensajescore' => $scoreGuardado
             ]
         ];
     }
@@ -106,10 +162,14 @@ class ComunidadMensajeModelo
         // invertida para entregarlos en orden cronologico.
         $sql = "SELECT m.tbcomunidadmensajeid, m.tbcomunidadid, m.tbperfilidemisor,
                        m.tbcomunidadmensajetexto, m.tbcomunidadmensajefechahora,
+                       m.tbcomunidadmensajebloqueado, m.tbcomunidadmensajecategoria,
+                       m.tbcomunidadmensajescore,
                        p.tbperfilnombre
                 FROM (
                     SELECT x.tbcomunidadmensajeid, x.tbcomunidadid, x.tbperfilidemisor,
-                           x.tbcomunidadmensajetexto, x.tbcomunidadmensajefechahora
+                           x.tbcomunidadmensajetexto, x.tbcomunidadmensajefechahora,
+                           x.tbcomunidadmensajebloqueado, x.tbcomunidadmensajecategoria,
+                           x.tbcomunidadmensajescore
                     FROM tbcomunidadmensaje x
                     WHERE x.tbcomunidadid = :comunidadId AND x.tbcomunidadmensajeid > :desdeId
                     ORDER BY x.tbcomunidadmensajeid DESC
@@ -125,13 +185,20 @@ class ComunidadMensajeModelo
 
         $mensajes = [];
         foreach ($stmt->fetchAll() as $fila) {
+            $bloqueado = (bool) $fila['tbcomunidadmensajebloqueado'];
+
             $mensajes[] = [
                 'tbcomunidadmensajeid' => (int) $fila['tbcomunidadmensajeid'],
                 'tbcomunidadid' => (int) $fila['tbcomunidadid'],
                 'tbperfilidemisor' => (int) $fila['tbperfilidemisor'],
                 'tbperfilnombre' => $fila['tbperfilnombre'],
-                'tbcomunidadmensajetexto' => $fila['tbcomunidadmensajetexto'],
-                'tbcomunidadmensajefechahora' => $fila['tbcomunidadmensajefechahora']
+                // Doble barrera: el texto ya se guardo enmascarado y aun asi se
+                // enmascara al leer, para que ningun registro legacy filtre el original.
+                'tbcomunidadmensajetexto' => $bloqueado ? MODERACION_TEXTO_BLOQUEADO : $fila['tbcomunidadmensajetexto'],
+                'tbcomunidadmensajefechahora' => $fila['tbcomunidadmensajefechahora'],
+                'tbcomunidadmensajebloqueado' => $bloqueado,
+                'tbcomunidadmensajecategoria' => $fila['tbcomunidadmensajecategoria'],
+                'tbcomunidadmensajescore' => $fila['tbcomunidadmensajescore'] !== null ? (float) $fila['tbcomunidadmensajescore'] : null
             ];
         }
 
