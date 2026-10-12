@@ -28,8 +28,11 @@ $esVistaPerfiles = in_array($vistaActual, ['perfiles', 'perfilaccesos', 'perfilr
                 </li>
 
                 <li class="nav-item">
-    <a class="nav-link <?= $vistaActual === 'eventos' ? 'activo' : '' ?>" href="index.php?vista=eventos">Eventos</a>
-</li>
+                    <a class="nav-link <?= $vistaActual === 'eventos' ? 'activo' : '' ?>" href="index.php?vista=eventos">Eventos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'analisisdiscurso' ? 'activo' : '' ?>" href="index.php?vista=analisisdiscurso">Análisis de Discurso</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">

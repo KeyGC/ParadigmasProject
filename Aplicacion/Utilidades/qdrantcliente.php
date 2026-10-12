@@ -83,7 +83,9 @@ class QdrantCliente
             return false;
         }
 
-        if (!empty($existe['datos']['result'])) {
+        $noExiste = (int) $existe['codigo'] === 404;
+
+        if (!$noExiste && !empty($existe['datos']['result'])) {
             $tamanoActual = $existe['datos']['result']['vectors']['size']
                 ?? $existe['datos']['result']['config']['params']['vectors']['size']
                 ?? null;
@@ -94,7 +96,7 @@ class QdrantCliente
 
             $borrado = $this->ejecutar('DELETE', '/collections/' . $this->coleccion);
 
-            if ($borrado['error']
+            if ($borrado['error'] || (int) $borrado['codigo'] >= 400
                 || (($borrado['datos']['result'] ?? false) !== true
                     && ($borrado['datos']['status'] ?? '') !== 'ok')) {
                 return false;
@@ -114,10 +116,34 @@ class QdrantCliente
             return false;
         }
 
+        if ((int) $crear['codigo'] >= 400 && (int) $crear['codigo'] !== 409) {
+            error_log("Qdrant: rechazó la creación de '{$this->coleccion}' (http={$crear['codigo']})");
+            return false;
+        }
+
         if (($crear['datos']['status'] ?? '') === 'error') {
             $verificar = $this->ejecutar('GET', '/collections/' . $this->coleccion);
 
-            return !$verificar['error'] && !empty($verificar['datos']['result']);
+            return !$verificar['error']
+                && !empty($verificar['datos']['result'])
+                && (int) $verificar['codigo'] < 400;
+        }
+
+        return true;
+    }
+
+    public function crearIndice($campo, $esquema = 'keyword')
+    {
+        $cuerpo = [
+            'field_name' => (string) $campo,
+            'field_schema' => $esquema
+        ];
+
+        $respuesta = $this->ejecutar('PUT', '/collections/' . $this->coleccion . '/index', $cuerpo);
+
+        if ($respuesta['error'] || (int) $respuesta['codigo'] >= 400) {
+            error_log("Qdrant: no se pudo crear índice '{$campo}' en '{$this->coleccion}' (http={$respuesta['codigo']})");
+            return false;
         }
 
         return true;
@@ -137,8 +163,9 @@ class QdrantCliente
 
         $status = $respuesta['datos']['status'] ?? null;
 
-        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
-            error_log("Qdrant: error al guardar punto en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+        if ($respuesta['error'] || (int) $respuesta['codigo'] >= 400
+            || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al guardar punto en '{$this->coleccion}' (http={$respuesta['codigo']}, status=" . json_encode($status) . ")");
             return false;
         }
 
@@ -172,8 +199,9 @@ class QdrantCliente
 
         $status = $respuesta['datos']['status'] ?? null;
 
-        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
-            error_log("Qdrant: error al guardar lote en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+        if ($respuesta['error'] || (int) $respuesta['codigo'] >= 400
+            || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al guardar lote en '{$this->coleccion}' (http={$respuesta['codigo']}, status=" . json_encode($status) . ")");
             return false;
         }
 
@@ -193,7 +221,7 @@ class QdrantCliente
     {
         $respuesta = $this->ejecutar('GET', '/collections/' . $this->coleccion . '/points/' . (int) $tbperfilid);
 
-        if ($respuesta['error']) {
+        if ($respuesta['error'] || (int) $respuesta['codigo'] >= 300) {
             return null;
         }
 
@@ -205,7 +233,7 @@ class QdrantCliente
         return $resultado;
     }
 
-    public function buscarSimilares($vector, $limite = 5, $scoreThreshold = null)
+    public function buscarSimilares($vector, $limite = 5, $scoreThreshold = null, $filtro = null)
     {
         $cuerpo = [
             'vector' => array_values(array_map('floatval', $vector)),
@@ -218,12 +246,17 @@ class QdrantCliente
             $cuerpo['score_threshold'] = (float) $scoreThreshold;
         }
 
+        if (is_array($filtro) && !empty($filtro)) {
+            $cuerpo['filter'] = $filtro;
+        }
+
         $respuesta = $this->ejecutar('POST', '/collections/' . $this->coleccion . '/points/search', $cuerpo);
 
         $status = $respuesta['datos']['status'] ?? null;
 
-        if ($respuesta['error'] || $status === 'error' || (is_array($status) && !empty($status['error']))) {
-            error_log("Qdrant: error al buscar en '{$this->coleccion}' (status=" . json_encode($status) . ")");
+        if ($respuesta['error'] || (int) $respuesta['codigo'] >= 400
+            || $status === 'error' || (is_array($status) && !empty($status['error']))) {
+            error_log("Qdrant: error al buscar en '{$this->coleccion}' (http={$respuesta['codigo']}, status=" . json_encode($status) . ")");
             return null;
         }
 

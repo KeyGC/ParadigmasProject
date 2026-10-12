@@ -31,10 +31,19 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                 <li class="nav-item">
                     <a class="nav-link <?= $vistaActual === 'comunidades' ? 'activo' : '' ?>" href="index.php?vista=comunidades">Comunidades</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'grupos' ? 'activo' : '' ?>" href="index.php?vista=grupos">Grupos</a>
+                </li>
             </ul>
 
             <?php if ($usuarioActivo): ?>
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link nav-campana position-relative" href="index.php?vista=notificaciones" aria-label="Notificaciones">
+                            <span aria-hidden="true">&#128276;</span>
+                            <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle d-none" id="campanaBadge">0</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="usuario-pill" href="index.php?vista=miperfil" style="text-decoration:none;">
                             <?= htmlspecialchars($usuarioActivo) ?>
@@ -49,3 +58,4 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
     </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/notificaciones.js"></script>

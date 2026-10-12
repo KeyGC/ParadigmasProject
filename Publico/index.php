@@ -15,10 +15,10 @@ if ($vista === 'logout') {
 $vistasPublicas = ['login', 'registro'];
 
 // Vistas exclusivas de admin
-$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos'];
+$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos', 'analisisdiscurso'];
 
 // Vistas exclusivas de cliente
-$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades'];
+$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos'];
 
 if (!in_array($vista, $vistasPublicas, true)) {
 
@@ -90,6 +90,12 @@ switch ($vista) {
     case 'comunidades':
         require_once APP_PATH . '/Vista/Cliente/comunidades.php';
         break;
+    case 'notificaciones':
+        require_once APP_PATH . '/Vista/Cliente/notificaciones.php';
+        break;
+    case 'grupos':
+        require_once APP_PATH . '/Vista/Cliente/grupos.php';
+        break;
     case 'canciones':
         require_once APP_PATH . '/Vista/Admin/canciones.php';
         break;
@@ -98,5 +104,8 @@ switch ($vista) {
         break;
     case 'eventos':
         require_once APP_PATH . '/Vista/Admin/eventos.php';
+        break;
+    case 'analisisdiscurso':
+        require_once APP_PATH . '/Vista/Admin/analisisdiscurso.php';
         break;
 }

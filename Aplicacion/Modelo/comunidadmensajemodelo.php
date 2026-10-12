@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/comunidadmodelo.php';
 require_once __DIR__ . '/moderacionmodelo.php';
+require_once __DIR__ . '/perfiltemamodelo.php';
 
 class ComunidadMensajeModelo
 {
@@ -10,6 +11,8 @@ class ComunidadMensajeModelo
     private $comunidadModelo;
 
     private $moderacionModelo;
+
+    private $perfilTemaModelo;
 
     private $longitudMaxima = 1000;
 
@@ -20,6 +23,7 @@ class ComunidadMensajeModelo
         $this->conexion = Basedatos::conectar();
         $this->comunidadModelo = new ComunidadModelo();
         $this->moderacionModelo = new ModeracionModelo();
+        $this->perfilTemaModelo = new PerfilTemaModelo();
     }
 
     private function perfilExisteYActivo($perfilId)
@@ -51,7 +55,9 @@ class ComunidadMensajeModelo
             return ['exito' => false, 'mensaje' => "El mensaje supera los {$this->longitudMaxima} caracteres."];
         }
 
-        if (!$this->comunidadModelo->getComunidadPorId($comunidadId)['exito']) {
+        $comunidad = $this->comunidadModelo->getComunidadPorId($comunidadId);
+
+        if (!$comunidad['exito']) {
             return ['exito' => false, 'mensaje' => 'La comunidad no existe o está inactiva.'];
         }
 
@@ -133,6 +139,22 @@ class ComunidadMensajeModelo
         $stmtNombre->execute();
         $perfilNombre = $stmtNombre->fetchColumn();
 
+        // Senales de afinidad: se registran despues del INSERT y nunca en la
+        // rama fail-closed (que retorna antes). Fail-open. Participar en la
+        // sala suma el tema de la sala ademas de lo que el texto clasifique.
+        $datosComunidad = $comunidad['data'];
+        $temaSala = preg_replace('/^Comunidad de\s+/iu', '', (string) $datosComunidad['tbcomunidadnombre']);
+
+        $this->registrarSenalesTema(
+            $emisorId,
+            $bloqueado,
+            $categoria,
+            $texto,
+            'comunidad',
+            $temaSala,
+            $datosComunidad['tbcomunidadcategoria']
+        );
+
         return [
             'exito' => true,
             'data' => [
@@ -203,5 +225,26 @@ class ComunidadMensajeModelo
         }
 
         return ['exito' => true, 'data' => $mensajes];
+    }
+
+    private function registrarSenalesTema($perfilId, $bloqueado, $categoria, $texto, $origen, $temaSala = null, $categoriaSala = null)
+    {
+        try {
+            $registro = $this->perfilTemaModelo->registrarDesdeMensaje(
+                $perfilId,
+                $bloqueado,
+                $categoria,
+                $texto,
+                $origen,
+                $temaSala,
+                $categoriaSala
+            );
+
+            if (!$registro['exito']) {
+                error_log('Afinidad: no se registro la senal - ' . ($registro['mensaje'] ?? 'desconocido'));
+            }
+        } catch (Throwable $e) {
+            error_log('Afinidad: excepcion al registrar senal - ' . $e->getMessage());
+        }
     }
 }

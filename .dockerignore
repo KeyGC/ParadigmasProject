@@ -13,3 +13,6 @@ Comando para Compilar.txt
 # Pruebas y documentación (solo desarrollo/local)
 Pruebas
 Documentación
+
+# Marcador de throttle del modulo de afinidad (no debe ir al contenedor)
+BaseDatos/Temas/.afinidad_ultima

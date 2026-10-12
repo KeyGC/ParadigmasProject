@@ -25,7 +25,9 @@
         ultimoId: 0,
         timer: null,
         consultando: false,
-        enviando: false
+        enviando: false,
+        vistos: {},
+        cargandoConversaciones: false
     };
 
     function consultar(params) {
@@ -116,8 +118,19 @@
         });
     }
 
+    function claveMensaje(dato) {
+        if (dato.tbmensajeid !== null && dato.tbmensajeid !== undefined) {
+            return 'id:' + dato.tbmensajeid;
+        }
+        return 'bloqueado:' + (dato.tbmensajetexto || '') + ':' + (dato.tbmensajefechahora || '');
+    }
+
     function agregarMensaje(dato) {
         if (!el.mensajes) return;
+
+        var clave = claveMensaje(dato);
+        if (estado.vistos[clave]) return;
+        estado.vistos[clave] = true;
 
         var fila = document.createElement('div');
         fila.className = 'chat-fila ' + (dato.tbperfilidemisor === perfilId ? 'mía' : 'otra');
@@ -158,11 +171,16 @@
         if (document.hidden) return;
         estado.consultando = true;
 
+        var conversacionId = estado.activa.tbconversacionid;
+
         consultar({
             accion: 'getMensajesNuevos',
-            conversacionId: estado.activa.tbconversacionid,
+            conversacionId: conversacionId,
             desdeId: estado.ultimoId
         }).then(function (respuesta) {
+            if (!estado.activa || estado.activa.tbconversacionid !== conversacionId) {
+                return;
+            }
             if (!respuesta.exito) {
                 mensaje(respuesta.mensaje || 'No se pudieron actualizar los mensajes.');
                 return;
@@ -172,6 +190,9 @@
             if (nuevos.length === 0) return;
 
             nuevos.forEach(function (dato) {
+                if (dato.tbmensajeid && dato.tbmensajeid <= estado.ultimoId) {
+                    return;
+                }
                 agregarMensaje(dato);
                 if (dato.tbmensajeid > estado.ultimoId) {
                     estado.ultimoId = dato.tbmensajeid;
@@ -196,6 +217,9 @@
     }
 
     function cargarConversaciones() {
+        if (estado.cargandoConversaciones) return Promise.resolve();
+        estado.cargandoConversaciones = true;
+
         return consultar({ accion: 'getConversaciones' })
             .then(function (respuesta) {
                 if (!respuesta.exito) {
@@ -207,6 +231,9 @@
             })
             .catch(function () {
                 mensaje('Sin conexión con el servidor.');
+            })
+            .then(function () {
+                estado.cargandoConversaciones = false;
             });
     }
 
@@ -214,6 +241,7 @@
         estado.activa = conversacion;
         estado.ultimoId = 0;
         estado.consultando = false;
+        estado.vistos = {};
 
         if (el.nombre) {
             el.nombre.textContent = conversacion.tbperfilnombreotro
@@ -225,11 +253,16 @@
         if (el.texto) el.texto.focus();
         pintarConversaciones();
 
+        var conversacionId = conversacion.tbconversacionid;
+
         consultar({
             accion: 'getMensajesNuevos',
-            conversacionId: conversacion.tbconversacionid,
+            conversacionId: conversacionId,
             desdeId: 0
         }).then(function (respuesta) {
+            if (!estado.activa || estado.activa.tbconversacionid !== conversacionId) {
+                return;
+            }
             if (!respuesta.exito) {
                 mensaje(respuesta.mensaje || 'No se pudieron cargar los mensajes.');
                 return;
@@ -279,7 +312,7 @@
         if (texto === '') return;
 
         estado.enviando = true;
-        if (el.enviar) el.enviar.disabled = true;
+        activarEnvio(false);
 
         enviar({
             accion: 'enviarMensaje',

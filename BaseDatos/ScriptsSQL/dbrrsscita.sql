@@ -1564,3 +1564,112 @@ INSERT IGNORE INTO `tbcomunidad` (`tbcomunidadcategoria`, `tbcomunidadreferencia
 ('deporte', 15, 'Comunidad de Surf'),
 ('deporte', 16, 'Comunidad de Escalada');
 
+-- =====================================================================
+-- MODULO DE AFINIDAD TEMATICA (re-ejecutable, idempotente)
+-- Detecta perfiles que hablan de los mismos temas (genero/comida/deporte),
+-- los notifica y, con 2+ aceptaciones, crea un grupo de chat.
+-- Sin llaves foraneas (convencion del proyecto).
+-- =====================================================================
+
+-- Senales tematicas por perfil. Una fila por (perfil, tipo, categoria,
+-- tema, origen): tipo 'bueno' guarda temas de interes; tipo 'malo' guarda
+-- categorias de moderacion (drogas/sexual/violencia) con tema ''.
+-- `origen` distingue si la senal vino de una comunidad o de un chat.
+CREATE TABLE IF NOT EXISTS `tbperfiltema` (
+  `tbperfiltemaid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbperfiltematipo` varchar(10) NOT NULL,
+  `tbperfiltemacategoria` varchar(20) NOT NULL,
+  `tbperfiltematema` varchar(150) NOT NULL DEFAULT '',
+  `tbperfiltemaorigen` varchar(15) NOT NULL,
+  `tbperfiltemacount` int NOT NULL DEFAULT 0,
+  `tbperfiltemafechaultima` datetime NOT NULL,
+  PRIMARY KEY (`tbperfiltemaid`),
+  UNIQUE KEY `uq_perfiltema` (`tbperfilid`, `tbperfiltematipo`, `tbperfiltemacategoria`, `tbperfiltematema`, `tbperfiltemaorigen`),
+  KEY `idx_perfiltema_tema` (`tbperfiltematipo`, `tbperfiltemacategoria`, `tbperfiltematema`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Estado de control del modulo de afinidad. Reemplaza al marcador de archivo
+-- BaseDatos/Temas/.afinidad_ultima (no escribible en el contenedor y perdido
+-- al reiniciar). Fila unica id=1: marca de la ultima ejecucion de generar().
+CREATE TABLE IF NOT EXISTS `tbafinidadcontrol` (
+  `tbafinidadcontrolid` int NOT NULL,
+  `tbafinidadcontrolultimageneracion` datetime DEFAULT NULL,
+  `tbafinidadcontrolfechaactualizacion` datetime DEFAULT NULL,
+  PRIMARY KEY (`tbafinidadcontrolid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO `tbafinidadcontrol` (`tbafinidadcontrolid`) VALUES (1);
+
+-- Cohorte de afinidad por (tipo, categoria, tema). `origen` es 'chat' si
+-- CUALQUIER senal contribuyente vino de chats individuales; entonces la API
+-- oculta los nombres de los demas hasta que el perfil acepte. El estado
+-- 'cerrada' es solo desactivacion por admin; quien acepte despues entra al
+-- grupo ya existente. Las fechas las escribe PHP (America/Costa_Rica).
+CREATE TABLE IF NOT EXISTS `tbafinidad` (
+  `tbafinidadid` int NOT NULL AUTO_INCREMENT,
+  `tbafinidadtipo` varchar(10) NOT NULL,
+  `tbafinidadcategoria` varchar(20) NOT NULL,
+  `tbafinidadtema` varchar(150) NOT NULL DEFAULT '',
+  `tbafinidadorigen` varchar(15) NOT NULL,
+  `tbafinidadestado` varchar(12) NOT NULL DEFAULT 'abierta',
+  `tbafinidadfechacreacion` datetime NOT NULL,
+  `tbafinidadfechaactualizacion` datetime NOT NULL,
+  PRIMARY KEY (`tbafinidadid`),
+  UNIQUE KEY `uq_afinidad` (`tbafinidadtipo`, `tbafinidadcategoria`, `tbafinidadtema`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Miembros propuestos/dentro de una cohorte de afinidad.
+CREATE TABLE IF NOT EXISTS `tbafinidadmiembro` (
+  `tbafinidadmiembroid` int NOT NULL AUTO_INCREMENT,
+  `tbafinidadid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbafinidadmiembroestado` varchar(12) NOT NULL DEFAULT 'pendiente',
+  `tbafinidadmiembrofechapropuesta` datetime NOT NULL,
+  `tbafinidadmiembrofecharespuesta` datetime DEFAULT NULL,
+  PRIMARY KEY (`tbafinidadmiembroid`),
+  UNIQUE KEY `uq_afinidadmiembro` (`tbafinidadid`, `tbperfilid`),
+  KEY `idx_afinidadmiembro_perfil` (`tbperfilid`, `tbafinidadmiembroestado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Grupo de chat creado cuando una cohorte acumula 2+ aceptaciones.
+CREATE TABLE IF NOT EXISTS `tbgrupo` (
+  `tbgrupoid` int NOT NULL AUTO_INCREMENT,
+  `tbafinidadid` int NOT NULL,
+  `tbgrupocategoria` varchar(20) NOT NULL,
+  `tbgrupotema` varchar(150) NOT NULL DEFAULT '',
+  `tbgrupoorigen` varchar(15) NOT NULL,
+  `tbgruponombre` varchar(180) NOT NULL,
+  `tbgrupoestado` varchar(12) NOT NULL DEFAULT 'activo',
+  `tbgrupofechacreacion` datetime NOT NULL,
+  PRIMARY KEY (`tbgrupoid`),
+  UNIQUE KEY `uq_grupo_afinidad` (`tbafinidadid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Miembros del grupo y cursor de lectura para no-leidos.
+CREATE TABLE IF NOT EXISTS `tbgrupomiembro` (
+  `tbgrupomiembroid` int NOT NULL AUTO_INCREMENT,
+  `tbgrupoid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbgrupomiembrofechaingreso` datetime NOT NULL,
+  `tbgrupomiembroultimomensajeid` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`tbgrupomiembroid`),
+  UNIQUE KEY `uq_grupomiembro` (`tbgrupoid`, `tbperfilid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Mensajes del grupo. Sin marca de leido por usuario: los no-leidos se
+-- calculan con tbgrupomiembroultimomensajeid. El texto bloqueado se guarda
+-- enmascarado y nunca se persiste el original.
+CREATE TABLE IF NOT EXISTS `tbgrupomensaje` (
+  `tbgrupomensajeid` int NOT NULL AUTO_INCREMENT,
+  `tbgrupoid` int NOT NULL,
+  `tbperfilidemisor` int NOT NULL,
+  `tbgrupomensajetexto` text NOT NULL,
+  `tbgrupomensajefechahora` datetime NOT NULL,
+  `tbgrupomensajebloqueado` tinyint(1) NOT NULL DEFAULT 0,
+  `tbgrupomensajecategoria` varchar(20) DEFAULT NULL,
+  `tbgrupomensajescore` decimal(6,4) DEFAULT NULL,
+  PRIMARY KEY (`tbgrupomensajeid`),
+  KEY `idx_grupomensaje_grupo` (`tbgrupoid`, `tbgrupomensajeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

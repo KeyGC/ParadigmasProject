@@ -59,7 +59,130 @@ class ModeracionModelo
         return defined('Rubix\\ML\\VERSION') ? Rubix\ML\VERSION : 'desconocida';
     }
 
-    public static function construirTransformadores()
+    private static function sinonimos()
+    {
+        static $cargados = null;
+
+        if ($cargados !== null) {
+            return $cargados;
+        }
+
+        $archivo = __DIR__ . '/../Utilidades/sinonimosmoderacion.php';
+
+        $cargados = is_file($archivo) ? (require $archivo) : [];
+
+        return is_array($cargados) ? $cargados : [];
+    }
+
+    private static function normalizarSinonimos(string $texto): string
+    {
+        $sinonimos = self::sinonimos();
+
+        $texto = mb_strtolower(trim($texto));
+
+        if ($texto === '') {
+            return '';
+        }
+
+        if (empty($sinonimos)) {
+            return $texto;
+        }
+
+        $palabras = [];
+
+        foreach ($sinonimos as $grupo => $mapa) {
+            if ($grupo === 'frases' || !is_array($mapa)) {
+                continue;
+            }
+
+            foreach ($mapa as $variante => $canonico) {
+                $palabras[(string) $variante] = (string) $canonico;
+            }
+        }
+
+        $patron = '/[^\p{L}\p{N}\'_-]+/u';
+
+        $tokens = preg_split($patron, $texto, -1, PREG_SPLIT_NO_EMPTY);
+
+        $resultado = [];
+        $cantidad = count($tokens);
+
+        for ($i = 0; $i < $cantidad; $i++) {
+            $reemplazado = false;
+
+            if (!empty($sinonimos['frases'])) {
+                foreach ($sinonimos['frases'] as $frasesCategoria) {
+                    foreach ($frasesCategoria as $frase => $canonico) {
+                        $partes = preg_split($patron, mb_strtolower((string) $frase), -1, PREG_SPLIT_NO_EMPTY);
+                        $largo = count($partes);
+
+                        if ($largo < 2 || $i + $largo > $cantidad) {
+                            continue;
+                        }
+
+                        $coincide = true;
+
+                        for ($j = 0; $j < $largo; $j++) {
+                            if ($tokens[$i + $j] !== $partes[$j]) {
+                                $coincide = false;
+                                break;
+                            }
+                        }
+
+                        if ($coincide) {
+                            $resultado[] = (string) $canonico;
+                            $i += $largo - 1;
+                            $reemplazado = true;
+                            break;
+                        }
+                    }
+
+                    if ($reemplazado) {
+                        break;
+                    }
+                }
+            }
+
+            if (!$reemplazado) {
+                $resultado[] = isset($palabras[$tokens[$i]]) ? $palabras[$tokens[$i]] : $tokens[$i];
+            }
+        }
+
+        return implode(' ', $resultado);
+    }
+
+    private static function statsSinonimos()
+    {
+        $sinonimos = self::sinonimos();
+
+        if (empty($sinonimos)) {
+            return null;
+        }
+
+        $variantes = 0;
+        $frases = 0;
+
+        foreach ($sinonimos as $grupo => $mapa) {
+            if ($grupo === 'frases') {
+                foreach ($mapa as $frasesCategoria) {
+                    $frases += count($frasesCategoria);
+                }
+                continue;
+            }
+
+            if (is_array($mapa)) {
+                $variantes += count($mapa);
+            }
+        }
+
+        return [
+            'variantes' => $variantes,
+            'frases' => $frases,
+            'categorias' => array_values(array_filter(array_keys($sinonimos), fn($g) => $g !== 'frases'))
+        ];
+    }
+
+    public static function construirTransformadores(bool $normalizar = true)
     {
         $ruta = self::artefactoRutaCsv();
 
@@ -101,7 +224,7 @@ class ModeracionModelo
         }
 
         $dataset = new Rubix\ML\Datasets\Labeled(
-            array_map(fn($t) => [$t], $textos),
+            array_map(fn($t) => $normalizar ? [self::normalizarSinonimos($t)] : [$t], $textos),
             $categorias
         );
 
@@ -245,7 +368,7 @@ class ModeracionModelo
 
     private function vectorizarCon($artefacto, $texto)
     {
-        $muestras = [[(string) $texto]];
+        $muestras = [[self::normalizarSinonimos((string) $texto)]];
 
         $artefacto['vectorizador']->transform($muestras);
         $artefacto['tfidf']->transform($muestras);
@@ -287,7 +410,7 @@ class ModeracionModelo
         $muestras = [];
 
         foreach ($textos as $texto) {
-            $muestras[] = [(string) $texto];
+            $muestras[] = [self::normalizarSinonimos((string) $texto)];
         }
 
         if (empty($muestras)) {
@@ -447,7 +570,8 @@ class ModeracionModelo
             'coleccion' => self::COLECCION,
             'umbral' => MODERACION_UMBRAL,
             'umbralAprendizaje' => MODERACION_UMBRAL_APRENDIZAJE,
-            'textoBloqueado' => MODERACION_TEXTO_BLOQUEADO
+            'textoBloqueado' => MODERACION_TEXTO_BLOQUEADO,
+            'sinonimos' => self::statsSinonimos()
         ];
 
         $carga = self::cargarArtefacto();

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/conversacionmodelo.php';
 require_once __DIR__ . '/moderacionmodelo.php';
+require_once __DIR__ . '/perfiltemamodelo.php';
 
 class MensajeModelo
 {
@@ -11,6 +12,8 @@ class MensajeModelo
 
     private $moderacionModelo;
 
+    private $perfilTemaModelo;
+
     private $longitudMaxima = 1000;
 
     public function __construct()
@@ -18,6 +21,7 @@ class MensajeModelo
         $this->conexion = Basedatos::conectar();
         $this->conversacionModelo = new ConversacionModelo();
         $this->moderacionModelo = new ModeracionModelo();
+        $this->perfilTemaModelo = new PerfilTemaModelo();
     }
 
     public function enviarMensaje($conversacionId, $emisorId, $texto)
@@ -110,10 +114,17 @@ class MensajeModelo
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
         }
 
+        $nuevoId = (int) $this->conexion->lastInsertId();
+
+        // Senales de afinidad: se registran despues del INSERT y nunca en la
+        // rama fail-closed (que retorna antes). Fail-open: un fallo aqui no
+        // impide que el mensaje ya guardado se entregue.
+        $this->registrarSenalesTema($emisorId, $bloqueado, $categoria, $texto, 'chat');
+
         return [
             'exito' => true,
             'data' => [
-                'tbmensajeid' => (int) $this->conexion->lastInsertId(),
+                'tbmensajeid' => $nuevoId,
                 'tbconversacionid' => $conversacionId,
                 'tbperfilidemisor' => $emisorId,
                 'tbmensajetexto' => $textoGuardado,
@@ -189,5 +200,24 @@ class MensajeModelo
         $stmt->execute();
 
         return ['exito' => true, 'data' => ['tbmensajesactualizados' => $stmt->rowCount()]];
+    }
+
+    private function registrarSenalesTema($perfilId, $bloqueado, $categoria, $texto, $origen)
+    {
+        try {
+            $registro = $this->perfilTemaModelo->registrarDesdeMensaje(
+                $perfilId,
+                $bloqueado,
+                $categoria,
+                $texto,
+                $origen
+            );
+
+            if (!$registro['exito']) {
+                error_log('Afinidad: no se registro la senal - ' . ($registro['mensaje'] ?? 'desconocido'));
+            }
+        } catch (Throwable $e) {
+            error_log('Afinidad: excepcion al registrar senal - ' . $e->getMessage());
+        }
     }
 }

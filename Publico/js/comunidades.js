@@ -49,7 +49,9 @@
         timer: null,
         consultando: false,
         enviando: false,
-        avisoFormato: false
+        avisoFormato: false,
+        vistos: {},
+        cargandoComunidades: false
     };
 
     function capitalizar(texto) {
@@ -172,8 +174,19 @@
         });
     }
 
+    function claveMensaje(dato) {
+        if (dato.tbcomunidadmensajeid !== null && dato.tbcomunidadmensajeid !== undefined) {
+            return 'id:' + dato.tbcomunidadmensajeid;
+        }
+        return 'bloqueado:' + (dato.tbcomunidadmensajetexto || '') + ':' + (dato.tbcomunidadmensajefechahora || '');
+    }
+
     function agregarMensaje(dato) {
         if (!el.mensajes) return;
+
+        var clave = claveMensaje(dato);
+        if (estado.vistos[clave]) return;
+        estado.vistos[clave] = true;
 
         var fila = document.createElement('div');
         var propia = dato.tbperfilidemisor === perfilId;
@@ -220,11 +233,16 @@
         if (document.hidden) return;
         estado.consultando = true;
 
+        var comunidadId = estado.activa.tbcomunidadid;
+
         consultar({
             accion: 'getMensajesComunidad',
-            comunidadId: estado.activa.tbcomunidadid,
+            comunidadId: comunidadId,
             desdeId: estado.ultimoId
         }).then(function (respuesta) {
+            if (!estado.activa || estado.activa.tbcomunidadid !== comunidadId) {
+                return;
+            }
             if (!respuesta.exito) {
                 mensaje(respuesta.mensaje || 'No se pudieron actualizar los mensajes.');
                 return;
@@ -243,6 +261,9 @@
             if (nuevos.length === 0) return;
 
             nuevos.forEach(function (dato) {
+                if (dato.tbcomunidadmensajeid && dato.tbcomunidadmensajeid <= estado.ultimoId) {
+                    return;
+                }
                 agregarMensaje(dato);
                 if (dato.tbcomunidadmensajeid > estado.ultimoId) {
                     estado.ultimoId = dato.tbcomunidadmensajeid;
@@ -275,6 +296,7 @@
         estado.ultimoId = 0;
         estado.consultando = false;
         estado.avisoFormato = false;
+        estado.vistos = {};
 
         if (el.catalogo) el.catalogo.classList.add('d-none');
         if (el.sala) el.sala.classList.remove('d-none');
@@ -284,11 +306,16 @@
         activarEnvio(true);
         if (el.texto) el.texto.focus();
 
+        var comunidadId = comunidad.tbcomunidadid;
+
         consultar({
             accion: 'getMensajesComunidad',
-            comunidadId: comunidad.tbcomunidadid,
+            comunidadId: comunidadId,
             desdeId: 0
         }).then(function (respuesta) {
+            if (!estado.activa || estado.activa.tbcomunidadid !== comunidadId) {
+                return;
+            }
             if (!respuesta.exito) {
                 mensaje(respuesta.mensaje || 'No se pudieron cargar los mensajes.');
                 return;
@@ -327,7 +354,7 @@
         if (texto === '') return;
 
         estado.enviando = true;
-        if (el.enviar) el.enviar.disabled = true;
+        activarEnvio(false);
 
         enviar({
             accion: 'enviarMensajeComunidad',
@@ -355,6 +382,9 @@
     }
 
     function cargarComunidades() {
+        if (estado.cargandoComunidades) return Promise.resolve();
+        estado.cargandoComunidades = true;
+
         return consultar({ accion: 'getComunidades' })
             .then(function (respuesta) {
                 if (!respuesta.exito) {
@@ -380,6 +410,9 @@
                 }
                 mensajeCatalogo('Sin conexión con el servidor, reintenta.');
                 if (el.cargando) el.cargando.hidden = true;
+            })
+            .then(function () {
+                estado.cargandoComunidades = false;
             });
     }
 
