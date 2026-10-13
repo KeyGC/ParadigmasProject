@@ -1,16 +1,4 @@
 <?php
-/**
- * Siembra del clasificador de temas.
- *
- * Uso (desde la raíz del proyecto):
- *   php Aplicacion/Utilidades/sembrartemas.php
- *   php Aplicacion/Utilidades/sembrartemas.php --diagnostico
- *   php Aplicacion/Utilidades/sembrartemas.php --reconstruir
- *
- * El ajuste de los transformadores ocurre UNA sola vez sobre las 520 filas del
- * dataset y queda serializado en BaseDatos/Temas/temas_rubix.bin.
- * En producción nadie vuelve a entrenar: los requests solo deserializan.
- */
 
 require_once __DIR__ . '/../Modelo/temasmodelo.php';
 
@@ -119,7 +107,6 @@ if (!$lectura['exito']) {
 
 ok('Filas leídas: ' . count($lectura['textos']));
 
-// Se vectoriza con el artefacto ya persistido: no se reentrena nada aquí.
 $vectores = $modelo->vectorizarLote($lectura['textos']);
 
 if ($vectores === null) {

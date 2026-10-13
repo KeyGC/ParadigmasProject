@@ -1405,15 +1405,6 @@ CREATE TABLE IF NOT EXISTS `tbmensaje` (
 );
 
 
--- =====================================================================
--- COMUNIDADES DE CHAT GRUPAL POR INTERES
--- tbcomunidadcategoria: 'genero' | 'comida' | 'deporte'
--- tbcomunidadreferenciaid: referencia polimorfica a tbgeneroid /
--- tbtipocomidaid / tbtipodeporteid segun la categoria.
--- Sin FKs, mismo criterio que el resto del esquema: la integridad se
--- valida en PHP con prepared statements (patron tbeventoubicacion).
--- =====================================================================
-
 CREATE TABLE IF NOT EXISTS `tbcomunidad` (
   `tbcomunidadid` int NOT NULL AUTO_INCREMENT,
   `tbcomunidadcategoria` varchar(20) NOT NULL,
@@ -1436,17 +1427,6 @@ CREATE TABLE IF NOT EXISTS `tbcomunidadmensaje` (
   PRIMARY KEY (`tbcomunidadmensajeid`)
 );
 
--- =====================================================================
--- MIGRACION DE MODERACION (re-ejecutable, idempotente)
--- Las columnas de metadatos ya forman parte de los CREATE TABLE de arriba
--- (bases nuevas). Para bases donde las tablas ya existian, el bloque ALTER
--- de abajo agrega las columnas si faltan; correrlo dos veces no rompe nada.
--- MySQL 8 no admite ADD COLUMN IF NOT EXISTS, por eso cada ALTER se
--- protege con information_schema + PREPARE/EXECUTE.
---
--- tbmensajetexto guarda el texto ENMASCARADO cuando va bloqueado; el
--- original nunca se persiste en MySQL (solo en el payload de Qdrant).
--- =====================================================================
 
 SET @col := (
   SELECT COUNT(*) FROM information_schema.COLUMNS
@@ -1564,17 +1544,7 @@ INSERT IGNORE INTO `tbcomunidad` (`tbcomunidadcategoria`, `tbcomunidadreferencia
 ('deporte', 15, 'Comunidad de Surf'),
 ('deporte', 16, 'Comunidad de Escalada');
 
--- =====================================================================
--- MODULO DE AFINIDAD TEMATICA (re-ejecutable, idempotente)
--- Detecta perfiles que hablan de los mismos temas (genero/comida/deporte),
--- los notifica y, con 2+ aceptaciones, crea un grupo de chat.
--- Sin llaves foraneas (convencion del proyecto).
--- =====================================================================
 
--- Senales tematicas por perfil. Una fila por (perfil, tipo, categoria,
--- tema, origen): tipo 'bueno' guarda temas de interes; tipo 'malo' guarda
--- categorias de moderacion (drogas/sexual/violencia) con tema ''.
--- `origen` distingue si la senal vino de una comunidad o de un chat.
 CREATE TABLE IF NOT EXISTS `tbperfiltema` (
   `tbperfiltemaid` int NOT NULL AUTO_INCREMENT,
   `tbperfilid` int NOT NULL,
@@ -1589,9 +1559,6 @@ CREATE TABLE IF NOT EXISTS `tbperfiltema` (
   KEY `idx_perfiltema_tema` (`tbperfiltematipo`, `tbperfiltemacategoria`, `tbperfiltematema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Estado de control del modulo de afinidad. Reemplaza al marcador de archivo
--- BaseDatos/Temas/.afinidad_ultima (no escribible en el contenedor y perdido
--- al reiniciar). Fila unica id=1: marca de la ultima ejecucion de generar().
 CREATE TABLE IF NOT EXISTS `tbafinidadcontrol` (
   `tbafinidadcontrolid` int NOT NULL,
   `tbafinidadcontrolultimageneracion` datetime DEFAULT NULL,
@@ -1601,11 +1568,7 @@ CREATE TABLE IF NOT EXISTS `tbafinidadcontrol` (
 
 INSERT IGNORE INTO `tbafinidadcontrol` (`tbafinidadcontrolid`) VALUES (1);
 
--- Cohorte de afinidad por (tipo, categoria, tema). `origen` es 'chat' si
--- CUALQUIER senal contribuyente vino de chats individuales; entonces la API
--- oculta los nombres de los demas hasta que el perfil acepte. El estado
--- 'cerrada' es solo desactivacion por admin; quien acepte despues entra al
--- grupo ya existente. Las fechas las escribe PHP (America/Costa_Rica).
+
 CREATE TABLE IF NOT EXISTS `tbafinidad` (
   `tbafinidadid` int NOT NULL AUTO_INCREMENT,
   `tbafinidadtipo` varchar(10) NOT NULL,

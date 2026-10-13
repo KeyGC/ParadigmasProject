@@ -1,5 +1,4 @@
 <?php
-// Aplicacion/Controlador/UbicacionControlador.php
 require_once __DIR__ . '/../Modelo/ubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilubicacionmodelo.php';
 require_once __DIR__ . '/../Modelo/perfilmodelo.php';
@@ -11,9 +10,6 @@ header('Content-Type: application/json; charset=utf-8');
 $modelo = new UbicacionModelo();
 $accion = $_REQUEST['accion'] ?? '';
 
-// Valida que lat/lng sean numéricos y estén en rango.
-// Devuelve las coordenadas normalizadas a 8 decimales (igual que las columnas
-// decimal(10,8) de tbubicacion) o null si son inválidas.
 function validarCoordenadas($lat, $lng)
 {
     if (!is_numeric($lat) || !is_numeric($lng)) {
@@ -33,22 +29,6 @@ function validarCoordenadas($lat, $lng)
     ];
 }
 
-// Resuelve la ubicación administrativa a partir del bloque 'address' crudo
-// de Nominatim, en DOS ETAPAS. En ambas etapas los IDs se BUSCAN y VERIFICAN
-// contra tbprovincia/tbcanton/tbdistrito con consultas preparadas (nunca se
-// asumen ni se confía en datos del navegador).
-//
-// Etapa 1 - CÓDIGO POSTAL: los códigos postales de Costa Rica (PCCDD)
-// usan la misma codificación del catálogo: provincia = 1er dígito,
-// cantón = 3 primeros dígitos, distrito = 5 dígitos. Es determinístico y
-// resuelve zonas donde Nominatim no entrega el nombre del cantón (ej.
-// centro de San José). El ID derivado SIEMPRE se verifica contra la BD.
-//
-// Etapa 2 - NOMBRES (respaldo): prueba combinaciones ordenadas de campos
-// candidatos de Nominatim contra los nombres normalizados del catálogo.
-//
-// Devuelve [provinciaId, cantonId, distritoId, provincia, canton, distrito,
-// origen] o null si no se pudo resolver una combinación VÁLIDA completa.
 function resolverUbicacionDesdeAddress($modelo, $address)
 {
     // ---- Etapa 1: código postal nacional (P + CC + DD) ----
@@ -69,7 +49,6 @@ function resolverUbicacionDesdeAddress($modelo, $address)
         }
     }
 
-    // ---- Etapa 2: coincidencia por nombres con candidatos ordenados ----
     $candidatosProvincia = ['province', 'state'];
     $candidatosCanton = ['county', 'municipality'];
     $candidatosDistrito = [
@@ -174,15 +153,12 @@ switch ($accion) {
             break;
         }
 
-        // Validación de coordenadas desde PHP
         $coordenadas = validarCoordenadas($lat, $lng);
         if ($coordenadas === null) {
             echo json_encode(["exito" => false, "mensaje" => "Las coordenadas son inválidas"]);
             break;
         }
 
-        // Validación de integridad desde PHP: los IDs deben existir, estar
-        // activos y respetar la jerarquía provincia -> cantón -> distrito
         $nombres = $modelo->getNombresPorIds($provinciaId, $cantonId, $distritoId);
         if ($nombres === null) {
             echo json_encode(["exito" => false, "mensaje" => "La combinación de provincia, cantón y distrito no es válida"]);
@@ -192,8 +168,6 @@ switch ($accion) {
         $ubicacionId = $_SESSION['perfil']['tbubicacionid'];
         $perfilId = $_SESSION['perfil']['tbperfilid'];
 
-        // El cambio de la ubicación actual y su registro histórico deben ser
-        // consistentes entre sí, por eso van en una transacción PDO
         $conexion = Basedatos::conectar();
 
         try {
@@ -204,7 +178,6 @@ switch ($accion) {
                 throw new RuntimeException("Error al actualizar tbubicacion");
             }
 
-            // Histórico MANUAL: fotografía inmutable de esta ubicación
             $perfilUbicacionModelo = new PerfilUbicacionModelo();
             $data = $perfilUbicacionModelo->construirData(
                 $nombres['provincia'],
@@ -239,9 +212,6 @@ switch ($accion) {
 
         break;
 
-    // UBICACIÓN AUTOMÁTICA (GPS + Reverse Geocoding).
-    // Nunca interrumpe el funcionamiento de la aplicación: ante cualquier
-    // problema responde con exito=true y guardado=false.
     case 'guardarAutomatica':
         if (!isset($_SESSION['perfil'])) {
             echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
@@ -262,21 +232,17 @@ switch ($accion) {
         $perfilModelo = new PerfilModelo();
         $perfilUbicacionModelo = new PerfilUbicacionModelo();
 
-        // Validación de la relación lógica con tbperfil desde PHP
         if (!$perfilUbicacionModelo->existePerfilActivo($perfilId)) {
             echo json_encode(["exito" => true, "guardado" => false, "mensaje" => "El perfil no está disponible para registrar ubicación"]);
             break;
         }
 
-        // Reverse Geocoding: coordenadas -> datos crudos de ubicación.
-        // Si el servicio falla NO se guarda nada (ni datos incompletos).
         $address = reverseGeocodificar($coordenadas['lat'], $coordenadas['lng']);
         if ($address === null) {
             echo json_encode(["exito" => true, "guardado" => false, "mensaje" => "No se pudo determinar la ubicación automática"]);
             break;
         }
 
-        // Resolución verificada contra el catálogo (código postal + nombres)
         $ubicacion = resolverUbicacionDesdeAddress($modelo, $address);
         if ($ubicacion === null) {
             error_log("guardarAutomatica: sin coincidencia en catalogo para " . json_encode($address, JSON_UNESCAPED_UNICODE));
@@ -284,8 +250,6 @@ switch ($accion) {
             break;
         }
 
-        // Anti-duplicados: si el punto prácticamente no cambió respecto a la
-        // última ubicación registrada, no se crean filas innecesarias
         if ($perfilUbicacionModelo->esSimilarAUltima($perfilId, $coordenadas['lat'], $coordenadas['lng'])) {
             echo json_encode([
                 "exito" => true,
@@ -296,7 +260,6 @@ switch ($accion) {
             break;
         }
 
-        // El histórico usa los nombres EXACTOS del catálogo verificado
         $data = $perfilUbicacionModelo->construirData(
             $ubicacion['provincia'],
             $ubicacion['canton'],
@@ -308,14 +271,11 @@ switch ($accion) {
             PerfilUbicacionModelo::TIPO_AUTOMATICA
         );
 
-        // Tres operaciones relacionadas deben quedar consistentes entre sí,
-        // por eso se ejecutan dentro de una transacción PDO
         $conexion = Basedatos::conectar();
 
         try {
             $conexion->beginTransaction();
 
-            // 1) Nueva fila concreta en tbubicacion
             $nuevoUbicacionId = $modelo->insert(
                 $ubicacion['provinciaId'],
                 $ubicacion['cantonId'],
@@ -327,12 +287,10 @@ switch ($accion) {
                 throw new RuntimeException("No se pudo insertar en tbubicacion");
             }
 
-            // 2) La nueva ubicación pasa a ser la ACTUAL del perfil
             if (!$perfilModelo->setUbicacion($perfilId, $nuevoUbicacionId)) {
                 throw new RuntimeException("No se pudo actualizar tbperfil.tbubicacionid");
             }
 
-            // 3) Nuevo registro del histórico como AUTOMATICA
             $idHistorico = $perfilUbicacionModelo->insertar($perfilId, $data, PerfilUbicacionModelo::TIPO_AUTOMATICA);
             if ($idHistorico === false) {
                 throw new RuntimeException("No se pudo insertar el histórico en tbperfilubicacion");
@@ -340,11 +298,8 @@ switch ($accion) {
 
             $conexion->commit();
 
-            // Refresca la sesión para que el resto de vistas use la ubicación nueva
             $_SESSION['perfil']['tbubicacionid'] = (int) $nuevoUbicacionId;
 
-            // Comparación contra conciertos activos del día (no crítico: si falla,
-            // no debe afectar el guardado de ubicación que ya se confirmó arriba)
             $coincidencias = [];
             try {
                 $eventoModelo = new EventoModelo();
@@ -383,9 +338,6 @@ switch ($accion) {
 
         break;
 
-    // HISTÓRICO DE UBICACIONES: exclusivo del administrador.
-    // Devuelve el histórico de cualquier perfil indicando su idPerfil,
-    // siguiendo el mismo patrón de getMatriz en perfilaccesocontrolador.php
     case 'getHistoricoPerfil':
         if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
             echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);

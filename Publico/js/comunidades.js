@@ -96,8 +96,6 @@
     }
 
     function estadoVacio() {
-        // estado.comunidades es un objeto { genero: [], comida: [], deporte: [] },
-        // no un array: se recorre con Object.keys y no con metodos de Array
         return Object.keys(estado.comunidades).every(function (clave) {
             return !Array.isArray(estado.comunidades[clave]) || estado.comunidades[clave].length === 0;
         });

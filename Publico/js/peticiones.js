@@ -1,19 +1,4 @@
-/*
- * Helper unico de peticiones.
- *
- * Centraliza el manejo de la respuesta del servidor para que cada vista no
- * repita la misma logica. Traduce cada situacion a un mensaje distinto:
- *   - 401 -> sesion expirada (se puede redirigir a login)
- *   - 403 -> sin permiso
- *   - 5xx / respuesta no valida -> error del servidor
- *   - fallo de red -> sin conexion
- *
- * Uso:
- *   peticion(url, opciones).then(function (datos) {
- *       if (!datos.exito) { mostrar(datos.mensaje); return; }
- *       ...
- *   }).catch(function (error) { mostrar(error.message); });
- */
+
 var MENSAJES_PETICION = {
     red: 'No se pudo conectar con el servidor. Verifica tu conexion e intenta nuevamente.',
     servidor: 'Ocurrio un error en el servidor. Intenta nuevamente mas tarde.',

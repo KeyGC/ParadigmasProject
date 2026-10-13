@@ -2,16 +2,6 @@
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/grupomodelo.php';
 
-/**
- * Cohortes de afinidad tematica.
- *
- * Una afinidad existe cuando DOS o mas perfiles distintos acumulan cada uno
- * al menos TEMAS_MINIMO_MENSAJES senales del mismo (tipo, categoria, tema).
- * El origen es 'chat' si CUALQUIER senal contribuyente vino de un chat
- * individual; en ese caso la API oculta los nombres de los demas perfiles
- * hasta que el perfil acepta. El estado 'cerrada' es solo desactivacion por
- * admin; quien acepte despues entra al grupo ya existente.
- */
 class AfinidadModelo
 {
     private $conexion;

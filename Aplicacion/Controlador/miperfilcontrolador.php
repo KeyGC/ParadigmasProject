@@ -33,7 +33,6 @@ switch ($accion) {
             exit;
         }
 
-        // Ubicación
         $ubicacion = null;
 
         if (!empty($perfil['tbubicacionid'])) {
@@ -54,7 +53,6 @@ switch ($accion) {
             }
         }
 
-        // Perfil musical
         $musicalModelo = new PerfilMusicalModelo();
 
         $perfilado = $musicalModelo->generarPerfilado($perfilId);

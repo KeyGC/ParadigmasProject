@@ -1,6 +1,3 @@
-// Helpers de formato de presentación (fechas en dd/mm/aaaa y hora HH:mm,
-// porcentajes con decimales consistentes). Se comparten entre las vistas para
-// no repetir la lógica en cada archivo.
 
 function formatearFecha(valor) {
     if (!valor) return '';

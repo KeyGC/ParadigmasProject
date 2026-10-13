@@ -1405,16 +1405,6 @@ CREATE TABLE IF NOT EXISTS `tbmensaje` (
   PRIMARY KEY (`tbmensajeid`)
 );
 
-
--- =====================================================================
--- COMUNIDADES DE CHAT GRUPAL POR INTERES
--- tbcomunidadcategoria: 'genero' | 'comida' | 'deporte'
--- tbcomunidadreferenciaid: referencia polimorfica a tbgeneroid /
--- tbtipocomidaid / tbtipodeporteid segun la categoria.
--- Sin FKs, mismo criterio que el resto del esquema: la integridad se
--- valida en PHP con prepared statements (patron tbeventoubicacion).
--- =====================================================================
-
 CREATE TABLE IF NOT EXISTS `tbcomunidad` (
   `tbcomunidadid` int NOT NULL AUTO_INCREMENT,
   `tbcomunidadcategoria` varchar(20) NOT NULL,
@@ -1436,18 +1426,6 @@ CREATE TABLE IF NOT EXISTS `tbcomunidadmensaje` (
   `tbcomunidadmensajescore` decimal(6,4) DEFAULT NULL,
   PRIMARY KEY (`tbcomunidadmensajeid`)
 );
-
--- =====================================================================
--- MIGRACION DE MODERACION (re-ejecutable, idempotente)
--- Las columnas de metadatos ya forman parte de los CREATE TABLE de arriba
--- (bases nuevas). Para bases donde las tablas ya existian, el bloque ALTER
--- de abajo agrega las columnas si faltan; correrlo dos veces no rompe nada.
--- MySQL 8 no admite ADD COLUMN IF NOT EXISTS, por eso cada ALTER se
--- protege con information_schema + PREPARE/EXECUTE.
---
--- tbmensajetexto guarda el texto ENMASCARADO cuando va bloqueado; el
--- original nunca se persiste en MySQL (solo en el payload de Qdrant).
--- =====================================================================
 
 SET @col := (
   SELECT COUNT(*) FROM information_schema.COLUMNS

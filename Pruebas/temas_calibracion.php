@@ -1,9 +1,5 @@
 <?php
-// CALIBRACION DE TEMAS: php Pruebas/temas_calibracion.php
-// Conjunto (a): >=40 mensajes benignos/genericos -> se reportan FALSOS POSITIVOS
-// Conjunto (b): >=40 mensajes tematicos nuevos (no del dataset) -> ACIERTOS
-// Criterio de aceptacion: 0 falsos positivos en (a) y >=60% aciertos en (b).
-// Requiere .env.local exportado.
+
 
 require_once __DIR__ . '/../Configuracion/configuracion.php';
 require_once APP_PATH . '/Modelo/temasmodelo.php';

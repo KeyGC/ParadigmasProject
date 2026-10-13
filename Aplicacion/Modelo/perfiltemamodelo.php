@@ -2,16 +2,6 @@
 require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/temasmodelo.php';
 
-/**
- * Registra las senales tematicas de un perfil (tabla tbperfiltema).
- *
- * Cada fila es un contador por (perfil, tipo, categoria, tema, origen):
- *  - tipo 'bueno': categoria en genero/comida/deporte y tema concreto.
- *  - tipo 'malo': categoria de moderacion (drogas/sexual/violencia) y tema ''.
- *
- * Los bloqueos SOLO se registran cuando la moderacion dio una categoria real.
- * La rama fail-closed no llega aqui porque no hay INSERT previo (por diseno).
- */
 class PerfilTemaModelo
 {
     private $conexion;
@@ -65,8 +55,6 @@ class PerfilTemaModelo
             }
         }
 
-        // Participar en la sala de una comunidad es en si una senal del tema
-        // de la sala, ademas de lo que el propio texto clasifique.
         $temaSala = $temaSala !== null ? trim((string) $temaSala) : '';
 
         if ($temaSala !== '') {

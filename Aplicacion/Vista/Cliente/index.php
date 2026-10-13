@@ -35,14 +35,12 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? 'Hola';
             </div>
 
             <div id="contenedorGeneros" class="grid-generos">
-                <!-- Tarjetas de género se insertan aquí vía JS -->
             </div>
 
             <div id="contenedorPlaylist" style="display:none;">
                 <button id="btnVolverGeneros" class="btn btn-sm btn-outline-secondary mb-3" onclick="volverGeneros()">← Volver a géneros</button>
                 <h4 id="tituloPlaylist" class="mb-3"></h4>
                 <div class="carrusel-canciones" id="carruselCanciones">
-                    <!-- Tarjetas de canciones del género seleccionado -->
                 </div>
             </div>
         </section>
@@ -50,7 +48,6 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? 'Hola';
 
     <?php include APP_PATH . '/Vista/Componentes/footer.php'; ?>
 
-    <!-- Modal reproductor -->
     <div class="modal fade" id="modalReproductor" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-reproductor">

@@ -1,20 +1,5 @@
 'use strict';
 
-/*
- * Harness de duplicados de chat (1-a-1 y comunidades).
- *
- * Ejecuta los archivos REALES Publico/js/chat.js y Publico/js/comunidades.js
- * dentro de un DOM minimo simulado, con fetch/timers controlables, para
- * reproducir ordenes de resolucion problematicos:
- *   - mensaje bloqueado por moderacion (tbmensajeid: null) -> una sola fila
- *   - enviar mientras el fetch inicial de abrirConversacion sigue en vuelo
- *   - cambiar de conversacion/sala mientras un polling esta pendiente
- *   - reabrir conversaciones/salas: una fila por conversacion
- *   - un solo setInterval de polling activo
- *
- * Uso:  node Pruebas/duplicados_harness.js [--label ANTES|DESPUES]
- * La etiqueta solo decora el reporte (el harness lee el estado actual de disco).
- */
 
 const fs = require('fs');
 const vm = require('vm');
@@ -28,9 +13,6 @@ const JS_NOTIF = process.env.NOTIF_JS || path.join(__dirname, '..', 'Publico', '
 const ME = 7;
 const OTRO = 9;
 
-/* ------------------------------------------------------------------ */
-/* DOM minimo                                                          */
-/* ------------------------------------------------------------------ */
 
 const CHAT_IDS = [
     'chatConversaciones', 'chatListaVacia', 'chatNombre', 'chatMensajes',
@@ -125,10 +107,6 @@ class StubDocument {
     fire(t, evt) { (this._events[t] || []).slice().forEach((fn) => fn(evt)); }
 }
 
-/* ------------------------------------------------------------------ */
-/* fetch / timers controlables                                         */
-/* ------------------------------------------------------------------ */
-
 const wrap = (value) => ({
     json: () => Promise.resolve(value),
     text: () => Promise.resolve(JSON.stringify(value))
@@ -204,9 +182,6 @@ function buildEnv(script, windowObj, routes) {
 
 const settle = async (n = 8) => { for (let i = 0; i < n; i++) { await new Promise((r) => setTimeout(r, 0)); } };
 
-/* ------------------------------------------------------------------ */
-/* datos                                                               */
-/* ------------------------------------------------------------------ */
 
 const conv = (id, otro, nombre) => ({
     tbconversacionid: id, tbperfilidotro: otro, tbperfilnombreotro: nombre,
@@ -267,10 +242,6 @@ const recomendada = (id, tema) => ({
     tbafinidadmostrarnombres: true, tbafinidadotros: []
 });
 
-/* ------------------------------------------------------------------ */
-/* helpers de consulta al DOM                                          */
-/* ------------------------------------------------------------------ */
-
 const desc = (el) => {
     const out = [];
     (function walk(n) { for (const c of n.children) { out.push(c); walk(c); } })(el);
@@ -307,9 +278,6 @@ const notifConfig = { apiUrl: 'apiafinidad.php', intervalo: 10000, perfilId: ME 
 const many = (value, n = 12) => Array.from({ length: n }, () => v(value));
 const ok = { exito: true, data: {} };
 
-/* ------------------------------------------------------------------ */
-/* casos                                                               */
-/* ------------------------------------------------------------------ */
 
 async function chatBloqueadoUnaVez() {
     const A = conv(1, OTRO, 'Ana');
@@ -578,10 +546,6 @@ async function notifContadorRepetidoNoDuplica() {
     const bien = lista === 2 && intervalos === 1;
     return { name: 'notificaciones · refrescos repetidos no duplican tarjetas', ok: bien, detail: 'tarjetas pendientes = ' + lista + ' (esperado 2), intervalos = ' + intervalos };
 }
-
-/* ------------------------------------------------------------------ */
-/* runner                                                              */
-/* ------------------------------------------------------------------ */
 
 const CASES = [
     chatBloqueadoUnaVez,

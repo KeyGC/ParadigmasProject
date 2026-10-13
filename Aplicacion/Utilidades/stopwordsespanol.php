@@ -1,12 +1,5 @@
 <?php
-/**
- * Stoplist en espanol para el ranking TF-IDF del clasificador de temas.
- * Palabras normalizadas (minusculas, sin acentos). Se usa tanto al ajustar
- * el vocabulario como al vectorizar consultas: las palabras funcionales y los
- * verbos genericos no deben pesar en la similitud entre temas.
- *
- * Devuelve un arreglo plano; el modelo lo indexa por valor para busqueda O(1).
- */
+
 return [
     'a', 'al', 'algo', 'algun', 'alguna', 'algunas', 'alguno', 'algunos', 'alli', 'alla',
     'ante', 'antes', 'aqui', 'asi', 'aun', 'aunque', 'bien', 'buen', 'buena', 'buenas',

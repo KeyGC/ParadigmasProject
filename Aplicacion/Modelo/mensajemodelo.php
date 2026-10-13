@@ -50,8 +50,6 @@ class MensajeModelo
             return ['exito' => false, 'mensaje' => 'No perteneces a esta conversación.'];
         }
 
-        // Moderacion antes de tocar la base de datos. Con fail-closed, si no hay
-        // veredicto el mensaje no se guarda: se registra bloqueado y enmascarado.
         $moderacion = $this->moderacionModelo->evaluar($texto);
 
         if (!$moderacion['exito']) {
@@ -78,8 +76,6 @@ class MensajeModelo
         $categoria = $moderacion['categoria'];
         $score = (float) $moderacion['score'];
 
-        // Solo los bloqueos con confianza alta alimentan el aprendizaje; asi el
-        // dataset no se contamina con falsos positivos.
         if ($bloqueado && $score > MODERACION_UMBRAL_APRENDIZAJE && $categoria !== null) {
             $aprendido = $this->moderacionModelo->aprenderDeConfirmado($texto, $categoria);
 
@@ -90,9 +86,6 @@ class MensajeModelo
 
         $textoGuardado = $bloqueado ? $moderacion['textoEnmascarado'] : $texto;
 
-        // Categoria y score solo son significativos cuando la moderacion
-        // decidio el bloqueo; si no, se guardan NULL para no etiquetar
-        // mensajes legitimos con la categoria del vecino mas cercano.
         $categoriaGuardada = $bloqueado ? $categoria : null;
         $scoreGuardado = $bloqueado ? $score : null;
         $ahora = date('Y-m-d H:i:s');
@@ -106,7 +99,6 @@ class MensajeModelo
         $stmt->bindValue(':texto', $textoGuardado);
         $stmt->bindValue(':fecha', $ahora);
         $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
-        // Sin esto PDO emulado podria guardar '' en vez de NULL.
         $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindValue(':score', $scoreGuardado);
 
@@ -116,9 +108,6 @@ class MensajeModelo
 
         $nuevoId = (int) $this->conexion->lastInsertId();
 
-        // Senales de afinidad: se registran despues del INSERT y nunca en la
-        // rama fail-closed (que retorna antes). Fail-open: un fallo aqui no
-        // impide que el mensaje ya guardado se entregue.
         $this->registrarSenalesTema($emisorId, $bloqueado, $categoria, $texto, 'chat');
 
         return [
@@ -166,8 +155,6 @@ class MensajeModelo
                 'tbmensajeid' => (int) $fila['tbmensajeid'],
                 'tbconversacionid' => (int) $fila['tbconversacionid'],
                 'tbperfilidemisor' => (int) $fila['tbperfilidemisor'],
-                // Doble barrera: el texto ya se guardo enmascarado y aun asi se
-                // enmascara al leer, para que ningun registro legacy filtre el original.
                 'tbmensajetexto' => $bloqueado ? MODERACION_TEXTO_BLOQUEADO : $fila['tbmensajetexto'],
                 'tbmensajefechahora' => $fila['tbmensajefechahora'],
                 'tbmensajeleido' => (bool) $fila['tbmensajeleido'],

@@ -126,8 +126,7 @@ class EventoModelo
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-
-    // Devuelve la lista de ubicaciones específicas dentro de un evento (por ahora, solo categoría 'comida')
+    
     public function getUbicacionesPorEvento($eventoId, $categoria = null)
     {
         $sql = "SELECT tbeventoubicacionid, tbeventoid, tbeventoubicacioncategoria,

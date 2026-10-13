@@ -18,11 +18,6 @@ $tiposModelos = [
         'archivo' => APP_PATH . '/Modelo/perfilmusicalmodelo.php',
         'clase'   => 'PerfilMusicalModelo',
     ],
-    // Futuros perfilados se agregan acá:
-    // 'gastronomico' => [
-    //     'archivo' => APP_PATH . '/Modelo/perfilgastronomicomodelo.php',
-    //     'clase'   => 'PerfilGastronomicoModelo',
-    // ],
 ];
 
 switch ($accion) {

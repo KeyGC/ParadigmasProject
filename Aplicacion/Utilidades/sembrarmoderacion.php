@@ -1,16 +1,4 @@
 <?php
-/**
- * Siembra del modelo de moderación.
- *
- * Uso (desde la raíz del proyecto):
- *   php Aplicacion/Utilidades/sembrarmoderacion.php
- *   php Aplicacion/Utilidades/sembrarmoderacion.php --diagnostico
- *   php Aplicacion/Utilidades/sembrarmoderacion.php --reconstruir
- *
- * El ajuste de los transformadores ocurre UNA sola vez sobre las 300 filas del
- * dataset y queda serializado en BaseDatos/Moderacion/moderacion_rubix.bin.
- * En producción nadie vuelve a entrenar: los requests solo deserializan.
- */
 
 require_once __DIR__ . '/../Modelo/moderacionmodelo.php';
 
@@ -33,10 +21,6 @@ function fallo($texto)
     linea('  [!!] ' . $texto);
 }
 
-/**
- * Lee el CSV con fgetcsv porque algunos textos contienen comas y están
- * entrecomillados; exploding por coma partiría filas.
- */
 function leerDataset()
 {
     $ruta = BASE_PATH . '/BaseDatos/Moderacion/dataset_moderacion.csv';
@@ -161,7 +145,6 @@ if (!$lectura['exito']) {
 
 ok('Filas leídas: ' . count($lectura['textos']));
 
-// Se vectoriza con el artefacto ya persistido: no se reentrena nada aquí.
 $vectores = $modelo->vectorizarLote($lectura['textos']);
 
 if ($vectores === null) {

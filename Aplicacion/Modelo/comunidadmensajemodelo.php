@@ -65,8 +65,6 @@ class ComunidadMensajeModelo
             return ['exito' => false, 'mensaje' => 'El perfil no existe o está inactivo.'];
         }
 
-        // Moderacion antes de tocar la base de datos. Con fail-closed, si no hay
-        // veredicto el mensaje no se guarda: se registra bloqueado y enmascarado.
         $moderacion = $this->moderacionModelo->evaluar($texto);
 
         $ahora = date('Y-m-d H:i:s');
@@ -95,7 +93,6 @@ class ComunidadMensajeModelo
         $categoria = $moderacion['categoria'];
         $score = (float) $moderacion['score'];
 
-        // Solo los bloqueos con confianza alta alimentan el aprendizaje.
         if ($bloqueado && $score > MODERACION_UMBRAL_APRENDIZAJE && $categoria !== null) {
             $aprendido = $this->moderacionModelo->aprenderDeConfirmado($texto, $categoria);
 
@@ -106,9 +103,6 @@ class ComunidadMensajeModelo
 
         $textoGuardado = $bloqueado ? $moderacion['textoEnmascarado'] : $texto;
 
-        // Categoria y score solo son significativos cuando la moderacion
-        // decidio el bloqueo; si no, se guardan NULL para no etiquetar
-        // mensajes legitimos con la categoria del vecino mas cercano.
         $categoriaGuardada = $bloqueado ? $categoria : null;
         $scoreGuardado = $bloqueado ? $score : null;
 
@@ -123,7 +117,6 @@ class ComunidadMensajeModelo
         $stmt->bindValue(':texto', $textoGuardado);
         $stmt->bindValue(':fecha', $ahora);
         $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
-        // Sin esto PDO emulado podria guardar '' en vez de NULL.
         $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindValue(':score', $scoreGuardado);
 
@@ -131,7 +124,6 @@ class ComunidadMensajeModelo
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
         }
 
-        // Se toma antes de cualquier otra consulta: lastInsertId() se resetea
         $nuevoId = (int) $this->conexion->lastInsertId();
 
         $stmtNombre = $this->conexion->prepare('SELECT tbperfilnombre FROM tbperfil WHERE tbperfilid = :id');
@@ -139,9 +131,6 @@ class ComunidadMensajeModelo
         $stmtNombre->execute();
         $perfilNombre = $stmtNombre->fetchColumn();
 
-        // Senales de afinidad: se registran despues del INSERT y nunca en la
-        // rama fail-closed (que retorna antes). Fail-open. Participar en la
-        // sala suma el tema de la sala ademas de lo que el texto clasifique.
         $datosComunidad = $comunidad['data'];
         $temaSala = preg_replace('/^Comunidad de\s+/iu', '', (string) $datosComunidad['tbcomunidadnombre']);
 
@@ -180,8 +169,6 @@ class ComunidadMensajeModelo
             return ['exito' => false, 'mensaje' => 'Comunidad inválida.'];
         }
 
-        // Con desdeId = 0 se carga la cola de la sala (ultimos mensajes),
-        // invertida para entregarlos en orden cronologico.
         $sql = "SELECT m.tbcomunidadmensajeid, m.tbcomunidadid, m.tbperfilidemisor,
                        m.tbcomunidadmensajetexto, m.tbcomunidadmensajefechahora,
                        m.tbcomunidadmensajebloqueado, m.tbcomunidadmensajecategoria,
@@ -214,8 +201,6 @@ class ComunidadMensajeModelo
                 'tbcomunidadid' => (int) $fila['tbcomunidadid'],
                 'tbperfilidemisor' => (int) $fila['tbperfilidemisor'],
                 'tbperfilnombre' => $fila['tbperfilnombre'],
-                // Doble barrera: el texto ya se guardo enmascarado y aun asi se
-                // enmascara al leer, para que ningun registro legacy filtre el original.
                 'tbcomunidadmensajetexto' => $bloqueado ? MODERACION_TEXTO_BLOQUEADO : $fila['tbcomunidadmensajetexto'],
                 'tbcomunidadmensajefechahora' => $fila['tbcomunidadmensajefechahora'],
                 'tbcomunidadmensajebloqueado' => $bloqueado,

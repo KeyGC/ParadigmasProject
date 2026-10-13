@@ -23,7 +23,6 @@ class Perfil
         $this->tbperfilactivo = $tbperfilactivo;
     }
 
-    // Getters
     public function get_tbperfilid()
     {
         return $this->tbperfilid;

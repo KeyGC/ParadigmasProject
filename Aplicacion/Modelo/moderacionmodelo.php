@@ -228,8 +228,6 @@ class ModeracionModelo
             $categorias
         );
 
-        // El orden del pipeline importa: TF-IDF solo acepta la matriz numérica
-        // que produce el vectorizador, nunca el texto original.
         $vectorizador = new Rubix\ML\Transformers\WordCountVectorizer();
         $vectorizador->fit($dataset);
 
@@ -298,7 +296,6 @@ class ModeracionModelo
             return ['exito' => false, 'mensaje' => 'No se pudo escribir el artefacto temporal.'];
         }
 
-        // Escritura atómica: rename evita dejar un .bin corrupto a medias.
         if (!rename($temporal, $ruta)) {
             @unlink($temporal);
             return ['exito' => false, 'mensaje' => 'No se pudo promover el artefacto temporal.'];
@@ -454,8 +451,6 @@ class ModeracionModelo
             'categoria' => null,
             'score' => 0.0,
             'textoOriginal' => $texto,
-            // 'mensaje' es el diagnostico interno del fallo; lo que ve el
-            // cliente es siempre textoEnmascarado cuando va bloqueado.
             'mensaje' => null,
             'textoEnmascarado' => MODERACION_TEXTO_BLOQUEADO,
             'motivo' => 'moderacion_no_disponible'
@@ -468,7 +463,6 @@ class ModeracionModelo
         $carga = self::cargarArtefacto();
 
         if (!$carga['exito']) {
-            // fail-closed: sin modelo no se entrega el mensaje
             return array_merge($base, ['mensaje' => $carga['mensaje']]);
         }
 
@@ -488,7 +482,6 @@ class ModeracionModelo
         $similares = $qdrant->buscarSimilares($vector, 1);
 
         if ($similares === null) {
-            // fail-closed: sin veredicto de Qdrant no se entrega el mensaje
             return array_merge($base, ['mensaje' => 'Qdrant no respondió la consulta de similitud.']);
         }
 

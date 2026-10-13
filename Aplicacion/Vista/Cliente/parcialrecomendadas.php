@@ -1,6 +1,4 @@
 <?php
-// Parcial reutilizable: "Recomendadas para ti". No depende de comunidades.
-// Requiere que js/notificaciones.js esté cargado (lo incluye la navbar).
 ?>
 <section class="mt-5" id="recomendadasSeccion">
     <header class="mb-3">

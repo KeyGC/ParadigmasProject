@@ -3,11 +3,6 @@ require_once __DIR__ . '/../../Configuracion/basedatos.php';
 require_once __DIR__ . '/moderacionmodelo.php';
 require_once __DIR__ . '/perfiltemamodelo.php';
 
-/**
- * Grupos de chat creados a partir de una cohorte de afinidad aceptada.
- * Los no-leidos se calculan con tbgrupomiembroultimomensajeid (cursor que
- * se actualiza cuando el perfil abre el grupo).
- */
 class GrupoModelo
 {
     private $conexion;
@@ -46,9 +41,6 @@ class GrupoModelo
         return ((int) $stmt->fetchColumn()) > 0;
     }
 
-    // Crea el grupo de una afinidad si no existe y suma a los miembros que ya
-    // aceptaron. Se llama al aceptar y al listar, para que quien acepte tarde
-    // entre al grupo ya creado.
     public function asegurarGrupoPara($afinidadId)
     {
         $afinidadId = (int) $afinidadId;
@@ -334,7 +326,6 @@ class GrupoModelo
 
         $nuevoId = (int) $this->conexion->lastInsertId();
 
-        // Los mensajes de grupo alimentan las senales tematicas como chats.
         $this->registrarSenalesTema($emisorId, $bloqueado, $categoria, $texto);
 
         return [

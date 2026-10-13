@@ -1,12 +1,4 @@
 <?php
-// COMPILAR: php rubrica.php
-//
-// Suite de casos negativos de la rúbrica: validaciones de servidor,
-// detección de duplicados en PHP (sin distinguir mayúsculas y excluyendo el
-// propio registro al editar) y verificación estática de que los errores
-// internos (SQL/PDO/trazas/rutas) no se exponen al cliente.
-//
-// Solo crea y elimina datos de prueba identificables por el sufijo aleatorio.
 
 require_once __DIR__ . '/../Configuracion/configuracion.php';
 require_once APP_PATH . '/Utilidades/validacion.php';
@@ -40,9 +32,6 @@ function seccion($titulo)
     echo "\n=== $titulo ===\n";
 }
 
-// ---------------------------------------------------------------------------
-// 1. Validaciones de servidor
-// ---------------------------------------------------------------------------
 seccion('Validaciones de servidor');
 
 assertTrue(campoRequerido('   ', 'nombre') !== null, 'campoRequerido: rechaza cadena con solo espacios');
@@ -63,9 +52,6 @@ assertTrue(coordenadasValidas(9.93, -84.08) === null, 'coordenadasValidas: acept
 assertTrue(urlValida('javascript:alert(1)') !== null, 'urlValida: rechaza esquema no http(s)');
 assertTrue(urlValida('https://ejemplo.com/cancion') === null, 'urlValida: acepta URL http(s) válida');
 
-// ---------------------------------------------------------------------------
-// 2. Duplicados e integridad lógica (se controlan desde PHP)
-// ---------------------------------------------------------------------------
 seccion('Detección de duplicados en PHP');
 
 $conexion = Basedatos::conectar();
@@ -143,9 +129,6 @@ try {
     echo "  Datos de prueba eliminados (sufijo $sufijo).\n";
 }
 
-// ---------------------------------------------------------------------------
-// 3. No filtración de errores internos (verificación estática)
-// ---------------------------------------------------------------------------
 seccion('No filtración de errores internos');
 
 $configuracion = file_get_contents(APP_PATH . '/../Configuracion/configuracion.php');
@@ -193,7 +176,6 @@ $perfilControlador = file_get_contents(APP_PATH . '/Controlador/perfilcontrolado
 assertTrue(substr_count($perfilControlador, "exigirRol(['admin'])") >= 4, 'perfilcontrolador.php: las operaciones administrativas exigen rol admin');
 assertTrue(strpos($perfilControlador, 'session_regenerate_id(true)') !== false, 'perfilcontrolador.php: regenera el id de sesión al iniciar sesión');
 
-// ---------------------------------------------------------------------------
 seccion('Resumen');
 echo "Total de aserciones: $totalPruebas\n";
 echo "Fallos:              $totalFallos\n";

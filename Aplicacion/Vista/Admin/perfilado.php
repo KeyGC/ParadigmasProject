@@ -69,7 +69,6 @@ $labelTipo = $tiposDisponibles[$tipo]['label'];
                 </div>
             </div>
 
-            <!-- Cargando -->
             <div class="tarjeta-panel" id="contenedorCargando">
                 <div class="text-center py-4">
                     <div class="spinner-border" role="status"
@@ -78,10 +77,8 @@ $labelTipo = $tiposDisponibles[$tipo]['label'];
                 </div>
             </div>
 
-            <!-- Sin datos -->
             <div class="alert alert-warning" id="contenedorSinDatos" style="display:none;"></div>
 
-            <!-- Resultados -->
             <div id="contenedorResultados" style="display:none;">
                 <div class="tarjeta-panel">
                     <div class="row g-3" id="tarjetasResultado"></div>

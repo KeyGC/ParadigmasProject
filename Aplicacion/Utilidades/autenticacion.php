@@ -21,8 +21,6 @@ function usuarioTieneRol(array $rolesPermitidos)
     return in_array($_SESSION['perfil']['tbperfilrol'], $rolesPermitidos, true);
 }
 
-// Responde la denegación en el formato correcto: JSON con estado HTTP para
-// endpoints AJAX (api*.php) y redirección al login para vistas HTML.
 function denegarAcceso($autenticado)
 {
     if (esPeticionApi()) {

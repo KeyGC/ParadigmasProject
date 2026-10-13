@@ -40,8 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('formUbicacion').addEventListener('submit', guardarUbicacion);
 });
 
-// MAPA (Leaflet + OpenStreetMap, sin API key) 
-
 function initMapa() {
     const centroDefault = [9.9281, -84.0907]; // San José, Costa Rica
 
@@ -56,7 +54,6 @@ function initMapa() {
         colocarMarcador(evento.latlng);
     });
 
-    // Centra el mapa en la ubicación real, si la autoriza
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((posicion) => {
             const ubicacionUsuario = [posicion.coords.latitude, posicion.coords.longitude];
@@ -82,7 +79,6 @@ function actualizarCoordenadas(latlng) {
     document.getElementById('longitud').value = latlng.lng;
 }
 
-//  SELECTS EN CASCADA 
 
 function resetSelect(id, textoDefault) {
     const select = document.getElementById(id);

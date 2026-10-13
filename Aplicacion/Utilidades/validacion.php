@@ -1,9 +1,5 @@
 <?php
 
-// Helpers de validación reutilizables. Cada función devuelve un mensaje de
-// error (string) cuando el dato es inválido, o null cuando es aceptable, de
-// modo que el controlador pueda responder con un mensaje específico.
-
 function campoRequerido($valor, $etiqueta)
 {
     if (trim((string) $valor) === '') {

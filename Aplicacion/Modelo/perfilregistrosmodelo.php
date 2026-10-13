@@ -90,8 +90,6 @@ class PerfilRegistrosModelo
         return $stmt->execute();
     }
 
-    // Se llama cada vez que se edita contraseña, correo o nickname
-    // $tipo debe ser 'contra', 'correo' o 'nombre'
     public function registrarCambio($idPerfil, $tipo, $valorNuevo)
     {
         if (!isset($this->columnasPorTipo[$tipo])) {
@@ -105,7 +103,6 @@ class PerfilRegistrosModelo
 
         $registro = $this->getByPerfilId($idPerfil);
 
-        // Fallback por si el perfil se creó antes de existir esta funcionalidad
         if (!$registro) {
             $this->crearRegistro($idPerfil, '', '', '');
             $registro = $this->getByPerfilId($idPerfil);
@@ -123,7 +120,6 @@ class PerfilRegistrosModelo
         return $stmt->execute();
     }
 
-    // Devuelve el historial completo, separado por tipo de campo
     public function getHistorial($idPerfil)
     {
         $registro = $this->getByPerfilId($idPerfil);

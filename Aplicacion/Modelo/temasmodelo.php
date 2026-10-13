@@ -2,21 +2,6 @@
 require_once __DIR__ . '/../../Configuracion/configuracion.php';
 require_once __DIR__ . '/../Utilidades/qdrantcliente.php';
 
-/**
- * Clasificador de temas de interes (musica/comida/deporte).
- *
- * Estrategia de dos etapas:
- *   1. PUERTA por terminos distintivos: un termino que aparece en el dataset
- *      bajo UN SOLO tema (mas el nombre del tema y alias minimos). Si el
- *      mensaje no contiene al menos uno, no se clasifica. Los terminos que
- *      aparecen en varios temas no abren la puerta por si solos.
- *   2. RANKING: entre los temas que pasan la puerta se vectoriza con TF-IDF
- *      propio (stoplist en espanol, sin el diccionario de sinonimos de
- *      moderacion) y se elige el de mayor similitud en la coleccion Qdrant
- *      'temas'. Se exige TEMAS_UMBRAL.
- *
- * El artefacto y el dataset viven en BaseDatos/Temas/.
- */
 class TemasModelo
 {
     private const COLECCION = 'temas';
@@ -114,10 +99,6 @@ class TemasModelo
         ];
     }
 
-    /**
-     * Normaliza a minusculas y sin acentos, dejando solo [a-z0-9] separados
-     * por espacios. Base de la tokenizacion para la puerta y el ranking.
-     */
     public static function normalizar($texto)
     {
         $texto = mb_strtolower(trim((string) $texto));
@@ -136,9 +117,6 @@ class TemasModelo
         return trim($texto);
     }
 
-    /**
-     * Tokens utiles (>=2 caracteres, sin stopwords).
-     */
     private static function tokens($texto)
     {
         $normalizado = self::normalizar($texto);
@@ -167,10 +145,6 @@ class TemasModelo
         return empty($tokens) ? '' : implode(' ', $tokens);
     }
 
-    /**
-     * Lee BaseDatos/Temas/dataset_temas.csv (texto,tipo,tema) con fgetcsv
-     * porque algunos textos traen comas entrecomilladas.
-     */
     public static function leerDataset()
     {
         $ruta = self::artefactoRutaCsv();
@@ -218,10 +192,6 @@ class TemasModelo
         return ['exito' => true, 'textos' => $textos, 'tipos' => $tipos, 'temas' => $temas];
     }
 
-    /**
-     * Terminos distintivos: aparecen bajo un solo tema. Se suman el nombre
-     * del tema (sin palabras de categoria) y los alias minimos.
-     */
     private static function construirLexico(array $lectura)
     {
         $porTermino = [];
@@ -236,8 +206,6 @@ class TemasModelo
 
         $lexico = [];
 
-        // Distintivo y con evidencia: aparece en un solo tema y en al menos
-        // dos ejemplos de ese tema (descarta coincidencias aisladas).
         foreach ($porTermino as $token => $temasDelToken) {
             if (count($temasDelToken) === 1) {
                 $tema = array_key_first($temasDelToken);
@@ -248,8 +216,6 @@ class TemasModelo
             }
         }
 
-        // El nombre del tema abre la puerta; se excluyen las palabras de
-        // categoria para no clasificar por el mero uso de "comida"/"deporte".
         $excluir = ['genero' => true, 'comida' => true, 'deporte' => true,
             'musica' => true, 'musical' => true, 'comunidad' => true];
 
@@ -284,8 +250,6 @@ class TemasModelo
             $lectura['tipos']
         );
 
-        // El orden del pipeline importa: TF-IDF solo acepta la matriz numerica
-        // que produce el vectorizador, nunca el texto original.
         $vectorizador = new Rubix\ML\Transformers\WordCountVectorizer();
         $vectorizador->fit($dataset);
 
@@ -355,7 +319,6 @@ class TemasModelo
             return ['exito' => false, 'mensaje' => 'No se pudo escribir el artefacto temporal.'];
         }
 
-        // Escritura atomica: rename evita dejar un .bin corrupto a medias.
         if (!rename($temporal, $ruta)) {
             @unlink($temporal);
             return ['exito' => false, 'mensaje' => 'No se pudo promover el artefacto temporal.'];
@@ -504,9 +467,6 @@ class TemasModelo
         return $carga['exito'] ? $carga['data']['dimension'] : null;
     }
 
-    /**
-     * Devuelve los temas candidatos que abren la puerta para el texto.
-     */
     public function temasCandidatos($texto)
     {
         $carga = self::cargarArtefacto();
@@ -530,14 +490,6 @@ class TemasModelo
         return array_keys($candidatos);
     }
 
-    /**
-     * Clasifica el texto (puerta + ranking). Devuelve:
-     *  - clasificado=true con tipo/tema cuando supera TEMAS_UMBRAL
-     *  - clasificado=false cuando no abre la puerta o no supera el umbral
-     *  - exito=false cuando el modelo/Qdrant no responden (fail-open arriba)
-     *
-     * Con $ignorarUmbral=true se salta el umbral (solo para calibracion).
-     */
     public function clasificarTema($texto, $ignorarUmbral = false)
     {
         $texto = trim((string) $texto);
@@ -580,7 +532,6 @@ class TemasModelo
         }
 
         if (!self::$indiceAsegurado) {
-            // Qdrant exige un indice keyword para filtrar por 'tema'.
             $qdrant->crearIndice('tema', 'keyword');
             self::$indiceAsegurado = true;
         }
@@ -609,8 +560,6 @@ class TemasModelo
         $tema = $mejor['tema'] ?? ($mejor['payload']['tema'] ?? null);
         $tipo = $mejor['tipo'] ?? ($mejor['payload']['tipo'] ?? null);
 
-        // Con un solo candidato la puerta ya decidio: no se exige umbral. El
-        // umbral solo desempata cuando hay varios temas candidatos.
         $esMultiple = count($candidatos) > 1;
 
         if ($tema === null || $score <= 0.0 || ($esMultiple && !$ignorarUmbral && $score < TEMAS_UMBRAL)) {
