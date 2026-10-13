@@ -31,6 +31,12 @@ $esVistaPerfiles = in_array($vistaActual, ['perfiles', 'perfilaccesos', 'perfilr
                     <a class="nav-link <?= $vistaActual === 'eventos' ? 'activo' : '' ?>" href="index.php?vista=eventos">Eventos</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'comidas' ? 'activo' : '' ?>" href="index.php?vista=comidas">Comidas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $vistaActual === 'deportes' ? 'activo' : '' ?>" href="index.php?vista=deportes">Deportes</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?= $vistaActual === 'analisisdiscurso' ? 'activo' : '' ?>" href="index.php?vista=analisisdiscurso">Análisis de Discurso</a>
                 </li>
             </ul>
@@ -47,3 +53,4 @@ $esVistaPerfiles = in_array($vistaActual, ['perfiles', 'perfilaccesos', 'perfilr
     </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/peticiones.js"></script>

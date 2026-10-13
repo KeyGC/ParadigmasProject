@@ -92,4 +92,110 @@ class DeporteModelo
 
         return $stmt->execute();
     }
+
+    public function getListAdmin()
+    {
+        $sql = "SELECT d.tbdeporteid AS id, d.tbtipodeporteid, d.tbdeportenombre AS nombre,
+                       d.tbdeporteimagenurl AS imagenUrl, d.tbdeporteactivo AS activo,
+                       t.tbtipodeportenombre AS tipoNombre
+                FROM tbdeporte d
+                INNER JOIN tbtipodeporte t ON d.tbtipodeporteid = t.tbtipodeporteid
+                ORDER BY t.tbtipodeportenombre ASC, d.tbdeportenombre ASC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getItemAdmin($id)
+    {
+        $sql = "SELECT d.tbdeporteid AS id, d.tbtipodeporteid, d.tbdeportenombre AS nombre,
+                       d.tbdeporteimagenurl AS imagenUrl, d.tbdeporteactivo AS activo,
+                       t.tbtipodeportenombre AS tipoNombre
+                FROM tbdeporte d
+                INNER JOIN tbtipodeporte t ON d.tbtipodeporteid = t.tbtipodeporteid
+                WHERE d.tbdeporteid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $fila = $stmt->fetch();
+        return $fila ?: null;
+    }
+
+    public function existeNombre($nombre, $tipoId, $excluirId = null)
+    {
+        $sql = "SELECT tbdeporteid FROM tbdeporte
+                WHERE LOWER(tbdeportenombre) = LOWER(:nombre)
+                  AND tbtipodeporteid = :tipoId";
+        if ($excluirId !== null) {
+            $sql .= " AND tbdeporteid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':tipoId', (int) $tipoId, PDO::PARAM_INT);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetch() !== false;
+    }
+
+    public function insert($tipoId, $nombre, $imagenUrl)
+    {
+        $sql = "INSERT INTO tbdeporte (tbtipodeporteid, tbdeportenombre, tbdeporteimagenurl)
+                VALUES (:tipoId, :nombre, :imagenUrl)";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':tipoId', (int) $tipoId, PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':imagenUrl', $imagenUrl);
+
+        if ($stmt->execute()) {
+            return $this->conexion->lastInsertId();
+        }
+        return false;
+    }
+
+    public function update($id, $tipoId, $nombre, $imagenUrl)
+    {
+        $sql = "UPDATE tbdeporte SET
+                    tbtipodeporteid = :tipoId,
+                    tbdeportenombre = :nombre,
+                    tbdeporteimagenurl = :imagenUrl
+                WHERE tbdeporteid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':tipoId', (int) $tipoId, PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':imagenUrl', $imagenUrl);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function toggleEstado($id)
+    {
+        $sql = "UPDATE tbdeporte SET tbdeporteactivo = NOT tbdeporteactivo WHERE tbdeporteid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function tieneSwipes($id)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM tbdeporteswipe WHERE tbdeporteid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $fila = $stmt->fetch();
+
+        return $fila && (int) $fila['total'] > 0;
+    }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM tbdeporte WHERE tbdeporteid = :id";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }
