@@ -2,3 +2,7 @@
 
 # Marcador de throttle del modulo de afinidad (ahora vive en la BD)
 BaseDatos/Temas/.afinidad_ultima
+.env.local
+cookies.txt
+tmp/
+/tmp/

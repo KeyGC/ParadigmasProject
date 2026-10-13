@@ -12,7 +12,7 @@ function enviarContrasenaTemporal($correoDestino, $nombre, $contraTemporal) {
     $cuerpo = [
         'sender' => [
             'name' => 'Sistema de Perfiles',
-            'email' => 'matchloveweb@gmail.com'
+            'email' => 'unamatch2026@gmail.com'
         ],
         'to' => [
             [
