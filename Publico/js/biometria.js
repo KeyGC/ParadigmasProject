@@ -164,12 +164,11 @@ function enviarVector(vector) {
         cuerpo = { vector: vector };
     }
 
-    fetch(`${URL_CONTROLADOR_BIOMETRIA}?accion=${accion}`, {
+    peticion(`${URL_CONTROLADOR_BIOMETRIA}?accion=${accion}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cuerpo)
     })
-        .then(res => res.json())
         .then(resp => {
             if (!resp.exito) {
                 mostrarMensaje('danger', resp.mensaje);
@@ -202,7 +201,7 @@ function enviarVector(vector) {
             }
         })
         .catch(err => {
-            mostrarMensaje('danger', 'Error de conexión: ' + err);
+            mostrarMensaje('danger', err.message);
             mostrarReintentar();
         });
 }

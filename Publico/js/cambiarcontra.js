@@ -84,13 +84,12 @@ function cambiarContra(e) {
 
 
 
-    fetch(`${URL_CONTROLADOR}?accion=cambiarContra`, {
+    peticion(`${URL_CONTROLADOR}?accion=cambiarContra`, {
 
         method: 'POST',
         body: formData
 
     })
-        .then(res => res.json())
 
         .then(resp => {
 
@@ -129,7 +128,7 @@ function cambiarContra(e) {
 
             alerta.innerHTML = `
             <div class="alert alert-danger">
-                Error de conexión: ${err}
+                No se pudo conectar con el servidor. Verifique su conexión e intente nuevamente.
             </div>
         `;
 

@@ -44,10 +44,8 @@
     }
 
     function consultar(params) {
-        return fetch(apiUrl + '?' + new URLSearchParams(params), {
+        return peticion(apiUrl + '?' + new URLSearchParams(params), {
             headers: { 'Accept': 'application/json' }
-        }).then(function (respuesta) {
-            return respuesta.json();
         });
     }
 
@@ -56,12 +54,10 @@
         datos.append('accion', 'registrarSwipe');
         datos.append(idCampo, id);
         datos.append('gusto', gusto);
-        return fetch(apiUrl, {
+        return peticion(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
             body: datos.toString()
-        }).then(function (respuesta) {
-            return respuesta.json();
         });
     }
 
@@ -284,14 +280,14 @@
 
                     var meta = document.createElement('span');
                     meta.className = 'text-secondary';
-                    meta.textContent = 'Confianza ' + resultado.confianza + '% · basado en ' +
+                    meta.textContent = 'Confianza ' + Number(resultado.confianza).toFixed(1) + '% · basado en ' +
                         (resultado.soporte || 0) + ' registros';
                     li.appendChild(meta);
                 } else {
                     li.textContent = '#' + (indice + 1) + ' ' + resultado.tipo;
                     var porcentaje = document.createElement('span');
                     porcentaje.className = 'text-secondary';
-                    porcentaje.textContent = (resultado.porcentaje !== undefined ? resultado.porcentaje + '%' : '');
+                    porcentaje.textContent = (resultado.porcentaje !== undefined ? Number(resultado.porcentaje).toFixed(1) + '%' : '');
                     li.appendChild(porcentaje);
                 }
 

@@ -44,8 +44,7 @@ function cargarMiPerfil() {
 
     const alerta = document.getElementById('alertaPerfil');
 
-    fetch(`${URL_PERFIL}?accion=getMiPerfil`)
-        .then(res => res.json())
+    peticion(`${URL_PERFIL}?accion=getMiPerfil`)
         .then(resp => {
 
             if (resp.exito) {
@@ -69,7 +68,7 @@ function cargarMiPerfil() {
 
             alerta.innerHTML = `
                 <div class="alert alert-danger">
-                    Error de conexión: ${err}
+                    No se pudo conectar con el servidor. Verifique su conexión e intente nuevamente.
                 </div>
             `;
 
@@ -147,11 +146,10 @@ function guardarPerfil(e) {
     formData.append('contra', contra);
     formData.append('correo', correo);
 
-    fetch(`${URL_PERFIL}?accion=actualizarPerfil`, {
+    peticion(`${URL_PERFIL}?accion=actualizarPerfil`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(resp => {
 
             if (resp.exito) {
@@ -179,7 +177,7 @@ function guardarPerfil(e) {
 
             alerta.innerHTML = `
                 <div class="alert alert-danger">
-                    Error de conexión: ${err}
+                    No se pudo conectar con el servidor. Verifique su conexión e intente nuevamente.
                 </div>
             `;
 

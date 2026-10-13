@@ -58,4 +58,5 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
     </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/peticiones.js"></script>
 <script src="js/notificaciones.js"></script>

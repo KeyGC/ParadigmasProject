@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function generarPerfilado(idPerfil, tipo) {
-    fetch(`apiperfilado.php?accion=getPerfilado&perfilId=${idPerfil}&tipo=${encodeURIComponent(tipo)}`)
-        .then(res => res.json())
+    peticion(`apiperfilado.php?accion=getPerfilado&perfilId=${idPerfil}&tipo=${encodeURIComponent(tipo)}`)
         .then(res => {
             document.getElementById('contenedorCargando').style.display = 'none';
 
@@ -43,7 +42,7 @@ function generarPerfilado(idPerfil, tipo) {
                         <h5 class="titulo-tarjeta">Resultado ${i + 1}</h5>
                         <p>${r.texto}.</p>
                         <p class="subtitulo-pagina mb-0" style="font-size:0.85rem;">
-                            Confianza: <strong>${r.confianza}%</strong><br>
+                            Confianza: <strong>${Number(r.confianza).toFixed(1)}%</strong><br>
                             Basado en <strong>${r.soporte}</strong> registros
                         </p>
                     </div>

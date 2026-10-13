@@ -91,8 +91,7 @@ function resetSelect(id, textoDefault) {
 
 function cargarProvincias() {
 
-    return fetch(`${URL_UBICACION}?accion=getProvincias`)
-        .then(res => res.json())
+    return peticion(`${URL_UBICACION}?accion=getProvincias`)
         .then(resp => {
 
             if (resp.exito) {
@@ -116,8 +115,7 @@ function cargarUbicacion() {
 
     const perfilId = document.getElementById('perfilId').value;
 
-    fetch(`${URL_UBICACION}?accion=getUbicacion&perfilId=${perfilId}`)
-        .then(res => res.json())
+    peticion(`${URL_UBICACION}?accion=getUbicacion&perfilId=${perfilId}`)
         .then(async resp => {
 
             if (!resp.exito || !resp.data) {
@@ -188,8 +186,7 @@ function deshabilitarFormularioUbicacion() {
 
 function cargarCantones(provinciaId) {
 
-    return fetch(`${URL_UBICACION}?accion=getCantones&provinciaId=${provinciaId}`)
-        .then(res => res.json())
+    return peticion(`${URL_UBICACION}?accion=getCantones&provinciaId=${provinciaId}`)
         .then(resp => {
 
             if (resp.exito) {
@@ -211,8 +208,7 @@ function cargarCantones(provinciaId) {
 
 function cargarDistritos(cantonId) {
 
-    return fetch(`${URL_UBICACION}?accion=getDistritos&cantonId=${cantonId}`)
-        .then(res => res.json())
+    return peticion(`${URL_UBICACION}?accion=getDistritos&cantonId=${cantonId}`)
         .then(resp => {
 
             if (resp.exito) {
@@ -266,11 +262,10 @@ function guardarUbicacion(e) {
 
 
 
-    fetch(`${URL_UBICACION}?accion=guardarUbicacion`, {
+    peticion(`${URL_UBICACION}?accion=guardarUbicacion`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(resp => {
             alert(resp.mensaje);
         })

@@ -44,14 +44,13 @@
     }
 
     async function pedir(url, opciones) {
-        const respuesta = await fetch(url, Object.assign({ credentials: 'same-origin' }, opciones || {}));
-        const texto = await respuesta.text();
-        return JSON.parse(texto);
+        return peticion(url, Object.assign({ credentials: 'same-origin' }, opciones || {}));
     }
 
     async function refrescarContador() {
         try {
             const datos = await pedir(config.apiUrl + '?accion=contador');
+            if (manejarSesion(datos)) return;
             if (datos && datos.exito) {
                 pintarBadge(datos.data ? datos.data.total : 0);
             }
@@ -152,6 +151,7 @@
             lista.innerHTML = '';
             const pendientes = (datos && datos.data) || [];
 
+            if (manejarSesion(datos)) return;
             if (!datos || !datos.exito) {
                 mostrarError((datos && datos.mensaje) || 'No se pudieron cargar las recomendaciones.');
                 return;
@@ -227,6 +227,7 @@
 
             contenedor.innerHTML = '';
 
+            if (manejarSesion(datos)) return;
             if (!datos || !datos.exito) {
                 if (errorRec) {
                     errorRec.textContent = (datos && datos.mensaje) || 'No se pudieron cargar las recomendaciones.';

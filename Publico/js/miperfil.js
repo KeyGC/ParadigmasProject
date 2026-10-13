@@ -3,8 +3,7 @@ const URL_API_MIPERFIL = 'apimiperfil.php';
 document.addEventListener('DOMContentLoaded', cargarResumenPerfil);
 
 function cargarResumenPerfil() {
-    fetch(`${URL_API_MIPERFIL}?accion=getResumen`)
-        .then(res => res.json())
+    peticion(`${URL_API_MIPERFIL}?accion=getResumen`)
         .then(respuesta => {
             if (!respuesta.exito) {
                 document.getElementById('nombrePerfilResumen').textContent = 'No se pudo cargar el perfil';

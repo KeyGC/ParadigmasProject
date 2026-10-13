@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function cargarReproducciones(idPerfil) {
-    fetch(`apicancion.php?accion=getReproduccionesPorPerfil&perfilId=${idPerfil}`)
-        .then(res => res.json())
+    peticion(`apicancion.php?accion=getReproduccionesPorPerfil&perfilId=${idPerfil}`)
         .then(res => {
             if (!res.exito) {
                 alert(res.mensaje);
@@ -49,11 +48,10 @@ function toggleEstado(id, idPerfil) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch('apicancion.php?accion=toggleReproduccionEstado', {
+    peticion('apicancion.php?accion=toggleReproduccionEstado', {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarReproducciones(idPerfil);

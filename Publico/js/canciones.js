@@ -21,8 +21,7 @@ function mostrarFormulario() {
 }
 
 function cargarGenerosSelect() {
-    fetch(`${URL_CONTROLADOR}?accion=getGenerosDisponibles`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getGenerosDisponibles`)
         .then(respuesta => {
             if (respuesta.exito) {
                 const select = document.getElementById('generoId');
@@ -34,8 +33,7 @@ function cargarGenerosSelect() {
 }
 
 function cargarCanciones() {
-    fetch(`${URL_CONTROLADOR}?accion=getListAdmin`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getListAdmin`)
         .then(respuesta => {
             if (respuesta.exito) {
                 listaCanciones = respuesta.data;
@@ -94,8 +92,7 @@ function pintarTabla(canciones) {
 }
 
 function editarCancion(id) {
-    fetch(`${URL_CONTROLADOR}?accion=getCancion&id=${id}`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getCancion&id=${id}`)
         .then(respuesta => {
             if (respuesta.exito) {
                 document.getElementById('contenedorFormulario').style.display = 'block';
@@ -142,11 +139,10 @@ function guardarCancion(e) {
         formData.append('id', id);
     }
 
-    fetch(`${URL_CONTROLADOR}?accion=${accion}`, {
+    peticion(`${URL_CONTROLADOR}?accion=${accion}`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             alert(respuesta.mensaje);
             if (respuesta.exito) {
@@ -164,11 +160,10 @@ function toggleEstado(id) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch(`${URL_CONTROLADOR}?accion=toggleEstado`, {
+    peticion(`${URL_CONTROLADOR}?accion=toggleEstado`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarCanciones();

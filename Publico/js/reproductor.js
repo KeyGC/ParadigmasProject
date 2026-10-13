@@ -50,8 +50,7 @@ const PALETA_ACENTOS = [
 ];
 
 function cargarGeneros() {
-    fetch('apicancion.php?accion=getGenerosConConteo')
-        .then(r => r.json())
+    peticion('apicancion.php?accion=getGenerosConConteo')
         .then(res => {
             if (!res.exito) return;
 
@@ -74,8 +73,7 @@ function cargarGeneros() {
 }
 
 function cargarPlaylistGenero(tbgeneroid, nombreGenero) {
-    fetch(`apicancion.php?accion=getPlaylistPorGenero&tbgeneroid=${tbgeneroid}`)
-        .then(r => r.json())
+    peticion(`apicancion.php?accion=getPlaylistPorGenero&tbgeneroid=${tbgeneroid}`)
         .then(res => {
             if (!res.exito) return;
 
@@ -149,7 +147,7 @@ function registrarReproduccion() {
     formData.append('cancionId', cancionActualId);
     formData.append('fechaLocal', fechaLocalString());
 
-    fetch('apicancion.php?accion=registrarReproduccion', {
+    peticion('apicancion.php?accion=registrarReproduccion', {
         method: 'POST',
         body: formData
     });
@@ -185,7 +183,7 @@ function enviarTiempo(segundos) {
     formData.append('cancionId', cancionActualId);
     formData.append('segundos', segundos);
 
-    fetch('apicancion.php?accion=registrarTiempo', {
+    peticion('apicancion.php?accion=registrarTiempo', {
         method: 'POST',
         body: formData
     });

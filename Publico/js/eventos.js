@@ -25,8 +25,7 @@ function mostrarFormulario() {
 }
 
 function cargarGeneros() {
-    fetch(`${URL_GENEROS}?accion=getList`)
-        .then(res => res.json())
+    peticion(`${URL_GENEROS}?accion=getList`)
         .then(respuesta => {
             if (respuesta.exito) {
                 listaGeneros = respuesta.data.filter(g => g.tbgeneroestado == 1);
@@ -43,8 +42,7 @@ function cargarGeneros() {
 }
 
 function cargarEventos() {
-    fetch(`${URL_CONTROLADOR}?accion=getList`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getList`)
         .then(respuesta => {
             if (respuesta.exito) {
                 listaEventos = respuesta.data;
@@ -90,8 +88,8 @@ function pintarTabla(eventos) {
             <td>${e.tbeventoartista}</td>
             <td>${e.tbgeneronombre}</td>
             <td>${e.tbeventoubicaciongeneral}</td>
-            <td>${e.tbeventofecha}</td>
-            <td>${e.tbeventohora}</td>
+            <td>${formatearFecha(e.tbeventofecha)}</td>
+            <td>${formatearHora(e.tbeventohora)}</td>
             <td class="estado-celda">
                 <span class="badge-estado ${activo ? 'activo' : 'inactivo'}">${activo ? 'Activo' : 'Inactivo'}</span>
             </td>
@@ -121,8 +119,7 @@ function verUbicacionesComida(eventoId) {
 }
 
 function cargarUbicaciones(eventoId) {
-    fetch(`${URL_CONTROLADOR}?accion=getUbicaciones&eventoId=${eventoId}&categoria=comida`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getUbicaciones&eventoId=${eventoId}&categoria=comida`)
         .then(respuesta => {
             const lista = document.getElementById('listaUbicaciones');
             lista.innerHTML = '';
@@ -152,11 +149,10 @@ function guardarUbicacion(e) {
     formData.append('latitud', document.getElementById('ubicacionLatitud').value);
     formData.append('longitud', document.getElementById('ubicacionLongitud').value);
 
-    fetch(`${URL_CONTROLADOR}?accion=insertUbicacion`, {
+    peticion(`${URL_CONTROLADOR}?accion=insertUbicacion`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 document.getElementById('ubicacionNombre').value = '';
@@ -171,8 +167,7 @@ function guardarUbicacion(e) {
 }
 
 function editarEvento(id) {
-    fetch(`${URL_CONTROLADOR}?accion=getEvento&id=${id}`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getEvento&id=${id}`)
         .then(respuesta => {
             if (respuesta.exito) {
                 const e = respuesta.data;
@@ -224,11 +219,10 @@ function guardarEvento(e) {
         formData.append('id', id);
     }
 
-    fetch(`${URL_CONTROLADOR}?accion=${accion}`, {
+    peticion(`${URL_CONTROLADOR}?accion=${accion}`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             alert(respuesta.mensaje);
             if (respuesta.exito) {
@@ -246,11 +240,10 @@ function toggleEstado(id) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch(`${URL_CONTROLADOR}?accion=toggleEstado`, {
+    peticion(`${URL_CONTROLADOR}?accion=toggleEstado`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarEventos();

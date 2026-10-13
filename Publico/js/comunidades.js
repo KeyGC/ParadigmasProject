@@ -59,10 +59,8 @@
     }
 
     function consultar(params) {
-        return fetch(apiUrl + '?' + new URLSearchParams(params), {
+        return peticion(apiUrl + '?' + new URLSearchParams(params), {
             headers: { 'Accept': 'application/json' }
-        }).then(function (respuesta) {
-            return respuesta.json();
         });
     }
 
@@ -71,12 +69,10 @@
         Object.keys(params).forEach(function (clave) {
             datos.append(clave, params[clave]);
         });
-        return fetch(apiUrl, {
+        return peticion(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
             body: datos.toString()
-        }).then(function (respuesta) {
-            return respuesta.json();
         });
     }
 
@@ -87,8 +83,12 @@
     function hora(fecha) {
         if (!fecha) return '';
         var partes = String(fecha).replace('T', ' ').split(' ');
+        var fechaPartes = (partes[0] || '').split('-');
+        var fechaTexto = fechaPartes.length === 3
+            ? fechaPartes[2] + '/' + fechaPartes[1] + '/' + fechaPartes[0]
+            : (partes[0] || '');
         var horaTexto = partes[1] ? partes[1].slice(0, 5) : '';
-        return partes[0] + ' ' + horaTexto;
+        return (fechaTexto + ' ' + horaTexto).trim();
     }
 
     function scrollAlFinal() {
@@ -205,7 +205,7 @@
 
         var meta = document.createElement('span');
         meta.className = 'chat-hora';
-        meta.textContent = hora(dato.tbcomunidadmensajefechahora);
+        meta.textContent = ' ' + hora(dato.tbcomunidadmensajefechahora);
         fila.appendChild(meta);
 
         el.mensajes.appendChild(fila);
@@ -241,6 +241,10 @@
             desdeId: estado.ultimoId
         }).then(function (respuesta) {
             if (!estado.activa || estado.activa.tbcomunidadid !== comunidadId) {
+                return;
+            }
+            if (manejarSesion(respuesta)) {
+                detenerPolling();
                 return;
             }
             if (!respuesta.exito) {
@@ -387,6 +391,7 @@
 
         return consultar({ accion: 'getComunidades' })
             .then(function (respuesta) {
+                if (manejarSesion(respuesta)) return;
                 if (!respuesta.exito) {
                     mensaje(respuesta.mensaje || 'No se pudieron cargar las comunidades.');
                     if (el.cargando) el.cargando.hidden = true;

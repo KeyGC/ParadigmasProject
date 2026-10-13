@@ -58,12 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         datos.append('nombre', nombre);
         datos.append('correo', correo);
 
-        fetch('api.php', {
+        peticion('api.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: datos
         })
-        .then(res => res.json())
         .then(resp => {
             if (resp.exito) {
 
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(err => {
-            alertaRegistro.innerHTML = `<div class="alert alert-danger">Error de conexión: ${err}</div>`;
+            alertaRegistro.innerHTML = `<div class="alert alert-danger">${err.message}</div>`;
         });
     });
 });

@@ -14,11 +14,10 @@ function loguear(e) {
     formData.append('nombre', nombre);
     formData.append('contra', contra);
 
-    fetch(`${URL_CONTROLADOR}?accion=login`, {
+    peticion(`${URL_CONTROLADOR}?accion=login`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(resp => {
 
             if (resp.exito) {
@@ -43,6 +42,6 @@ function loguear(e) {
         })
         .catch(err => {
             document.getElementById('alertaLogin').innerHTML =
-                `<div class="alert alert-danger">Error de conexión: ${err}</div>`;
+                `<div class="alert alert-danger">${err.message}</div>`;
         });
 }

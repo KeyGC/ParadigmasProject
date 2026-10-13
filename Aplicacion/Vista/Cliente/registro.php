@@ -47,6 +47,7 @@
         </div>
     </main>
 
+    <script src="js/peticiones.js"></script>
     <script src="js/registro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script src="js/biometria.js"></script>

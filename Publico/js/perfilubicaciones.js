@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function cargarHistoricoUbicaciones(idPerfil) {
 
-    fetch(`apiubicacion.php?accion=getHistoricoPerfil&idPerfil=${idPerfil}`)
-        .then(res => res.json())
+    peticion(`apiubicacion.php?accion=getHistoricoPerfil&idPerfil=${idPerfil}`)
         .then(res => {
 
             if (!res.exito) {
@@ -33,8 +32,8 @@ function cargarHistoricoUbicaciones(idPerfil) {
             data.ubicaciones.forEach(u => {
                 cuerpo.innerHTML += `
                     <tr>
-                        <td>${u.fecha}</td>
-                        <td>${u.hora}</td>
+                        <td>${formatearFecha(u.fecha)}</td>
+                        <td>${formatearHora(u.hora)}</td>
                         <td>
                             <span class="badge ${u.tipo === 'AUTOMATICA' ? 'bg-success' : 'bg-primary'}">
                                 ${u.tipo}

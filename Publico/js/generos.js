@@ -20,8 +20,7 @@ function mostrarFormulario() {
 }
 
 function cargarGeneros() {
-    fetch(`${URL_CONTROLADOR}?accion=getList`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getList`)
         .then(respuesta => {
             if (respuesta.exito) {
                 listaGeneros = respuesta.data;
@@ -77,8 +76,7 @@ function pintarTabla(generos) {
 }
 
 function editarGenero(id) {
-    fetch(`${URL_CONTROLADOR}?accion=getGenero&id=${id}`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getGenero&id=${id}`)
         .then(respuesta => {
             if (respuesta.exito) {
                 document.getElementById('contenedorFormulario').style.display = 'block';
@@ -116,11 +114,10 @@ function guardarGenero(e) {
         formData.append('id', id);
     }
 
-    fetch(`${URL_CONTROLADOR}?accion=${accion}`, {
+    peticion(`${URL_CONTROLADOR}?accion=${accion}`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             alert(respuesta.mensaje);
             if (respuesta.exito) {
@@ -138,11 +135,10 @@ function toggleEstado(id) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch(`${URL_CONTROLADOR}?accion=toggleEstado`, {
+    peticion(`${URL_CONTROLADOR}?accion=toggleEstado`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarGeneros();

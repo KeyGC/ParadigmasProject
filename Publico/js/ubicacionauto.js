@@ -29,11 +29,10 @@ function enviarUbicacionAutomatica(posicion) {
     formData.append('lat', posicion.coords.latitude);
     formData.append('lng', posicion.coords.longitude);
 
-    fetch(`${URL_UBICACION_AUTO}?accion=guardarAutomatica`, {
+    peticion(`${URL_UBICACION_AUTO}?accion=guardarAutomatica`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(resp => {
             if (!resp.guardado) {
                 console.info('[Ubicación automática]', resp.mensaje);

@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function cargarMatriz(idPerfil) {
-    fetch(`apiperfilacceso.php?accion=getMatriz&idPerfil=${idPerfil}`)
-        .then(res => res.json())
+    peticion(`apiperfilacceso.php?accion=getMatriz&idPerfil=${idPerfil}`)
         .then(res => {
             if (!res.exito) {
                 alert(res.mensaje);
@@ -15,8 +14,8 @@ function cargarMatriz(idPerfil) {
             const data = res.data;
             document.getElementById('tituloPerfil').textContent = `Accesos de: ${data.perfil}`;
 
-            const fc = data.fechaCreacion ? new Date(data.fechaCreacion).toLocaleString() : 'Sin registros';
-            const fu = data.fechaUltima ? new Date(data.fechaUltima).toLocaleString() : 'Sin registros';
+            const fc = data.fechaCreacion ? formatearFechaHora(data.fechaCreacion) : 'Sin registros';
+            const fu = data.fechaUltima ? formatearFechaHora(data.fechaUltima) : 'Sin registros';
             document.getElementById('resumenFechas').textContent =
                 `Cuenta creada: ${fc} | Último acceso: ${fu}`;
 
@@ -66,11 +65,10 @@ function toggleEstadoAcceso() {
     const formData = new FormData();
     formData.append('idPerfil', idPerfil);
 
-    fetch('apiperfilacceso.php?accion=toggleEstado', {
+    peticion('apiperfilacceso.php?accion=toggleEstado', {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarMatriz(idPerfil);

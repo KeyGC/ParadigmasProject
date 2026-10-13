@@ -23,8 +23,7 @@ function mostrarFormulario() {
 }
 
 function cargarPerfiles() {
-    fetch(`${URL_CONTROLADOR}?accion=getList`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getList`)
         .then(respuesta => {
             if (respuesta.exito) {
                 listaPerfiles = respuesta.data;
@@ -87,8 +86,7 @@ function pintarTabla(perfiles) {
 }
 
 function editarPerfil(id) {
-    fetch(`${URL_CONTROLADOR}?accion=getPerfil&id=${id}`)
-        .then(res => res.json())
+    peticion(`${URL_CONTROLADOR}?accion=getPerfil&id=${id}`)
         .then(respuesta => {
             if (respuesta.exito) {
                 document.getElementById('contenedorFormulario').style.display = 'block';
@@ -135,11 +133,10 @@ function guardarPerfil(e) {
         formData.append('ubicacionEstado', ubicacionEstado);
     }
 
-    fetch(`${URL_CONTROLADOR}?accion=${accion}`, {
+    peticion(`${URL_CONTROLADOR}?accion=${accion}`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             alert(respuesta.mensaje);
             if (respuesta.exito) {
@@ -157,11 +154,10 @@ function toggleEstado(id) {
     const formData = new FormData();
     formData.append('id', id);
 
-    fetch(`${URL_CONTROLADOR}?accion=toggleEstado`, {
+    peticion(`${URL_CONTROLADOR}?accion=toggleEstado`, {
         method: 'POST',
         body: formData
     })
-        .then(res => res.json())
         .then(respuesta => {
             if (respuesta.exito) {
                 cargarPerfiles();
