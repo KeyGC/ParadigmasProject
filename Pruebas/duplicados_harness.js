@@ -196,6 +196,8 @@ function buildEnv(script, windowObj, routes) {
         console: { log() { }, error() { }, warn() { } }
     };
     vm.createContext(sandbox);
+    const helper = path.join(__dirname, '..', 'Publico', 'js', 'peticiones.js');
+    vm.runInContext(fs.readFileSync(helper, 'utf8'), sandbox, { filename: helper });
     vm.runInContext(fs.readFileSync(script, 'utf8'), sandbox, { filename: script });
     return { doc, timers, fetchMock, routes };
 }

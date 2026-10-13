@@ -43,13 +43,29 @@ class GeneroModelo
 
     public function getGeneroByNombre($nombre)
     {
-        $sql = "SELECT * FROM tbgenero WHERE tbgeneronombre = :nombre";
+        $sql = "SELECT * FROM tbgenero WHERE LOWER(tbgeneronombre) = LOWER(:nombre)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':nombre', $nombre);
         $stmt->execute();
         $fila = $stmt->fetch();
 
         return $fila ? $this->mapearFila($fila) : null;
+    }
+
+    public function existeNombre($nombre, $excluirId = null)
+    {
+        $sql = "SELECT tbgeneroid FROM tbgenero WHERE LOWER(tbgeneronombre) = LOWER(:nombre)";
+        if ($excluirId !== null) {
+            $sql .= " AND tbgeneroid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
     }
 
     public function insert(Genero $genero)

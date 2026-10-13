@@ -152,6 +152,7 @@ exigirRol(['admin']);
         </div>
     </div>
 
+    <script src="js/formato.js"></script>
     <script src="js/eventos.js"></script>
 </body>
 

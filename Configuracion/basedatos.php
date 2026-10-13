@@ -29,7 +29,8 @@ if (self::$conexion === null) {
         
 
     } catch (PDOException $e) {
-        die("Error de conexión: " . $e->getMessage());
+        error_log('Basedatos::conectar - ' . $e->getMessage());
+        throw new RuntimeException('No se pudo conectar con la base de datos. Intente nuevamente más tarde.');
     }
 }
 

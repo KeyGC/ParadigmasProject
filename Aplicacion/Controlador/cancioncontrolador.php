@@ -4,6 +4,7 @@ require_once __DIR__ . '/../Modelo/cancionmodelo.php';
 require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Modelo/generomodelo.php';
 require_once __DIR__ . '/../Utilidades/autenticacion.php';
+require_once __DIR__ . '/../Utilidades/validacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -157,8 +158,34 @@ switch ($accion) {
         $artista = trim($_POST['artista'] ?? '');
         $url = trim($_POST['url'] ?? '');
 
-        if (!$generoId || $nombre === '' || $artista === '' || $url === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
+        if (!$generoId) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Debe seleccionar un género"]);
+            break;
+        }
+
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($artista, 'artista')
+            ?? campoRequerido($url, 'URL')
+            ?? campoLongitud($nombre, 'nombre', 100) ?? campoLongitud($artista, 'artista', 100)
+            ?? campoLongitud($url, 'URL', 255);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
+            break;
+        }
+
+        $errorUrl = urlValida($url);
+        if ($errorUrl) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $errorUrl]);
+            break;
+        }
+
+        $generoValido = (new GeneroModelo())->getGenero($generoId);
+        if (!$generoValido) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Debe seleccionar un género válido"]);
+            break;
+        }
+
+        if ($cancionModelo->existeDuplicada($nombre, $artista)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "Ya existe una canción con ese nombre y artista"]);
             break;
         }
 
@@ -170,7 +197,8 @@ switch ($accion) {
                 ? json_encode(["exito" => true, "mensaje" => "Canción creada correctamente", "id" => $id])
                 : json_encode(["exito" => false, "mensaje" => "Error al crear la canción"]);
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear: " . $e->getMessage()]);
+            error_log('cancioncontrolador insert: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo crear la canción. Intente nuevamente."]);
         }
 
         break;
@@ -184,14 +212,40 @@ switch ($accion) {
         $artista = trim($_POST['artista'] ?? '');
         $url = trim($_POST['url'] ?? '');
 
-        if (!$id || !$generoId || $nombre === '' || $artista === '' || $url === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
+        if (!$id || !$generoId) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Datos incompletos"]);
+            break;
+        }
+
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($artista, 'artista')
+            ?? campoRequerido($url, 'URL')
+            ?? campoLongitud($nombre, 'nombre', 100) ?? campoLongitud($artista, 'artista', 100)
+            ?? campoLongitud($url, 'URL', 255);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
+            break;
+        }
+
+        $errorUrl = urlValida($url);
+        if ($errorUrl) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $errorUrl]);
+            break;
+        }
+
+        $generoValido = (new GeneroModelo())->getGenero($generoId);
+        if (!$generoValido) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Debe seleccionar un género válido"]);
             break;
         }
 
         $cancionActual = $cancionModelo->getCancion($id);
         if (!$cancionActual) {
             echo json_encode(["exito" => false, "mensaje" => "Canción no encontrada"]);
+            break;
+        }
+
+        if ($cancionModelo->existeDuplicada($nombre, $artista, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "Ya existe una canción con ese nombre y artista"]);
             break;
         }
 
@@ -202,7 +256,8 @@ switch ($accion) {
                 ? json_encode(["exito" => true, "mensaje" => "Canción actualizada correctamente"])
                 : json_encode(["exito" => false, "mensaje" => "Error al actualizar"]);
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al actualizar: " . $e->getMessage()]);
+            error_log('cancioncontrolador update: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo actualizar la canción. Intente nuevamente."]);
         }
 
         break;

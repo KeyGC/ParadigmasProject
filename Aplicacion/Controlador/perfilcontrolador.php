@@ -7,6 +7,8 @@ require_once __DIR__ . '/../Utilidades/enviarcorreo.php';
 require_once __DIR__ . '/../Modelo/perfilaccesomodelo.php';
 require_once __DIR__ . '/../Modelo/perfilregistrosmodelo.php';
 require_once __DIR__ . '/../Modelo/biometriamodelo.php';
+require_once __DIR__ . '/../Utilidades/autenticacion.php';
+require_once __DIR__ . '/../Utilidades/validacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -46,11 +48,13 @@ function validarContra($contra)
 switch ($accion) {
 
     case 'getList':
+        exigirRol(['admin']);
         $perfiles = $modelo->getList();
         echo json_encode(["exito" => true, "data" => $perfiles]);
         break;
 
     case 'getPerfil':
+        exigirRol(['admin']);
         $id = $_GET['id'] ?? null;
         if (!$id) {
             echo json_encode(["exito" => false, "mensaje" => "ID no proporcionado"]);
@@ -72,19 +76,25 @@ switch ($accion) {
         $nombre = trim($_POST['nombre'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
 
-        if ($nombre === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Nombre y correo son obligatorios"]);
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($correo, 'correo')
+            ?? campoLongitud($nombre, 'nombre', 60) ?? campoLongitud($correo, 'correo', 100);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
             break;
         }
 
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(["exito" => false, "mensaje" => "Correo inválido"]);
+        if (!correoValido($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Correo inválido"]);
             break;
         }
 
-        $perfilExistente = $modelo->getPerfilByNombre($nombre);
-        if ($perfilExistente) {
-            echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
+        if ($modelo->existeNombre($nombre)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El nombre ya está en uso"]);
+            break;
+        }
+
+        if ($modelo->existeCorreo($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El correo ya está registrado"]);
             break;
         }
 
@@ -123,24 +133,44 @@ switch ($accion) {
                 echo json_encode(["exito" => false, "mensaje" => "Error al registrar"]);
             }
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al registrar: " . $e->getMessage()]);
+            error_log('perfilcontrolador registrar: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo completar el registro. Intente nuevamente."]);
         }
 
         break;
 
     case 'insert':
+        exigirRol(['admin']);
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
 
-        if ($nombre === '' || $contra === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($contra, 'contraseña')
+            ?? campoRequerido($correo, 'correo')
+            ?? campoLongitud($nombre, 'nombre', 60) ?? campoLongitud($correo, 'correo', 100);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
             break;
         }
 
-        $perfilExistente = $modelo->getPerfilByNombre($nombre);
-        if ($perfilExistente) {
-            echo json_encode(["exito" => false, "mensaje" => "El nombre ya está en uso"]);
+        if (!correoValido($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Correo inválido"]);
+            break;
+        }
+
+        $errorContra = validarContra($contra);
+        if ($errorContra) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $errorContra]);
+            break;
+        }
+
+        if ($modelo->existeNombre($nombre)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El nombre ya está en uso"]);
+            break;
+        }
+
+        if ($modelo->existeCorreo($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El correo ya está registrado"]);
             break;
         }
 
@@ -169,26 +199,51 @@ switch ($accion) {
                 echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil"]);
             }
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear el perfil: " . $e->getMessage()]);
+            error_log('perfilcontrolador insert: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo crear el perfil. Intente nuevamente."]);
         }
 
         break;
 
     case 'update':
+        exigirRol(['admin']);
         $id = $_POST['id'] ?? null;
         $nombre = trim($_POST['nombre'] ?? '');
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
         $ubicacionEstado = $_POST['ubicacionEstado'] ?? null;
 
-        if (!$id || $nombre === '' || $contra === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Datos incompletos"]);
+        if (!$id) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "ID no proporcionado"]);
+            break;
+        }
+
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($contra, 'contraseña')
+            ?? campoRequerido($correo, 'correo')
+            ?? campoLongitud($nombre, 'nombre', 60) ?? campoLongitud($correo, 'correo', 100);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
+            break;
+        }
+
+        if (!correoValido($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Correo inválido"]);
             break;
         }
 
         $perfilActual = $modelo->getPerfil($id);
         if (!$perfilActual) {
             echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
+            break;
+        }
+
+        if ($modelo->existeNombre($nombre, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El nombre ya está en uso por otro perfil"]);
+            break;
+        }
+
+        if ($modelo->existeCorreo($correo, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El correo ya está registrado por otro perfil"]);
             break;
         }
 
@@ -247,6 +302,7 @@ switch ($accion) {
                 break;
             }
 
+            session_regenerate_id(true);
             $_SESSION['perfil'] = $perfil;
 
             $accesoModelo = new PerfilAccesoModelo();
@@ -385,6 +441,7 @@ switch ($accion) {
             break;
         }
 
+        session_regenerate_id(true);
         $_SESSION['perfil'] = $perfil;
 
         $accesoModelo = new PerfilAccesoModelo();
@@ -467,13 +524,16 @@ switch ($accion) {
         $contra = trim($_POST['contra'] ?? '');
         $correo = trim($_POST['correo'] ?? '');
 
-        if ($nombre === '' || $contra === '' || $correo === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Todos los campos son obligatorios"]);
+        $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($contra, 'contraseña')
+            ?? campoRequerido($correo, 'correo')
+            ?? campoLongitud($nombre, 'nombre', 60) ?? campoLongitud($correo, 'correo', 100);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
             break;
         }
 
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(["exito" => false, "mensaje" => "Correo inválido"]);
+        if (!correoValido($correo)) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Correo inválido"]);
             break;
         }
 
@@ -486,6 +546,16 @@ switch ($accion) {
         $perfilActual = $modelo->getPerfil($id);
         if (!$perfilActual) {
             echo json_encode(["exito" => false, "mensaje" => "Perfil no encontrado"]);
+            break;
+        }
+
+        if ($modelo->existeNombre($nombre, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El nombre ya está en uso"]);
+            break;
+        }
+
+        if ($modelo->existeCorreo($correo, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "El correo ya está registrado"]);
             break;
         }
 
@@ -520,7 +590,8 @@ switch ($accion) {
                 echo json_encode(["exito" => false, "mensaje" => "Error al actualizar el perfil"]);
             }
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al actualizar: " . $e->getMessage()]);
+            error_log('perfilcontrolador actualizarPerfil: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo actualizar el perfil. Intente nuevamente."]);
         }
 
         break;

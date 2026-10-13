@@ -1,5 +1,13 @@
 <?php
 
+if (!function_exists('esPeticionApi')) {
+    function esPeticionApi()
+    {
+        $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
+        return strpos($script, 'api') === 0;
+    }
+}
+
 function usuarioAutenticado()
 {
     return isset($_SESSION['perfil']);
@@ -13,11 +21,38 @@ function usuarioTieneRol(array $rolesPermitidos)
     return in_array($_SESSION['perfil']['tbperfilrol'], $rolesPermitidos, true);
 }
 
+// Responde la denegación en el formato correcto: JSON con estado HTTP para
+// endpoints AJAX (api*.php) y redirección al login para vistas HTML.
+function denegarAcceso($autenticado)
+{
+    if (esPeticionApi()) {
+        http_response_code($autenticado ? 403 : 401);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'exito' => false,
+            'tipo' => $autenticado ? 'permiso' : 'autenticacion',
+            'mensaje' => $autenticado
+                ? 'No tiene permisos para realizar esta acción.'
+                : 'Sesión no iniciada. Inicie sesión para continuar.'
+        ]);
+        exit;
+    }
+
+    header('Location: index.php?vista=login');
+    exit;
+}
+
+function exigirSesion()
+{
+    if (!usuarioAutenticado()) {
+        denegarAcceso(false);
+    }
+}
+
 function exigirRol(array $rolesPermitidos)
 {
     if (!usuarioTieneRol($rolesPermitidos)) {
-        header('Location: index.php?vista=login');
-        exit;
+        denegarAcceso(usuarioAutenticado());
     }
 }
 

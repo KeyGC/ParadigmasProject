@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Modelo/eventomodelo.php';
 require_once __DIR__ . '/../Modelo/generomodelo.php';
 require_once __DIR__ . '/../Utilidades/autenticacion.php';
+require_once __DIR__ . '/../Utilidades/validacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -14,19 +15,35 @@ $accion = $_REQUEST['accion'] ?? '';
 
 function validarDatosEvento($generoId, $nombre, $artista, $ubicacion, $latitud, $longitud, $fecha, $hora, $modeloGenero)
 {
-    if ($nombre === '' || $artista === '' || $ubicacion === '') {
-        return "El nombre, artista y ubicación son obligatorios";
+    $error = campoRequerido($nombre, 'nombre') ?? campoRequerido($artista, 'artista')
+        ?? campoRequerido($ubicacion, 'ubicación')
+        ?? campoLongitud($nombre, 'nombre', 100) ?? campoLongitud($artista, 'artista', 100)
+        ?? campoLongitud($ubicacion, 'ubicación', 120);
+    if ($error) {
+        return $error;
     }
     if (!$generoId || !$modeloGenero->getGenero($generoId)) {
         return "Debe seleccionar un género válido";
     }
-    if (!is_numeric($latitud) || !is_numeric($longitud)) {
-        return "Latitud y longitud deben ser valores numéricos";
+    $errorCoords = coordenadasValidas($latitud, $longitud);
+    if ($errorCoords) {
+        return $errorCoords;
     }
-    if (!DateTime::createFromFormat('Y-m-d', $fecha)) {
+
+    $fechaObj = DateTime::createFromFormat('!Y-m-d', $fecha);
+    if (!$fechaObj || $fechaObj->format('Y-m-d') !== $fecha) {
         return "La fecha no es válida";
     }
-    if (!DateTime::createFromFormat('H:i', $hora) && !DateTime::createFromFormat('H:i:s', $hora)) {
+
+    $horaValida = false;
+    foreach (['H:i', 'H:i:s'] as $formato) {
+        $horaObj = DateTime::createFromFormat('!' . $formato, $hora);
+        if ($horaObj && $horaObj->format($formato) === $hora) {
+            $horaValida = true;
+            break;
+        }
+    }
+    if (!$horaValida) {
         return "La hora no es válida";
     }
     return null;
@@ -72,9 +89,29 @@ switch ($accion) {
         $latitud = $_POST['latitud'] ?? '';
         $longitud = $_POST['longitud'] ?? '';
 
-        if (!$eventoId || $categoria === '' || $nombre === '') {
-            echo json_encode(["exito" => false, "mensaje" => "Evento, categoría y nombre son obligatorios"]);
+        if (!$eventoId) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Evento no proporcionado"]);
             break;
+        }
+
+        $error = campoRequerido($categoria, 'categoría') ?? campoRequerido($nombre, 'nombre')
+            ?? campoLongitud($nombre, 'nombre', 120) ?? campoLongitud($categoria, 'categoría', 40);
+        if ($error) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $error]);
+            break;
+        }
+
+        if (($latitud === '') !== ($longitud === '')) {
+            echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => "Debe indicar latitud y longitud juntas"]);
+            break;
+        }
+
+        if ($latitud !== '') {
+            $errorCoords = coordenadasValidas($latitud, $longitud);
+            if ($errorCoords) {
+                echo json_encode(["exito" => false, "tipo" => "validacion", "mensaje" => $errorCoords]);
+                break;
+            }
         }
 
         $eventoExiste = $modelo->getEvento($eventoId);
@@ -116,9 +153,8 @@ switch ($accion) {
             break;
         }
 
-        $existente = $modelo->getEventoByNombreYFecha($nombre, $fecha);
-        if ($existente) {
-            echo json_encode(["exito" => false, "mensaje" => "Ya existe un evento con ese nombre en esa fecha"]);
+        if ($modelo->existeEvento($nombre, $fecha)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "Ya existe un evento con ese nombre en esa fecha"]);
             break;
         }
 
@@ -130,7 +166,8 @@ switch ($accion) {
                 ? json_encode(["exito" => true, "mensaje" => "Evento creado correctamente", "id" => $id])
                 : json_encode(["exito" => false, "mensaje" => "Error al crear el evento"]);
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al crear el evento: " . $e->getMessage()]);
+            error_log('eventocontrolador insert: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo crear el evento. Intente nuevamente."]);
         }
         break;
 
@@ -162,6 +199,11 @@ switch ($accion) {
             break;
         }
 
+        if ($modelo->existeEvento($nombre, $fecha, $id)) {
+            echo json_encode(["exito" => false, "tipo" => "duplicado", "mensaje" => "Ya existe un evento con ese nombre en esa fecha"]);
+            break;
+        }
+
         $evento = new Evento($id, $generoId, $nombre, $artista, $ubicacion, $latitud, $longitud, $fecha, $hora);
 
         try {
@@ -169,7 +211,8 @@ switch ($accion) {
                 ? json_encode(["exito" => true, "mensaje" => "Evento actualizado correctamente"])
                 : json_encode(["exito" => false, "mensaje" => "Error al actualizar el evento"]);
         } catch (PDOException $e) {
-            echo json_encode(["exito" => false, "mensaje" => "Error al actualizar: " . $e->getMessage()]);
+            error_log('eventocontrolador update: ' . $e->getMessage());
+            echo json_encode(["exito" => false, "tipo" => "servidor", "mensaje" => "No se pudo actualizar el evento. Intente nuevamente."]);
         }
         break;
 

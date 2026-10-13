@@ -6,6 +6,22 @@ $vista = $_GET['vista'] ?? 'login';
 
 // Cerrar sesión
 if ($vista === 'logout') {
+    $_SESSION = [];
+    if (ini_get('session.use_cookies')) {
+        $parametros = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            [
+                'expires' => time() - 42000,
+                'path' => $parametros['path'],
+                'domain' => $parametros['domain'],
+                'secure' => $parametros['secure'],
+                'httponly' => $parametros['httponly'],
+                'samesite' => $parametros['samesite'] ?? 'Lax'
+            ]
+        );
+    }
     session_destroy();
     header('Location: index.php?vista=login');
     exit;
@@ -15,7 +31,7 @@ if ($vista === 'logout') {
 $vistasPublicas = ['login', 'registro'];
 
 // Vistas exclusivas de admin
-$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos', 'analisisdiscurso'];
+$vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos', 'analisisdiscurso', 'comidas', 'deportes'];
 
 // Vistas exclusivas de cliente
 $vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos'];
@@ -107,5 +123,11 @@ switch ($vista) {
         break;
     case 'analisisdiscurso':
         require_once APP_PATH . '/Vista/Admin/analisisdiscurso.php';
+        break;
+    case 'comidas':
+        require_once APP_PATH . '/Vista/Admin/comidas.php';
+        break;
+    case 'deportes':
+        require_once APP_PATH . '/Vista/Admin/deportes.php';
         break;
 }

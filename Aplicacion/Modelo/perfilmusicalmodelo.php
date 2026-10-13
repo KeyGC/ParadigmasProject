@@ -365,9 +365,11 @@ class PerfilMusicalModelo
         try {
             $estimator->train($dataset);
         } catch (\Throwable $e) {
+            error_log('perfilmusicalmodelo entrenar: ' . $e->getMessage());
             return [
                 'exito' => false,
-                'mensaje' => "Error al entrenar el modelo: " . $e->getMessage(),
+                'tipo' => 'servidor',
+                'mensaje' => 'No se pudo generar el perfilado en este momento. Intente nuevamente.',
                 'totalEventos' => $totalEventos
             ];
         }

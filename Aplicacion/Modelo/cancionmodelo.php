@@ -87,6 +87,25 @@ class CancionModelo
         return $fila ? $this->mapearFila($fila) : null;
     }
 
+    public function existeDuplicada($nombre, $artista, $excluirId = null)
+    {
+        $sql = "SELECT tbcancionid FROM tbcancion
+                WHERE LOWER(tbcancionnombre) = LOWER(:nombre)
+                  AND LOWER(tbcancionartista) = LOWER(:artista)";
+        if ($excluirId !== null) {
+            $sql .= " AND tbcancionid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':artista', $artista);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
+    }
+
     public function insert(Cancion $cancion)
     {
         $sql = "INSERT INTO tbcancion (tbgeneroid, tbcancionnombre, tbcancionartista, tbcancionurl)

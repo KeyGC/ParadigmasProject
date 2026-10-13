@@ -547,9 +547,11 @@ class PerfilComidaModelo
             try {
                 $resultados = $this->entrenarInsights($eventos);
             } catch (\Throwable $e) {
+                error_log('perfilcomidamodelo entrenar: ' . $e->getMessage());
                 return [
                     'exito' => false,
-                    'mensaje' => 'No se pudo entrenar el modelo de comida: ' . $e->getMessage(),
+                    'tipo' => 'servidor',
+                    'mensaje' => 'No se pudo generar el perfilado de comida en este momento. Intente nuevamente.',
                     'totalSwipes' => $totalSwipes
                 ];
             }

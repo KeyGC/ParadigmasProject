@@ -44,12 +44,30 @@ class EventoModelo
     public function getEventoByNombreYFecha($nombre, $fecha)
     {
         $sql = "SELECT tbeventoid FROM tbevento
-                WHERE tbeventonombre = :nombre AND tbeventofecha = :fecha";
+                WHERE LOWER(tbeventonombre) = LOWER(:nombre) AND tbeventofecha = :fecha";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':nombre', $nombre);
         $stmt->bindValue(':fecha', $fecha);
         $stmt->execute();
         return $stmt->fetch() ?: null;
+    }
+
+    public function existeEvento($nombre, $fecha, $excluirId = null)
+    {
+        $sql = "SELECT tbeventoid FROM tbevento
+                WHERE LOWER(tbeventonombre) = LOWER(:nombre) AND tbeventofecha = :fecha";
+        if ($excluirId !== null) {
+            $sql .= " AND tbeventoid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->bindValue(':fecha', $fecha);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
     }
 
     public function insert(Evento $evento)

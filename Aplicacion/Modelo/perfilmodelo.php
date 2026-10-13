@@ -52,13 +52,47 @@ class PerfilModelo
 
     public function getPerfilByNombre($nombre)
     {
-        $sql = "SELECT * FROM tbperfil WHERE tbperfilnombre = :nombre";
+        $sql = "SELECT * FROM tbperfil WHERE LOWER(tbperfilnombre) = LOWER(:nombre)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':nombre', $nombre);
         $stmt->execute();
         $fila = $stmt->fetch();
 
         return $fila ? $this->mapearFila($fila) : null;
+    }
+
+    // Verifica en PHP la unicidad del nombre (comparación sin distinguir
+    // mayúsculas/minúsculas y sin contar el propio perfil al editar).
+    public function existeNombre($nombre, $excluirId = null)
+    {
+        $sql = "SELECT tbperfilid FROM tbperfil WHERE LOWER(tbperfilnombre) = LOWER(:nombre)";
+        if ($excluirId !== null) {
+            $sql .= " AND tbperfilid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
+    }
+
+    public function existeCorreo($correo, $excluirId = null)
+    {
+        $sql = "SELECT tbperfilid FROM tbperfil WHERE LOWER(tbperfilcorreo) = LOWER(:correo)";
+        if ($excluirId !== null) {
+            $sql .= " AND tbperfilid <> :excluirId";
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':correo', $correo);
+        if ($excluirId !== null) {
+            $stmt->bindValue(':excluirId', (int) $excluirId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetch() !== false;
     }
 
     public function insert(Perfil $perfil)

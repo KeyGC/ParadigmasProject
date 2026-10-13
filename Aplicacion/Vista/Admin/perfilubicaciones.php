@@ -60,6 +60,7 @@ if (!$idPerfil) {
     <?php require_once APP_PATH . '/Vista/Componentes/footeradmin.php'; ?>
 
     <input type="hidden" id="idPerfil" value="<?php echo htmlspecialchars($idPerfil); ?>">
+    <script src="js/formato.js"></script>
     <script src="js/perfilubicaciones.js"></script>
 </body>
 </html>

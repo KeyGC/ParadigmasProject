@@ -547,9 +547,11 @@ class PerfilDeporteModelo
             try {
                 $resultados = $this->entrenarInsights($eventos);
             } catch (\Throwable $e) {
+                error_log('perfildeportemodelo entrenar: ' . $e->getMessage());
                 return [
                     'exito' => false,
-                    'mensaje' => 'No se pudo entrenar el modelo de deporte: ' . $e->getMessage(),
+                    'tipo' => 'servidor',
+                    'mensaje' => 'No se pudo generar el perfilado de deporte en este momento. Intente nuevamente.',
                     'totalSwipes' => $totalSwipes
                 ];
             }
