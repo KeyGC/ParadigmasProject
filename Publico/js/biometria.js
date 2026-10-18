@@ -164,11 +164,19 @@ async function capturarRostro() {
     let framesCerrado = 0;
     let earMinimo = Infinity;
 
-    const detectorOptions = new faceapi.TinyFaceDetectorOptions({ inputSize: 224 });
+    const detectorOptions = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.35 });
+    let mejorScoreDescriptor = -1;
+    let tiempoInicioCierre = null;
 
     while (detectandoGesto) {
         if (!video.srcObject || !detectandoGesto) {
             break;
+        }
+
+        // Esperar a que el video esté reproduciendo frames válidos
+        if (video.readyState < 2 || video.videoWidth === 0) {
+            await new Promise(r => requestAnimationFrame(r));
+            continue;
         }
 
         const ahora = Date.now();
@@ -187,7 +195,7 @@ async function capturarRostro() {
         }
 
         try {
-            // Fase 1: Calibración promediando ~5 frames con ojos abiertos (EAR >= 0.20)
+            // Fase 1: Calibración promediando 5 frames en reposo (umbral bajo de 0.13 para admitir cualquier cámara/persona)
             if (baseEAR === null) {
                 const deteccion = await faceapi.detectSingleFace(video, detectorOptions)
                     .withFaceLandmarks()
@@ -202,9 +210,11 @@ async function capturarRostro() {
                 const pts = deteccion.landmarks.positions;
                 const ear = calcularEAR(pts);
 
-                if (ear >= 0.20) {
+                if (ear >= 0.13) {
                     framesCalibracion.push(ear);
-                    if (!descriptorFrontal) {
+                    const score = (deteccion.detection && deteccion.detection.score) ? deteccion.detection.score : 0;
+                    if (score > mejorScoreDescriptor || !descriptorFrontal) {
+                        mejorScoreDescriptor = score;
                         descriptorFrontal = Array.from(deteccion.descriptor);
                     }
                 }
@@ -212,7 +222,7 @@ async function capturarRostro() {
                 if (framesCalibracion.length >= 5) {
                     const suma = framesCalibracion.reduce((acc, v) => acc + v, 0);
                     baseEAR = suma / framesCalibracion.length;
-                    console.log(`[Liveness] Calibración de reposo lista. EAR base promedio: ${baseEAR.toFixed(4)}`);
+                    console.log(`[Liveness] Calibración de reposo lista. EAR base promedio: ${baseEAR.toFixed(4)} (score: ${mejorScoreDescriptor.toFixed(2)})`);
                     mostrarMensaje('primary', 'Prueba de vida: <strong>Parpadea una vez mirando a la cámara</strong>');
                 }
 
@@ -225,7 +235,7 @@ async function capturarRostro() {
                 .withFaceLandmarks();
 
             if (!deteccion) {
-                // Si no se detecta cara en un frame, ignorarlo sin reiniciar el proceso
+                // Si la detección fluctúa momentáneamente durante el parpadeo, no reiniciar
                 await new Promise(r => requestAnimationFrame(r));
                 continue;
             }
@@ -238,20 +248,32 @@ async function capturarRostro() {
                 earMinimo = ear;
             }
 
-            // Parpadeo válido: caída por debajo del 75% de la base y recuperación por encima del 90% de la base (cierre de 1 a 8 frames)
-            if (ear < baseEAR * 0.75) {
-                ojosCerrados = true;
-                framesCerrado++;
-                if (framesCerrado > 8) {
-                    // Cierre excesivamente prolongado (no es un parpadeo natural)
-                    ojosCerrados = false;
-                    framesCerrado = 0;
+            // Umbrales adaptativos a la persona y resolución de la cámara:
+            // Caída del 22% (o 0.03 mínimo) y reapertura al 86% de su reposo
+            const umbralCierre = Math.min(baseEAR * 0.78, baseEAR - 0.03);
+            const umbralReapertura = Math.max(baseEAR * 0.86, baseEAR - 0.035);
+
+            if (ear < umbralCierre) {
+                if (!ojosCerrados) {
+                    ojosCerrados = true;
+                    tiempoInicioCierre = ahora;
+                    framesCerrado = 1;
+                } else {
+                    framesCerrado++;
+                    const duracionMs = ahora - tiempoInicioCierre;
+                    if (duracionMs > 700 || framesCerrado > 20) {
+                        // Cierre excesivamente prolongado (no es un parpadeo natural)
+                        ojosCerrados = false;
+                        framesCerrado = 0;
+                    }
                 }
             } else if (ojosCerrados) {
-                if (ear > baseEAR * 0.90) {
-                    if (framesCerrado >= 1 && framesCerrado <= 8) {
+                if (ear > umbralReapertura) {
+                    const duracionMs = ahora - tiempoInicioCierre;
+                    // Parpadeo natural compatible con cámaras de 15 a 60 fps (duración 40ms a 700ms)
+                    if (framesCerrado >= 1 && (duracionMs <= 700 || framesCerrado <= 20)) {
                         detectandoGesto = false;
-                        console.log(`[Liveness] ¡Parpadeo válido! EAR base: ${baseEAR.toFixed(4)}, EAR mínimo: ${earMinimo.toFixed(4)}, frames cerrado: ${framesCerrado}`);
+                        console.log(`[Liveness] ¡Parpadeo válido! EAR base: ${baseEAR.toFixed(4)}, EAR mín: ${earMinimo.toFixed(4)}, frames: ${framesCerrado}, duración: ${duracionMs}ms`);
                         mostrarMensaje('success', '¡Parpadeo detectado! Identificando rostro...');
                         enviarVector(descriptorFrontal);
                         break;
