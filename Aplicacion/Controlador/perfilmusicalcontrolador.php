@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../Modelo/perfilmusicalmodelo.php';
+require_once __DIR__ . '/../Utilidades/autenticacion.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-if (!isset($_SESSION['perfil']) || $_SESSION['perfil']['tbperfilrol'] !== 'admin') {
-    echo json_encode(["exito" => false, "mensaje" => "No autorizado"]);
-    exit;
-}
+exigirSesion();
+exigirRol(['admin']);
+
 
 $modelo = new PerfilMusicalModelo();
 $accion = $_REQUEST['accion'] ?? '';
