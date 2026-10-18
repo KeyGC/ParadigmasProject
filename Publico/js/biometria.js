@@ -1,14 +1,10 @@
 const URL_CONTROLADOR_BIOMETRIA = 'api.php';
 const RUTA_MODELOS = 'models';
 
-// Umbrales de la prueba de vida (grados / proporciones)
-const LIVENESS_UMBRAL_INCLINACION = 8;  // inclinación mínima (a cualquier lado)
-const LIVENESS_UMBRAL_RETORNO = 7;      // vuelve al centro si |delta| <= este valor
-const LIVENESS_TOLERANCIA_OJOS = 0.30;  // cambio máximo permitido de la distancia entre ojos
-
 let streamActivo = null;
 let modoActual = null;
 let detectandoGesto = false;
+let sesionAntispoof = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const btnLogin = document.getElementById('btnLoginRostro');
@@ -120,24 +116,72 @@ function cerrarPanel() {
     }
 }
 
-function dist(p1, p2) {
-    return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+function cargarScript(url) {
+    return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = url;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('No se pudo cargar ' + url));
+        document.head.appendChild(s);
+    });
 }
 
-function mediana(arr) {
-    const s = [...arr].sort((a, b) => a - b);
-    return s[Math.floor(s.length / 2)];
+async function cargarAntispoof() {
+    if (sesionAntispoof) return sesionAntispoof;
+    if (typeof ort === 'undefined') {
+        await cargarScript('https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js');
+    }
+    ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/';
+    ort.env.wasm.numThreads = 1;
+    sesionAntispoof = await ort.InferenceSession.create('models/MiniFASNetV2.onnx', { executionProviders: ['wasm'] });
+    return sesionAntispoof;
 }
 
-// Ángulo roll = atan2 entre los puntos 36 (ojo derecho del usuario) y 45 (ojo izquierdo del usuario).
-// Los landmarks se calculan sobre la imagen original de la cámara (sin espejo), así que el signo
-// depende del cuerpo del usuario y no de si la vista previa se ve en espejo:
-// - Inclinar hacia TU hombro derecho baja el ojo 36 -> deltaRoll negativo.
-// - Inclinar hacia TU hombro izquierdo baja el ojo 45 -> deltaRoll positivo.
-function calcularAnguloRoll(pts) {
-    const p36 = pts[36];
-    const p45 = pts[45];
-    return Math.atan2(p45.y - p36.y, p45.x - p36.x) * (180 / Math.PI);
+function softmax(a) {
+    const m = Math.max(...a);
+    const e = a.map(v => Math.exp(v - m));
+    const s = e.reduce((x, y) => x + y, 0);
+    return e.map(v => v / s);
+}
+
+function recorteATensor(video, box) {
+    const W = video.videoWidth;
+    const H = video.videoHeight;
+    const bw = Math.max(1, box.width);
+    const bh = Math.max(1, box.height);
+    const escala = Math.min((H - 1) / bh, (W - 1) / bw, 2.7);
+    const nw = bw * escala;
+    const nh = bh * escala;
+    const cx = box.x + bw / 2;
+    const cy = box.y + bh / 2;
+
+    const x1 = Math.max(0, Math.trunc(cx - nw / 2));
+    const y1 = Math.max(0, Math.trunc(cy - nh / 2));
+    const x2 = Math.min(W - 1, Math.trunc(cx + nw / 2));
+    const y2 = Math.min(H - 1, Math.trunc(cy + nh / 2));
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 80;
+    canvas.height = 80;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(video, x1, y1, x2 - x1 + 1, y2 - y1 + 1, 0, 0, 80, 80);
+    const rgba = ctx.getImageData(0, 0, 80, 80).data;
+
+    const n = 80 * 80;
+    const datos = new Float32Array(3 * n);
+    for (let i = 0; i < n; i++) {
+        datos[i] = rgba[i * 4 + 2];
+        datos[n + i] = rgba[i * 4 + 1];
+        datos[2 * n + i] = rgba[i * 4];
+    }
+    return new ort.Tensor('float32', datos, [1, 3, 80, 80]);
+}
+
+async function probabilidadReal(video, box) {
+    const sesion = await cargarAntispoof();
+    const salida = await sesion.run({ [sesion.inputNames[0]]: recorteATensor(video, box) });
+    const p = softmax(Array.from(salida[sesion.outputNames[0]].data));
+    return p[1];
 }
 
 async function capturarRostro() {
@@ -153,31 +197,33 @@ async function capturarRostro() {
         return;
     }
 
-    mostrarMensaje('primary', 'Mantén el rostro al frente, calibrando...');
-
     const btnCapturar = document.getElementById('btnCapturarRostro');
     if (btnCapturar) btnCapturar.classList.add('d-none');
 
     detectandoGesto = true;
+    mostrarMensaje('primary', 'Preparando la verificación...');
+
+    try {
+        await cargarAntispoof();
+    } catch (err) {
+        console.error('Error al cargar el modelo anti-spoofing:', err);
+        detectandoGesto = false;
+        mostrarMensaje('danger', 'No se pudo cargar la verificación de vida. Revisa tu conexión e inténtalo de nuevo.');
+        mostrarReintentar();
+        return;
+    }
+
     const tiempoInicio = Date.now();
-    const tiempoLimiteMs = 20000;
-
-    let algunaCaraDetectada = false;
-    let avisoIluminacionMostrado = false;
-    const framesCalibracion = [];
-    let baseRoll = null;
-    let distOjosBase = null;
-    let descriptorInicial = null;
-    let mejorScore = -1;
-
-    let fase = 'inclinando'; // 'inclinando' -> 'volviendo'
-    let maxInclinacion = 0;
-    let framesInclinado = 0;
-
+    const tiempoLimiteMs = 15000;
     const opciones = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.35 });
+    const muestras = [];
+    let algunaCaraDetectada = false;
+    let avisoMostrado = false;
 
-    while (detectandoGesto) {
-        if (!video.srcObject || !detectandoGesto) break;
+    mostrarMensaje('primary', 'Mira a la cámara y mantente quieto...');
+
+    while (detectandoGesto && muestras.length < 6) {
+        if (!video.srcObject) break;
 
         if (video.readyState < 2 || video.videoWidth === 0) {
             await new Promise(r => requestAnimationFrame(r));
@@ -185,53 +231,22 @@ async function capturarRostro() {
         }
 
         const ahora = Date.now();
-
         if (ahora - tiempoInicio > tiempoLimiteMs) {
             detectandoGesto = false;
-            console.log(`[Liveness] Tiempo agotado | fase ${fase} | inclinación máx: ${maxInclinacion.toFixed(1)}°`);
-            mostrarMensaje('warning', 'No se completó la prueba de vida a tiempo. Inténtalo de nuevo.');
+            mostrarMensaje('warning', 'No se pudo completar la verificación a tiempo. Inténtalo de nuevo.');
             mostrarReintentar();
-            break;
+            return;
         }
 
-        if (!algunaCaraDetectada && (ahora - tiempoInicio > 3000) && !avisoIluminacionMostrado) {
+        if (!algunaCaraDetectada && !avisoMostrado && ahora - tiempoInicio > 4000) {
             mostrarMensaje('warning', 'No se detecta tu rostro. Mejora la iluminación y mira a la cámara.');
-            avisoIluminacionMostrado = true;
+            avisoMostrado = true;
         }
 
         try {
-            // Calibración en reposo: 3 frames, se guarda el mejor descriptor
-            if (baseRoll === null) {
-                const det = await faceapi.detectSingleFace(video, opciones)
-                    .withFaceLandmarks()
-                    .withFaceDescriptor();
-
-                if (!det) {
-                    await new Promise(r => requestAnimationFrame(r));
-                    continue;
-                }
-
-                algunaCaraDetectada = true;
-                const pts = det.landmarks.positions;
-                framesCalibracion.push({ roll: calcularAnguloRoll(pts), dOjos: dist(pts[36], pts[45]) });
-
-                const score = (det.detection && det.detection.score) ? det.detection.score : 0;
-                if (score > mejorScore || !descriptorInicial) {
-                    mejorScore = score;
-                    descriptorInicial = Array.from(det.descriptor);
-                }
-
-                if (framesCalibracion.length >= 3) {
-                    baseRoll = mediana(framesCalibracion.map(f => f.roll));
-                    distOjosBase = mediana(framesCalibracion.map(f => f.dOjos));
-                    console.log(`[Liveness] Calibración lista. Base roll: ${baseRoll.toFixed(1)}°`);
-                    mostrarMensaje('primary', 'Inclina la cabeza hacia un lado y vuelve al centro');
-                }
-                continue;
-            }
-
-            // Gesto: solo detector + landmarks
-            const det = await faceapi.detectSingleFace(video, opciones).withFaceLandmarks();
+            const det = await faceapi.detectSingleFace(video, opciones)
+                .withFaceLandmarks()
+                .withFaceDescriptor();
 
             if (!det) {
                 await new Promise(r => requestAnimationFrame(r));
@@ -239,65 +254,44 @@ async function capturarRostro() {
             }
 
             algunaCaraDetectada = true;
-            const pts = det.landmarks.positions;
+            const box = det.detection.box;
 
-            // Descarta el frame si la cara se acerca o aleja mucho (foto movida hacia/desde la cámara)
-            if (Math.abs(dist(pts[36], pts[45]) - distOjosBase) / distOjosBase > LIVENESS_TOLERANCIA_OJOS) {
+            if (box.width < 100) {
+                mostrarMensaje('warning', 'Acércate un poco a la cámara.');
+                await new Promise(r => requestAnimationFrame(r));
                 continue;
             }
 
-            const inclinacion = Math.abs(calcularAnguloRoll(pts) - baseRoll);
-            maxInclinacion = Math.max(maxInclinacion, inclinacion);
+            const pReal = await probabilidadReal(video, box);
+            muestras.push({
+                pReal,
+                score: det.detection.score || 0,
+                descriptor: Array.from(det.descriptor)
+            });
+            mostrarMensaje('primary', `Verificando que seas una persona real... ${muestras.length}/${6}`);
 
-            if (fase === 'inclinando') {
-                mostrarMensaje('primary',
-                    `Inclina la cabeza hacia un lado y vuelve al centro<br><small>Inclinación: ${inclinacion.toFixed(0)}° / ${LIVENESS_UMBRAL_INCLINACION}°</small>`);
-
-                // 2 frames seguidos sobre el umbral para ignorar ruido
-                framesInclinado = inclinacion >= LIVENESS_UMBRAL_INCLINACION ? framesInclinado + 1 : 0;
-                if (framesInclinado >= 2) {
-                    fase = 'volviendo';
-                    mostrarMensaje('info', '¡Bien! Ahora vuelve al centro.');
-                }
-            } else if (inclinacion <= LIVENESS_UMBRAL_RETORNO) {
-                mostrarMensaje('info', 'Verificando rostro...');
-
-                let detFinal = null;
-                for (let i = 0; i < 5 && !detFinal; i++) {
-                    detFinal = await faceapi.detectSingleFace(video, opciones)
-                        .withFaceLandmarks()
-                        .withFaceDescriptor();
-                    if (!detFinal) await new Promise(r => requestAnimationFrame(r));
-                }
-
-                if (!detFinal) {
-                    detectandoGesto = false;
-                    mostrarMensaje('warning', 'No se pudo verificar tu rostro. Inténtalo de nuevo.');
-                    mostrarReintentar();
-                    break;
-                }
-
-                const distDesc = faceapi.euclideanDistance(descriptorInicial, Array.from(detFinal.descriptor));
-                console.log(`[Liveness] Inclinación máx: ${maxInclinacion.toFixed(1)}° | Distancia descriptores: ${distDesc.toFixed(4)}`);
-
-                // Misma persona (< 0.5) y no idénticos (> 0.005)
-                if (distDesc >= 0.5 || distDesc <= 0.005) {
-                    detectandoGesto = false;
-                    mostrarMensaje('warning', 'No se pudo verificar tu rostro. Inténtalo de nuevo.');
-                    mostrarReintentar();
-                    break;
-                }
-
-                detectandoGesto = false;
-                mostrarMensaje('success', '¡Prueba de vida verificada! Identificando rostro...');
-                enviarVector(descriptorInicial);
-                break;
-            }
-
+            await new Promise(r => setTimeout(r, 120));
         } catch (err) {
-            console.error('Error durante la detección de liveness:', err);
+            console.error('Error durante la verificación de vida:', err);
         }
     }
+
+    if (!detectandoGesto || muestras.length === 0) return;
+    detectandoGesto = false;
+
+    const promedio = muestras.reduce((a, m) => a + m.pReal, 0) / muestras.length;
+    console.log('[Liveness] prob. real por frame:', muestras.map(m => m.pReal.toFixed(3)).join(', '),
+        '| promedio:', promedio.toFixed(3), '| umbral:', 0.7);
+
+    if (promedio < 0.7) {
+        mostrarMensaje('danger', 'No se pudo confirmar que seas una persona real. Usa buena luz y no muestres fotos ni pantallas.');
+        mostrarReintentar();
+        return;
+    }
+
+    const mejor = muestras.reduce((a, m) => (m.score > a.score ? m : a), muestras[0]);
+    mostrarMensaje('success', '¡Verificación de vida correcta! Identificando rostro...');
+    enviarVector(mejor.descriptor);
 }
 
 function enviarVector(vector) {
