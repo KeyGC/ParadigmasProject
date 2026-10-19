@@ -112,6 +112,10 @@ function reproducirCancion(cancion, videoId) {
     if (player && player.loadVideoById) {
         player.loadVideoById(videoId);
     }
+
+    if (typeof window.abrirCancionChat === 'function') {
+        window.abrirCancionChat(cancion.tbcancionid);
+    }
 }
 
 function onPlayerStateChange(event) {
@@ -196,6 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
         detenerTracking();
         if (player && player.stopVideo) {
             player.stopVideo();
+        }
+        /* Hook mínimo: detiene el chat y limpia la lista al cerrar el modal */
+        if (typeof window.cerrarCancionChat === 'function') {
+            window.cerrarCancionChat();
         }
     });
 });

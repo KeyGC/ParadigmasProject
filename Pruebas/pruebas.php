@@ -7,6 +7,8 @@ require_once APP_PATH . '/Modelo/perfil.php';
 require_once APP_PATH . '/Utilidades/qdrantcliente.php';
 require_once APP_PATH . '/Modelo/perfilmusicalmodelo.php';
 require_once APP_PATH . '/Modelo/reproduccionmodelo.php';
+require_once APP_PATH . '/Modelo/cancionchatmodelo.php';
+require_once APP_PATH . '/Modelo/cancionmodelo.php';
 
 header('Content-Type: text/plain; charset=utf-8');
 
@@ -227,6 +229,115 @@ function probarQdrantClienteApagado()
 
 
 $sufijo = substr(bin2hex(random_bytes(4)), 0, 6);
+
+
+function probarCancionChatModelo()
+{
+    seccion('CancionChatModelo');
+
+    $modelo = new CancionChatModelo();
+    $db = Basedatos::conectar();
+
+    /* ── Datos de prueba propios ── */
+    // Buscar una canción activa real
+    $stmtCancion = $db->query('SELECT tbcancionid FROM tbcancion WHERE tbcancionactivo = 1 LIMIT 1');
+    $filaCan = $stmtCancion->fetch(PDO::FETCH_ASSOC);
+
+    if (!$filaCan) {
+        echo "  [AVISO] No hay canciones activas en la BD; se omiten las pruebas de CancionChatModelo.\n";
+        return;
+    }
+    $cancionId = (int) $filaCan['tbcancionid'];
+
+    // Crear perfil de prueba propio
+    $sufijoCc = substr(bin2hex(random_bytes(4)), 0, 6);
+    $stmtUbic = $db->query('SELECT tbubicacionid FROM tbubicacion LIMIT 1');
+    $filaUbic = $stmtUbic->fetch(PDO::FETCH_ASSOC);
+    $ubicId = $filaUbic ? (int) $filaUbic['tbubicacionid'] : 1;
+
+    $stmtIns = $db->prepare(
+        'INSERT INTO tbperfil (tbubicacionid, tbperfilnombre, tbperfilcontra, tbperfilcorreo, tbperfilrol, tbperfilactivo)
+         VALUES (:ubic, :nombre, :contra, :correo, \'cliente\', 1)'
+    );
+    $stmtIns->bindValue(':ubic', $ubicId, PDO::PARAM_INT);
+    $stmtIns->bindValue(':nombre', 'cc_prueba_' . $sufijoCc);
+    $stmtIns->bindValue(':contra', password_hash('test1234', PASSWORD_BCRYPT));
+    $stmtIns->bindValue(':correo', 'cc_' . $sufijoCc . '@test.com');
+    $stmtIns->execute();
+    $perfilId = (int) $db->lastInsertId();
+
+    assertTrue($perfilId > 0, 'CancionChat: se crea un perfil de prueba propio');
+
+    /* ── Validaciones de entrada ── */
+    $resVacio = $modelo->enviarMensaje($cancionId, $perfilId, '   ');
+    assertTrue($resVacio['exito'] === false, 'CancionChat: rechaza mensaje vacío');
+    assertTrue(isset($resVacio['mensaje']), 'CancionChat: devuelve mensaje de error en vacío');
+
+    $resLargo = $modelo->enviarMensaje($cancionId, $perfilId, str_repeat('a', 301));
+    assertTrue($resLargo['exito'] === false, 'CancionChat: rechaza mensaje de más de 300 caracteres');
+
+    $resCancionMala = $modelo->enviarMensaje(0, $perfilId, 'Hola');
+    assertTrue($resCancionMala['exito'] === false, 'CancionChat: rechaza cancionId = 0');
+
+    $resCancionInexistente = $modelo->enviarMensaje(999999, $perfilId, 'Hola');
+    assertTrue($resCancionInexistente['exito'] === false, 'CancionChat: rechaza canción inexistente');
+
+    $resPerfilMalo = $modelo->enviarMensaje($cancionId, 0, 'Hola');
+    assertTrue($resPerfilMalo['exito'] === false, 'CancionChat: rechaza perfilId = 0');
+
+    /* ── Envío exitoso ── */
+    $textoOk = 'Mensaje de prueba ' . $sufijoCc;
+    $resOk = $modelo->enviarMensaje($cancionId, $perfilId, $textoOk);
+    assertTrue($resOk['exito'] === true, 'CancionChat: envío exitoso devuelve exito = true');
+    assertTrue(isset($resOk['data']['tbcancionchatid']), 'CancionChat: devuelve tbcancionchatid');
+    $mensajeId = (int) ($resOk['data']['tbcancionchatid'] ?? 0);
+    assertTrue($mensajeId > 0, 'CancionChat: tbcancionchatid es positivo');
+    assertEquals($cancionId, $resOk['data']['tbcancionid'] ?? null, 'CancionChat: devuelve el cancionId correcto');
+    assertEquals($perfilId, $resOk['data']['tbperfilid'] ?? null, 'CancionChat: devuelve el perfilId correcto');
+    assertTrue(isset($resOk['data']['tbcancionchatfechahora']), 'CancionChat: devuelve fecha/hora');
+
+    /* ── getMensajesNuevos: carga inicial (desdeId = 0) ── */
+    $resMensajes = $modelo->getMensajesNuevos($cancionId, 0);
+    assertTrue($resMensajes['exito'] === true, 'CancionChat: getMensajesNuevos devuelve exito = true');
+    assertTrue(is_array($resMensajes['data']), 'CancionChat: getMensajesNuevos devuelve array');
+
+    $encontrado = false;
+    foreach ($resMensajes['data'] as $m) {
+        if ((int) ($m['tbcancionchatid'] ?? 0) === $mensajeId) {
+            $encontrado = true;
+            break;
+        }
+    }
+    assertTrue($encontrado, 'CancionChat: el mensaje recién enviado aparece en getMensajesNuevos');
+
+    /* ── getMensajesNuevos: solo nuevos (desdeId = mensajeId) ── */
+    $resSoloNuevos = $modelo->getMensajesNuevos($cancionId, $mensajeId);
+    assertTrue($resSoloNuevos['exito'] === true, 'CancionChat: getMensajesNuevos con desdeId correcto');
+    $noRepite = true;
+    foreach ($resSoloNuevos['data'] as $m) {
+        if ((int) ($m['tbcancionchatid'] ?? 0) === $mensajeId) {
+            $noRepite = false;
+            break;
+        }
+    }
+    assertTrue($noRepite, 'CancionChat: getMensajesNuevos con desdeId no repite mensajes anteriores');
+
+    /* ── getMensajesNuevos: canción inválida ── */
+    $resMala = $modelo->getMensajesNuevos(0, 0);
+    assertTrue($resMala['exito'] === false, 'CancionChat: getMensajesNuevos rechaza cancionId = 0');
+
+    /* ── Limpieza propia ── */
+    $stmtDelMsg = $db->prepare('DELETE FROM tbcancionchat WHERE tbperfilid = :pid');
+    $stmtDelMsg->bindValue(':pid', $perfilId, PDO::PARAM_INT);
+    $stmtDelMsg->execute();
+
+    $stmtDelPerfil = $db->prepare('DELETE FROM tbperfil WHERE tbperfilid = :pid');
+    $stmtDelPerfil->bindValue(':pid', $perfilId, PDO::PARAM_INT);
+    $stmtDelPerfil->execute();
+
+    echo "  Datos de prueba de CancionChat ($perfilId) eliminados.\n";
+}
+
 $nombrePrueba  = "prueba_$sufijo";
 $correoPrueba  = "prueba_$sufijo@test.com";
 $contraPrueba  = "abcd1234"; 
@@ -494,6 +605,7 @@ try {
     probarCalcularHashDatos($perfilModelo);
     probarGenerarPerfiladoCache();
     probarQdrantClienteApagado();
+    probarCancionChatModelo();
 
 } catch (Throwable $e) {
     $totalFallos++;

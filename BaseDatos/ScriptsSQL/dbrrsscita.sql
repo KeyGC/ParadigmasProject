@@ -1582,7 +1582,6 @@ CREATE TABLE IF NOT EXISTS `tbafinidad` (
   UNIQUE KEY `uq_afinidad` (`tbafinidadtipo`, `tbafinidadcategoria`, `tbafinidadtema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Miembros propuestos/dentro de una cohorte de afinidad.
 CREATE TABLE IF NOT EXISTS `tbafinidadmiembro` (
   `tbafinidadmiembroid` int NOT NULL AUTO_INCREMENT,
   `tbafinidadid` int NOT NULL,
@@ -1595,7 +1594,6 @@ CREATE TABLE IF NOT EXISTS `tbafinidadmiembro` (
   KEY `idx_afinidadmiembro_perfil` (`tbperfilid`, `tbafinidadmiembroestado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Grupo de chat creado cuando una cohorte acumula 2+ aceptaciones.
 CREATE TABLE IF NOT EXISTS `tbgrupo` (
   `tbgrupoid` int NOT NULL AUTO_INCREMENT,
   `tbafinidadid` int NOT NULL,
@@ -1609,7 +1607,6 @@ CREATE TABLE IF NOT EXISTS `tbgrupo` (
   UNIQUE KEY `uq_grupo_afinidad` (`tbafinidadid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Miembros del grupo y cursor de lectura para no-leidos.
 CREATE TABLE IF NOT EXISTS `tbgrupomiembro` (
   `tbgrupomiembroid` int NOT NULL AUTO_INCREMENT,
   `tbgrupoid` int NOT NULL,
@@ -1620,9 +1617,6 @@ CREATE TABLE IF NOT EXISTS `tbgrupomiembro` (
   UNIQUE KEY `uq_grupomiembro` (`tbgrupoid`, `tbperfilid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Mensajes del grupo. Sin marca de leido por usuario: los no-leidos se
--- calculan con tbgrupomiembroultimomensajeid. El texto bloqueado se guarda
--- enmascarado y nunca se persiste el original.
 CREATE TABLE IF NOT EXISTS `tbgrupomensaje` (
   `tbgrupomensajeid` int NOT NULL AUTO_INCREMENT,
   `tbgrupoid` int NOT NULL,
@@ -1636,3 +1630,15 @@ CREATE TABLE IF NOT EXISTS `tbgrupomensaje` (
   KEY `idx_grupomensaje_grupo` (`tbgrupoid`, `tbgrupomensajeid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS `tbcancionchat` (
+  `tbcancionchatid` int NOT NULL AUTO_INCREMENT,
+  `tbcancionid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbcancionchattexto` varchar(300) NOT NULL,
+  `tbcancionchatfechahora` datetime NOT NULL,
+  `tbcancionchatbloqueado` tinyint(1) NOT NULL DEFAULT 0,
+  `tbcancionchatcategoria` varchar(20) DEFAULT NULL,
+  `tbcancionchatscore` decimal(6,4) DEFAULT NULL,
+  PRIMARY KEY (`tbcancionchatid`),
+  KEY `idx_cancionchat_cancion` (`tbcancionid`, `tbcancionchatid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

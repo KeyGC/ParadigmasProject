@@ -48,22 +48,47 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? 'Hola';
 
     <?php include APP_PATH . '/Vista/Componentes/footer.php'; ?>
 
+    <!-- Modal reproductor + chat en vivo -->
     <div class="modal fade" id="modalReproductor" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content modal-reproductor">
                 <div class="modal-header border-0">
                     <h5 class="modal-title" id="tituloCancionModal">Reproduciendo</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="btnCerrarModal"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="reproductorYoutube"></div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-7">
+                            <div id="reproductorYoutube"></div>
+                        </div>
+                        <div class="col-12 col-md-5 d-flex flex-column">
+                            <div class="cc-panel flex-grow-1 d-flex flex-column">
+                                <div class="cc-cabecera">
+                                    <span class="cc-icono">💬</span> Chat en vivo
+                                </div>
+                                <div id="ccMensajes" class="cc-mensajes flex-grow-1"></div>
+                                <div id="ccEstado" class="cc-estado"></div>
+                                <div class="cc-form">
+                                    <input type="text" id="ccTexto" class="cc-input" placeholder="Escribe algo…" maxlength="300" autocomplete="off">
+                                    <button type="button" id="ccBtnEnviar" class="cc-btn-enviar">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        window.CC_CONFIG = {
+            perfilId: <?= (int) ($_SESSION['perfil']['tbperfilid'] ?? 0) ?>
+        };
+    </script>
     <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="js/formato.js"></script>
     <script src="js/reproductor.js"></script>
+    <script src="js/cancionchat.js"></script>
     <script src="js/ubicacionauto.js"></script>
 
 </body>

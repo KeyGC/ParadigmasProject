@@ -942,6 +942,154 @@ body {
     opacity: 0.6;
 }
 
+/* ---------- Chat en vivo por canción ---------- */
+
+.cc-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 260px;
+    max-height: 340px;
+}
+
+.cc-cabecera {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.cc-icono {
+    margin-right: 4px;
+}
+
+.cc-mensajes {
+    overflow-y: auto;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cc-fila {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.cc-propia {
+    align-items: flex-end;
+}
+
+.cc-encabezado {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    margin-bottom: 2px;
+}
+
+.cc-nombre {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-acento, #E84393);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.cc-propia .cc-nombre {
+    color: #9ecfff;
+}
+
+.cc-hora {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+}
+
+.cc-burbuja {
+    margin: 0;
+    padding: 0.3rem 0.6rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px 10px 10px 3px;
+    font-size: 0.82rem;
+    color: #FFFFFF;
+    word-break: break-word;
+    max-width: 95%;
+}
+
+.cc-propia .cc-burbuja {
+    background: rgba(232, 67, 147, 0.25);
+    border-radius: 10px 10px 3px 10px;
+}
+
+.cc-estado {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0 0.8rem 0.2rem;
+    min-height: 1.2rem;
+    flex-shrink: 0;
+}
+
+.cc-form {
+    display: flex;
+    gap: 6px;
+    padding: 0.5rem 0.7rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.cc-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.6rem;
+    outline: none;
+}
+
+.cc-input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.cc-input:focus {
+    border-color: var(--color-acento, #E84393);
+}
+
+.cc-input:disabled {
+    opacity: 0.45;
+}
+
+.cc-btn-enviar {
+    background: var(--color-acento, #E84393);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+}
+
+.cc-btn-enviar:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.cc-btn-enviar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
 /* ---------- Biometría facial ---------- */
 
 .panel-biometria {
