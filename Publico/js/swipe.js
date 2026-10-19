@@ -357,9 +357,6 @@
     if (el.btnResultado) el.btnResultado.addEventListener('click', function () {
         consultar({ accion: 'generarPerfilado' }).then(mostrarResultado);
     });
-    if (el.btnCoincidencias) el.btnCoincidencias.addEventListener('click', function () {
-        consultar({ accion: 'buscarCoincidencias' }).then(mostrarCoincidencias);
-    });
     if (el.btnJugarDeNuevo) el.btnJugarDeNuevo.addEventListener('click', function () {
         window.location.reload();
     });

@@ -27,30 +27,44 @@ $conversacionSolicitada = (int) ($_GET['con'] ?? 0);
         <div class="container-lg px-lg-4 py-4">
             <div class="chat-panel">
                 <div class="chat-lista" id="chatLista">
-                    <p class="chat-vacio text-secondary mb-0" id="chatListaVacia">
-                        Todavía no tienes conversaciones. Envía un mensaje desde tus coincidencias.
+                    <h3 class="h6 mb-2 fw-semibold" style="color:var(--color-texto)">Conversaciones</h3>
+                    <p class="small mb-2" style="color:var(--color-texto-suave)" id="chatListaVacia">
+                        Cargando conversaciones...
                     </p>
                     <ul class="chat-conversaciones list-unstyled mb-0" id="chatConversaciones"></ul>
+
+                    <div class="chat-busqueda-afinidades mt-4 pt-3 border-top" id="chatAfinidadesSeccion">
+                        <h3 class="h6 mb-1 fw-semibold" style="color:var(--color-texto)">Descubrir afinidades</h3>
+                        <p class="small mb-2" style="color:var(--color-texto-suave)">Conecta con personas afines a tus gustos:</p>
+                        <div class="btn-group btn-group-sm w-100 mb-2" role="group" aria-label="Categoría de afinidad">
+                            <button type="button" class="btn btn-outline-primary active" id="btnAfinidadComida" data-cat="comida">🍔 Comida</button>
+                            <button type="button" class="btn btn-outline-primary" id="btnAfinidadDeporte" data-cat="deporte">⚽ Deporte</button>
+                            <button type="button" class="btn btn-outline-primary" id="btnAfinidadMusica" data-cat="musica">🎵 Música</button>
+                        </div>
+                        <div id="chatListaCoincidencias" class="coincidencias-contenedor">
+                            <p class="small mb-0" style="color:var(--color-texto-suave)" id="chatCoincidenciasEstado">Cargando afinidades...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="chat-ventana d-flex flex-column" id="chatVentana">
-                    <div class="chat-cabecera border-bottom">
-                        <h2 class="h6 mb-0" id="chatNombre">Selecciona una conversación</h2>
+                    <div class="chat-cabecera">
+                        <h2 class="h6 mb-0" id="chatNombre" style="color:var(--color-texto)">Selecciona una conversación</h2>
                     </div>
 
                     <div class="chat-mensajes flex-grow-1" id="chatMensajes">
-                        <p class="chat-vacio text-secondary mb-0" id="chatMensajesVacio">
+                        <p class="chat-vacio mb-0" id="chatMensajesVacio">
                             Los mensajes aparecerán aquí.
                         </p>
                     </div>
 
-                    <form class="chat-form border-top" id="chatForm">
+                    <form class="chat-form" id="chatForm">
                         <input type="text" class="form-control" id="chatTexto" maxlength="1000"
                             placeholder="Escribe un mensaje..." autocomplete="off" disabled>
                         <button type="submit" class="btn btn-primary" id="chatEnviar" disabled>Enviar</button>
                     </form>
 
-                    <p class="chat-estado text-secondary small mb-0" id="chatEstado"></p>
+                    <p class="chat-estado small mb-0" id="chatEstado"></p>
                 </div>
             </div>
         </div>
@@ -66,7 +80,7 @@ $conversacionSolicitada = (int) ($_GET['con'] ?? 0);
             conversacionInicial: <?= $conversacionSolicitada ?>
         };
     </script>
-    <script src="js/chat.js"></script>
+    <script src="js/chat.js?v=<?= filemtime(BASE_PATH . '/Publico/js/chat.js') ?>"></script>
 </body>
 
 </html>

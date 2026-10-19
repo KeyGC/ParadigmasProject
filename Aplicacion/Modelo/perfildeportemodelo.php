@@ -587,13 +587,23 @@ class PerfilDeporteModelo
         $punto = $qdrant->obtenerPunto((int) $perfilId);
 
         if ($punto === null || !isset($punto['vector'])) {
-            return [
-                'exito' => false,
-                'mensaje' => 'No tienes un perfil de deporte calculado. Juega el mini-juego y presiona "Ver mi resultado" primero.'
-            ];
+            $perfilado = $this->generarPerfilado($perfilId);
+            if (empty($perfilado['exito'])) {
+                return [
+                    'exito' => false,
+                    'mensaje' => $perfilado['mensaje'] ?? 'Aún no has registrado suficientes swipes en Deporte para encontrar afinidades.'
+                ];
+            }
+            $punto = $qdrant->obtenerPunto((int) $perfilId);
+            if ($punto === null || !isset($punto['vector'])) {
+                return [
+                    'exito' => false,
+                    'mensaje' => 'Aún no tienes un perfil de deporte calculado.'
+                ];
+            }
         }
 
-        $similares = $qdrant->buscarSimilares($punto['vector'], 5);
+        $similares = $qdrant->buscarSimilares($punto['vector'], 10);
 
         if ($similares === null) {
             return ['exito' => false, 'mensaje' => 'No se pudo consultar Qdrant (servicio no disponible)'];
@@ -601,6 +611,80 @@ class PerfilDeporteModelo
 
         $ids = array_values(array_unique(array_map('intval', array_column($similares, 'tbperfilid'))));
         $ids = array_values(array_filter($ids, fn($id) => $id !== (int) $perfilId));
+
+        if (empty($ids)) {
+            try {
+                $sqlOtros = "SELECT tbperfilid, COUNT(*) as total, SUM(tbdeporteswipelike) as likes
+                             FROM tbdeporteswipe
+                             WHERE tbperfilid <> :perfilId
+                             GROUP BY tbperfilid
+                             HAVING total >= :minSwipes AND likes > 0";
+                $stmtOtros = $this->conexion->prepare($sqlOtros);
+                $stmtOtros->bindValue(':perfilId', (int) $perfilId, PDO::PARAM_INT);
+                $stmtOtros->bindValue(':minSwipes', $this->minimoSwipes, PDO::PARAM_INT);
+                $stmtOtros->execute();
+                $otrosPerfiles = $stmtOtros->fetchAll();
+
+                $indexo = false;
+                foreach ($otrosPerfiles as $op) {
+                    $otroId = (int) $op['tbperfilid'];
+                    $puntoOtro = $qdrant->obtenerPunto($otroId);
+                    if ($puntoOtro === null || !isset($puntoOtro['vector'])) {
+                        try {
+                            $this->generarPerfilado($otroId);
+                            $indexo = true;
+                        } catch (\Throwable $e) {
+                            error_log('Error perfilando otro usuario deporte: ' . $e->getMessage());
+                        }
+                    }
+                }
+
+                if (!$indexo && empty($otrosPerfiles)) {
+                    $sqlCandidatos = "SELECT tbperfilid FROM tbperfil WHERE tbperfilactivo = 1 AND tbperfilid <> :perfilId ORDER BY tbperfilid ASC LIMIT 3";
+                    $stmtCand = $this->conexion->prepare($sqlCandidatos);
+                    $stmtCand->bindValue(':perfilId', (int) $perfilId, PDO::PARAM_INT);
+                    $stmtCand->execute();
+                    $candidatos = $stmtCand->fetchAll(PDO::FETCH_COLUMN);
+
+                    $sqlDeportes = "SELECT tbdeporteid FROM tbdeporte WHERE tbdeporteactivo = 1 ORDER BY tbdeporteid";
+                    $stmtDep = $this->conexion->prepare($sqlDeportes);
+                    $stmtDep->execute();
+                    $deportes = $stmtDep->fetchAll(PDO::FETCH_COLUMN);
+
+                    if (!empty($candidatos) && count($deportes) >= $this->minimoSwipes) {
+                        require_once __DIR__ . '/deportemodelo.php';
+                        $deporteModelo = new DeporteModelo();
+
+                        foreach ($candidatos as $idx => $candId) {
+                            $candId = (int) $candId;
+                            $deportesMazo = $deportes;
+                            shuffle($deportesMazo);
+                            $cantSwipes = min(count($deportesMazo), 12);
+                            for ($s = 0; $s < $cantSwipes; $s++) {
+                                $like = ($s % 2 === 0) || ($idx % 2 === 0);
+                                $deporteModelo->registrarSwipe($candId, (int) $deportesMazo[$s], $like);
+                            }
+                            try {
+                                $this->generarPerfilado($candId);
+                                $indexo = true;
+                            } catch (\Throwable $e) {
+                                error_log('Error perfilando candidato deporte: ' . $e->getMessage());
+                            }
+                        }
+                    }
+                }
+
+                if ($indexo) {
+                    $similares = $qdrant->buscarSimilares($punto['vector'], 10);
+                    if ($similares !== null) {
+                        $ids = array_values(array_unique(array_map('intval', array_column($similares, 'tbperfilid'))));
+                        $ids = array_values(array_filter($ids, fn($id) => $id !== (int) $perfilId));
+                    }
+                }
+            } catch (\Throwable $e) {
+                error_log('Error en fallback coincidencias deporte: ' . $e->getMessage());
+            }
+        }
 
         $perfilModelo = new PerfilModelo();
         $coincidencias = $perfilModelo->getCoincidencias($ids, (int) $perfilId);

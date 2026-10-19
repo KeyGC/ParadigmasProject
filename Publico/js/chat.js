@@ -72,7 +72,12 @@
         el.lista.innerHTML = '';
 
         if (estado.conversaciones.length === 0) {
-            if (el.listaVacia) el.listaVacia.classList.remove('d-none');
+            if (el.listaVacia) {
+                el.listaVacia.className = 'chat-vacio mb-2';
+                el.listaVacia.style.color = '';
+                el.listaVacia.textContent = 'Todavía no tienes conversaciones. Envía un mensaje desde tus afinidades abajo.';
+                el.listaVacia.classList.remove('d-none');
+            }
             return;
         }
         if (el.listaVacia) el.listaVacia.classList.add('d-none');
@@ -224,11 +229,23 @@
         if (estado.cargandoConversaciones) return Promise.resolve();
         estado.cargandoConversaciones = true;
 
+        if (estado.conversaciones.length === 0 && el.listaVacia) {
+            el.listaVacia.className = 'small mb-2';
+            el.listaVacia.style.color = 'var(--color-texto-suave)';
+            el.listaVacia.textContent = 'Cargando conversaciones...';
+            el.listaVacia.classList.remove('d-none');
+        }
+
         return consultar({ accion: 'getConversaciones' })
             .then(function (respuesta) {
                 if (manejarSesion(respuesta)) return;
                 if (!respuesta.exito) {
                     mensaje(respuesta.mensaje || 'No se pudieron cargar las conversaciones.');
+                    if (el.listaVacia && estado.conversaciones.length === 0) {
+                        el.listaVacia.className = 'small mb-2 text-secondary';
+                        el.listaVacia.textContent = 'No se pudieron cargar las conversaciones.';
+                        el.listaVacia.classList.remove('d-none');
+                    }
                     return;
                 }
                 estado.conversaciones = respuesta.data || [];
@@ -236,6 +253,11 @@
             })
             .catch(function () {
                 mensaje('Sin conexión con el servidor.');
+                if (el.listaVacia && estado.conversaciones.length === 0) {
+                    el.listaVacia.className = 'small mb-2 text-secondary';
+                    el.listaVacia.textContent = 'Sin conexión con el servidor.';
+                    el.listaVacia.classList.remove('d-none');
+                }
             })
             .then(function () {
                 estado.cargandoConversaciones = false;
@@ -349,6 +371,7 @@
     function iniciar() {
         activarEnvio(false);
         if (el.form) el.form.addEventListener('submit', enviarMensaje);
+        configurarBotonesAfinidad();
 
         cargarConversaciones().then(function () {
             if (conversacionInicial > 0 && conversacionInicial !== perfilId) {
@@ -358,6 +381,141 @@
             if (estado.conversaciones.length > 0) {
                 abrirConversacion(estado.conversaciones[0]);
             }
+        });
+    }
+
+    var APIS_AFINIDAD = {
+        comida: 'apicomida.php',
+        deporte: 'apideporte.php',
+        musica: 'apicancion.php'
+    };
+
+    // Caché de resultados por categoría para no repetir peticiones
+    var _cacheCatChat = {};
+
+    function escapeHtml(texto) {
+        var div = document.createElement('div');
+        div.textContent = texto || '';
+        return div.innerHTML;
+    }
+
+    function renderAfinidades(categoria, respuesta) {
+        var contenedor = document.getElementById('chatListaCoincidencias');
+        if (!contenedor) return;
+        contenedor.innerHTML = '';
+
+        if (!respuesta || !respuesta.exito) {
+            var msgErr = (respuesta && respuesta.mensaje) ? respuesta.mensaje : 'No se pudieron obtener las coincidencias.';
+            // Detectar mensajes de "sin datos" para dar mensaje amigable con enlace
+            var sinDatos = /swipe|resultado|calcul|m.nimo|mini-juego/i.test(msgErr);
+            var p = document.createElement('p');
+            p.className = 'small mb-0';
+            p.style.color = 'var(--color-texto-suave)';
+            if (sinDatos) {
+                var catNombre = categoria === 'comida' ? 'Comida' : (categoria === 'deporte' ? 'Deporte' : 'Música');
+                if (categoria !== 'musica') {
+                    p.innerHTML = 'Aún no tienes afinidades de <strong>' + escapeHtml(catNombre) + '</strong>. ' +
+                        'Juega el mini-juego de <a href="index.php?vista=descubrir' + escapeHtml(categoria) + '" style="color:var(--color-primario)">' + escapeHtml(catNombre) + '</a> para generarlas.';
+                } else {
+                    p.innerHTML = 'Aún no tienes afinidades de <strong>Música</strong>. ' +
+                        'Escucha canciones en <a href="index.php?vista=cliente" style="color:var(--color-primario)">Inicio</a> para generar tu perfil musical.';
+                }
+            } else {
+                p.textContent = msgErr;
+            }
+            contenedor.appendChild(p);
+            return;
+        }
+
+        var datos = respuesta.data || [];
+        if (datos.length === 0) {
+            var vacio = document.createElement('p');
+            vacio.className = 'small mb-0';
+            vacio.style.color = 'var(--color-texto-suave)';
+            vacio.textContent = 'Aún no hay coincidencias en esta categoría.';
+            contenedor.appendChild(vacio);
+            return;
+        }
+
+        var lista = document.createElement('ul');
+        lista.className = 'coincidencias-lista mt-2';
+        datos.forEach(function (coincidencia) {
+            var li = document.createElement('li');
+            li.className = 'd-flex justify-content-between align-items-center gap-2';
+
+            var nombreMostrar = coincidencia.tbperfilnombre || ('Perfil ' + coincidencia.tbperfilid);
+            if (coincidencia.mostrarNombres === false) {
+                nombreMostrar = 'Perfil reservado';
+            }
+
+            var info = document.createElement('div');
+            info.className = 'small fw-semibold text-truncate';
+            info.style.color = 'var(--color-texto)';
+            info.textContent = nombreMostrar;
+
+            var boton = document.createElement('button');
+            boton.type = 'button';
+            boton.className = 'btn btn-sm';
+            boton.style.cssText = 'background:var(--color-primario);color:#fff;border:none;border-radius:var(--radio-control);font-size:0.8rem;padding:0.25rem 0.65rem;white-space:nowrap;flex-shrink:0;';
+            boton.textContent = 'Enviar mensaje';
+            boton.addEventListener('click', function () {
+                abrirConOtroPerfil(coincidencia.tbperfilid);
+            });
+
+            li.appendChild(info);
+            li.appendChild(boton);
+            lista.appendChild(li);
+        });
+        contenedor.appendChild(lista);
+    }
+
+    function cargarAfinidadesCat(cat) {
+        var urlApi = APIS_AFINIDAD[cat] || APIS_AFINIDAD.comida;
+        peticion(urlApi + '?accion=buscarCoincidencias')
+            .then(function (respuesta) {
+                _cacheCatChat[cat] = respuesta;
+                // Renderizar solo si este tab está activo ahora
+                var btnActivo = document.querySelector('#chatAfinidadesSeccion [data-cat].active');
+                if (btnActivo && btnActivo.dataset.cat === cat) {
+                    renderAfinidades(cat, respuesta);
+                }
+            })
+            .catch(function () {
+                _cacheCatChat[cat] = { exito: false, mensaje: 'Error de conexión.' };
+                var btnActivo = document.querySelector('#chatAfinidadesSeccion [data-cat].active');
+                if (btnActivo && btnActivo.dataset.cat === cat) {
+                    renderAfinidades(cat, _cacheCatChat[cat]);
+                }
+            });
+    }
+
+    function configurarBotonesAfinidad() {
+        var botones = document.querySelectorAll('#chatAfinidadesSeccion [data-cat]');
+        var contenedor = document.getElementById('chatListaCoincidencias');
+
+        botones.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                botones.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var cat = btn.dataset.cat;
+                if (_cacheCatChat[cat] !== undefined) {
+                    // Ya cargado: mostrar caché instantáneo
+                    renderAfinidades(cat, _cacheCatChat[cat]);
+                } else {
+                    if (contenedor) {
+                        contenedor.innerHTML = '<p class="small mb-0" style="color:var(--color-texto-suave)">Cargando afinidades...</p>';
+                    }
+                    cargarAfinidadesCat(cat);
+                }
+            });
+        });
+
+        // Pre-cargar las 3 categorías en paralelo al abrir el chat
+        if (contenedor) {
+            contenedor.innerHTML = '<p class="small mb-0" style="color:var(--color-texto-suave)">Cargando afinidades...</p>';
+        }
+        ['comida', 'deporte', 'musica'].forEach(function (cat) {
+            cargarAfinidadesCat(cat);
         });
     }
 

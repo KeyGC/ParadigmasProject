@@ -15,29 +15,34 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-lg-4 me-auto gap-lg-1">
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'cliente' ? 'activo' : '' ?>" href="index.php?vista=cliente">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'descubrircomida' ? 'activo' : '' ?>" href="index.php?vista=descubrircomida">Comida</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'descubrirdeporte' ? 'activo' : '' ?>" href="index.php?vista=descubrirdeporte">Deporte</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'chat' ? 'activo' : '' ?>" href="index.php?vista=chat">Chat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'comunidades' ? 'activo' : '' ?>" href="index.php?vista=comunidades">Comunidades</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= $vistaActual === 'grupos' ? 'activo' : '' ?>" href="index.php?vista=grupos">Grupos</a>
-                </li>
-            </ul>
-
             <?php if ($usuarioActivo): ?>
+                <ul class="navbar-nav ms-lg-4 me-auto gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'cliente' ? 'activo' : '' ?>" href="index.php?vista=cliente">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'descubrircomida' ? 'activo' : '' ?>" href="index.php?vista=descubrircomida">Comida</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'descubrirdeporte' ? 'activo' : '' ?>" href="index.php?vista=descubrirdeporte">Deporte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'chat' ? 'activo' : '' ?>" href="index.php?vista=chat">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'comunidades' ? 'activo' : '' ?>" href="index.php?vista=comunidades">Comunidades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'grupos' ? 'activo' : '' ?>" href="index.php?vista=grupos">Grupos</a>
+                    </li>
+                </ul>
+
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'ayuda' ? 'activo' : '' ?>" href="index.php?vista=ayuda" aria-label="Ayuda" title="Ayuda y Guía">
+                            <span aria-hidden="true">&#10067;</span> Ayuda
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link nav-campana position-relative" href="index.php?vista=notificaciones" aria-label="Notificaciones">
                             <span aria-hidden="true">&#128276;</span>
@@ -51,6 +56,20 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-cerrar-cliente" href="index.php?vista=logout">Cerrar sesión</a>
+                    </li>
+                </ul>
+            <?php else: ?>
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'ayuda' ? 'activo' : '' ?>" href="index.php?vista=ayuda" aria-label="Ayuda" title="Ayuda y Guía">
+                            <span aria-hidden="true">&#10067;</span> Ayuda
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-primary" href="index.php?vista=login">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-primary" href="index.php?vista=registro">Crear cuenta</a>
                     </li>
                 </ul>
             <?php endif; ?>

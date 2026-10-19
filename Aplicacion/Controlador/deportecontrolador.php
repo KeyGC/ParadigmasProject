@@ -61,7 +61,12 @@ switch ($accion) {
         break;
 
     case 'buscarCoincidencias':
-        echo json_encode($perfilDeporteModelo->buscarCoincidencias((int) $_SESSION['perfil']['tbperfilid']));
+        try {
+            echo json_encode($perfilDeporteModelo->buscarCoincidencias((int) $_SESSION['perfil']['tbperfilid']));
+        } catch (\Throwable $e) {
+            error_log('deportecontrolador buscarCoincidencias: ' . $e->getMessage());
+            echo json_encode(['exito' => false, 'mensaje' => 'No se pudieron calcular las afinidades de deporte en este momento.']);
+        }
         break;
 
     case 'getListAdmin':

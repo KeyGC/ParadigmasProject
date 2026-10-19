@@ -587,10 +587,20 @@ class PerfilComidaModelo
         $punto = $qdrant->obtenerPunto((int) $perfilId);
 
         if ($punto === null || !isset($punto['vector'])) {
-            return [
-                'exito' => false,
-                'mensaje' => 'No tienes un perfil de comida calculado. Juega el mini-juego y presiona "Ver mi resultado" primero.'
-            ];
+            $perfilado = $this->generarPerfilado($perfilId);
+            if (empty($perfilado['exito'])) {
+                return [
+                    'exito' => false,
+                    'mensaje' => $perfilado['mensaje'] ?? 'Aún no has registrado suficientes swipes en Comida para encontrar afinidades.'
+                ];
+            }
+            $punto = $qdrant->obtenerPunto((int) $perfilId);
+            if ($punto === null || !isset($punto['vector'])) {
+                return [
+                    'exito' => false,
+                    'mensaje' => 'Aún no tienes un perfil de comida calculado.'
+                ];
+            }
         }
 
         $similares = $qdrant->buscarSimilares($punto['vector'], 5);

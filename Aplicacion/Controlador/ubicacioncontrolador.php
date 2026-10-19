@@ -50,11 +50,13 @@ function resolverUbicacionDesdeAddress($modelo, $address)
     }
 
     $candidatosProvincia = ['province', 'state'];
-    $candidatosCanton = ['county', 'municipality'];
+    $candidatosCanton = ['county', 'municipality', 'city'];
     $candidatosDistrito = [
         'village', 'town', 'city_district', 'municipality', 'borough',
         'suburb', 'quarter', 'neighbourhood', 'hamlet', 'city'
     ];
+
+    $provinciasBD = $modelo->getProvincias();
 
     foreach ($candidatosProvincia as $cp) {
         $nombreProvincia = normalizarTextoUbicacion($address[$cp] ?? '');
@@ -62,44 +64,88 @@ function resolverUbicacionDesdeAddress($modelo, $address)
             continue;
         }
 
-        foreach ($modelo->getProvincias() as $provincia) {
-            if (normalizarTextoUbicacion($provincia['tbprovincianombre']) !== $nombreProvincia) {
+        foreach ($provinciasBD as $provincia) {
+            $provNorm = normalizarTextoUbicacion($provincia['tbprovincianombre']);
+            if ($provNorm !== $nombreProvincia && strpos($nombreProvincia, $provNorm) === false && strpos($provNorm, $nombreProvincia) === false) {
                 continue;
             }
 
+            $cantonesBD = $modelo->getCantonesPorProvincia($provincia['tbprovinciaid']);
             foreach ($candidatosCanton as $cc) {
                 $nombreCanton = normalizarTextoUbicacion($address[$cc] ?? '');
                 if ($nombreCanton === '') {
                     continue;
                 }
 
-                foreach ($modelo->getCantonesPorProvincia($provincia['tbprovinciaid']) as $canton) {
-                    if (normalizarTextoUbicacion($canton['tbcantonnombre']) !== $nombreCanton) {
+                foreach ($cantonesBD as $canton) {
+                    $cantNorm = normalizarTextoUbicacion($canton['tbcantonnombre']);
+                    if ($cantNorm !== $nombreCanton && strpos($nombreCanton, $cantNorm) === false && strpos($cantNorm, $nombreCanton) === false) {
                         continue;
                     }
 
+                    $distritosBD = $modelo->getDistritosPorCanton($canton['tbcantonid']);
                     foreach ($candidatosDistrito as $cd) {
                         $nombreDistrito = normalizarTextoUbicacion($address[$cd] ?? '');
                         if ($nombreDistrito === '') {
                             continue;
                         }
 
-                        foreach ($modelo->getDistritosPorCanton($canton['tbcantonid']) as $distrito) {
-                            if (normalizarTextoUbicacion($distrito['tbdistritonombre']) !== $nombreDistrito) {
-                                continue;
+                        foreach ($distritosBD as $distrito) {
+                            $distNorm = normalizarTextoUbicacion($distrito['tbdistritonombre']);
+                            if ($distNorm === $nombreDistrito || strpos($nombreDistrito, $distNorm) !== false || strpos($distNorm, $nombreDistrito) !== false) {
+                                return [
+                                    'provinciaId' => (int) $provincia['tbprovinciaid'],
+                                    'cantonId' => (int) $canton['tbcantonid'],
+                                    'distritoId' => (int) $distrito['tbdistritoid'],
+                                    'origen' => 'nombres'
+                                ] + $modelo->getNombresPorIds(
+                                    $provincia['tbprovinciaid'],
+                                    $canton['tbcantonid'],
+                                    $distrito['tbdistritoid']
+                                );
                             }
-
-                            return [
-                                'provinciaId' => (int) $provincia['tbprovinciaid'],
-                                'cantonId' => (int) $canton['tbcantonid'],
-                                'distritoId' => (int) $distrito['tbdistritoid'],
-                                'origen' => 'nombres'
-                            ] + $modelo->getNombresPorIds(
-                                $provincia['tbprovinciaid'],
-                                $canton['tbcantonid'],
-                                $distrito['tbdistritoid']
-                            );
                         }
+                    }
+
+                    if (!empty($distritosBD)) {
+                        $primerDistrito = $distritosBD[0];
+                        return [
+                            'provinciaId' => (int) $provincia['tbprovinciaid'],
+                            'cantonId' => (int) $canton['tbcantonid'],
+                            'distritoId' => (int) $primerDistrito['tbdistritoid'],
+                            'origen' => 'cantonCabecera'
+                        ] + $modelo->getNombresPorIds(
+                            $provincia['tbprovinciaid'],
+                            $canton['tbcantonid'],
+                            $primerDistrito['tbdistritoid']
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    foreach ($candidatosProvincia as $cp) {
+        $nombreProvincia = normalizarTextoUbicacion($address[$cp] ?? '');
+        if ($nombreProvincia === '') continue;
+
+        foreach ($provinciasBD as $provincia) {
+            $provNorm = normalizarTextoUbicacion($provincia['tbprovincianombre']);
+            if ($provNorm === $nombreProvincia || strpos($nombreProvincia, $provNorm) !== false) {
+                $cantones = $modelo->getCantonesPorProvincia($provincia['tbprovinciaid']);
+                if (!empty($cantones)) {
+                    $distritos = $modelo->getDistritosPorCanton($cantones[0]['tbcantonid']);
+                    if (!empty($distritos)) {
+                        return [
+                            'provinciaId' => (int) $provincia['tbprovinciaid'],
+                            'cantonId' => (int) $cantones[0]['tbcantonid'],
+                            'distritoId' => (int) $distritos[0]['tbdistritoid'],
+                            'origen' => 'provinciaCabecera'
+                        ] + $modelo->getNombresPorIds(
+                            $provincia['tbprovinciaid'],
+                            $cantones[0]['tbcantonid'],
+                            $distritos[0]['tbdistritoid']
+                        );
                     }
                 }
             }
@@ -253,9 +299,19 @@ switch ($accion) {
         if ($perfilUbicacionModelo->esSimilarAUltima($perfilId, $coordenadas['lat'], $coordenadas['lng'])) {
             echo json_encode([
                 "exito" => true,
-                "guardado" => false,
+                "guardado" => true,
                 "duplicado" => true,
-                "mensaje" => "La ubicación automática es similar a la última registrada, no se duplica el histórico"
+                "mensaje" => "La ubicación automática coincide con la última registrada",
+                "data" => [
+                    "provinciaId" => $ubicacion['provinciaId'],
+                    "provincia" => $ubicacion['provincia'],
+                    "cantonId" => $ubicacion['cantonId'],
+                    "canton" => $ubicacion['canton'],
+                    "distritoId" => $ubicacion['distritoId'],
+                    "distrito" => $ubicacion['distrito'],
+                    "lat" => $coordenadas['lat'],
+                    "lng" => $coordenadas['lng']
+                ]
             ]);
             break;
         }

@@ -49,6 +49,7 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
 
             <div class="contenedorFormulario" id="contenedorFormularioUbicacion">
                 <h1>Ubicación</h1>
+                <div id="alertaUbicacion" class="mt-2"></div>
 
                 <form id="formUbicacion" class="mt-3">
                     <select id="provincia" class="form-select" required>
@@ -80,7 +81,7 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/perfilcliente.js"></script>
-    <script src="js/ubicacion.js"></script>
+    <script src="js/ubicacion.js?v=<?= filemtime(BASE_PATH . '/Publico/js/ubicacion.js') ?>"></script>
 </body>
 
 </html>

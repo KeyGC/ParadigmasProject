@@ -3,8 +3,11 @@
 require_once __DIR__ . '/../Modelo/cancionmodelo.php';
 require_once __DIR__ . '/../Modelo/reproduccionmodelo.php';
 require_once __DIR__ . '/../Modelo/generomodelo.php';
+require_once __DIR__ . '/../Modelo/perfilmodelo.php';
+require_once __DIR__ . '/../Modelo/perfilmusicalmodelo.php';
 require_once __DIR__ . '/../Utilidades/autenticacion.php';
 require_once __DIR__ . '/../Utilidades/validacion.php';
+require_once __DIR__ . '/../Utilidades/qdrantcliente.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -21,6 +24,64 @@ switch ($accion) {
             ? $cancionModelo->getPorGenero($generoId)
             : $cancionModelo->getList();
         echo json_encode(["exito" => true, "data" => $canciones]);
+        break;
+
+    case 'buscarCoincidencias':
+        if (!isset($_SESSION['perfil'])) {
+            echo json_encode(["exito" => false, "mensaje" => "Sesión no encontrada"]);
+            break;
+        }
+
+        $perfilId = (int) $_SESSION['perfil']['tbperfilid'];
+        $qdrant = new QdrantCliente();
+        $punto = $qdrant->obtenerPunto($perfilId);
+
+        if ($punto === null || !isset($punto['vector'])) {
+            $musicalModelo = new PerfilMusicalModelo();
+            $perfilado = $musicalModelo->generarPerfilado($perfilId);
+            if (empty($perfilado['exito'])) {
+                echo json_encode([
+                    "exito" => false,
+                    "mensaje" => $perfilado['mensaje'] ?? "Aún no tienes suficiente actividad musical registrada. Escucha más canciones para generar afinidad."
+                ]);
+                break;
+            }
+            $punto = $qdrant->obtenerPunto($perfilId);
+            if ($punto === null || !isset($punto['vector'])) {
+                echo json_encode([
+                    "exito" => false,
+                    "mensaje" => "No tienes un perfil musical calculado. Escucha más canciones para generar afinidad."
+                ]);
+                break;
+            }
+        }
+
+        $similares = $qdrant->buscarSimilares($punto['vector'], 5);
+
+        if ($similares === null) {
+            echo json_encode(["exito" => false, "mensaje" => "No se pudo consultar el servicio de recomendaciones."]);
+            break;
+        }
+
+        $ids = array_values(array_unique(array_map('intval', array_column($similares, 'tbperfilid'))));
+        $ids = array_values(array_filter($ids, fn($id) => $id !== $perfilId));
+
+        $perfilModelo = new PerfilModelo();
+        $coincidencias = $perfilModelo->getCoincidencias($ids, $perfilId);
+
+        $scorePorId = [];
+        foreach ($similares as $s) {
+            $scorePorId[(int) $s['tbperfilid']] = $s['score'];
+        }
+
+        foreach ($coincidencias as &$c) {
+            $c['score'] = $scorePorId[(int) $c['tbperfilid']] ?? 0.0;
+        }
+        unset($c);
+
+        usort($coincidencias, fn($a, $b) => $b['score'] <=> $a['score']);
+
+        echo json_encode(["exito" => true, "data" => $coincidencias]);
         break;
 
     case 'registrarTiempo':

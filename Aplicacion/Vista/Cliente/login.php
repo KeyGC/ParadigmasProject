@@ -16,7 +16,12 @@
             <div class="slogan-login">El lugar donde las historias comienzan</div>
 
             <div class="contenedorFormulario w-100">
-                <h1>Iniciar sesión</h1>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h1 class="mb-0">Iniciar sesión</h1>
+                    <a href="index.php?vista=ayudapublica" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; border-radius: var(--radio-control);" title="Guía y Ayuda">
+                        <span aria-hidden="true">&#10067;</span> Ayuda
+                    </a>
+                </div>
                 <div id="alertaLogin" class="mt-3"></div>
                 <form id="loginForm" class="mt-3">
                     <input type="text" id="nombre" class="form-control" placeholder="Sobrenombre" required>

@@ -61,7 +61,12 @@ switch ($accion) {
         break;
 
     case 'buscarCoincidencias':
-        echo json_encode($perfilComidaModelo->buscarCoincidencias((int) $_SESSION['perfil']['tbperfilid']));
+        try {
+            echo json_encode($perfilComidaModelo->buscarCoincidencias((int) $_SESSION['perfil']['tbperfilid']));
+        } catch (\Throwable $e) {
+            error_log('comidacontrolador buscarCoincidencias: ' . $e->getMessage());
+            echo json_encode(['exito' => false, 'mensaje' => 'No se pudieron calcular las afinidades de comida en este momento.']);
+        }
         break;
 
     case 'getListAdmin':

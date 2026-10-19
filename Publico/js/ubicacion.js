@@ -55,11 +55,90 @@ function initMapa() {
     });
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((posicion) => {
-            const ubicacionUsuario = [posicion.coords.latitude, posicion.coords.longitude];
-            mapa.setView(ubicacionUsuario, 14);
-        });
+        navigator.geolocation.getCurrentPosition(
+            (posicion) => {
+                const lat = posicion.coords.latitude;
+                const lng = posicion.coords.longitude;
+                mapa.setView([lat, lng], 14);
+                colocarMarcador({ lat: lat, lng: lng });
+
+                registrarUbicacionAutomatica(lat, lng);
+            },
+            (error) => {
+                console.info('Geolocalización no disponible:', error.message);
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
     }
+}
+
+function mostrarAvisoUbicacion(texto, tipo) {
+    const contenedor = document.getElementById('alertaUbicacion');
+    if (!contenedor) return;
+    contenedor.innerHTML = `<div class="alert alert-${tipo || 'info'} alert-dismissible fade show small py-2 mb-3" role="alert">
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+}
+
+async function aplicarDatosUbicacion(d) {
+    if (!d) return;
+
+    if (d.provinciaId) {
+        document.getElementById('provincia').value = d.provinciaId;
+
+        if (d.cantonId) {
+            await cargarCantones(d.provinciaId);
+            const elCanton = document.getElementById('canton');
+            if (elCanton) {
+                elCanton.disabled = false;
+                elCanton.value = d.cantonId;
+            }
+
+            if (d.distritoId) {
+                await cargarDistritos(d.cantonId);
+                const elDistrito = document.getElementById('distrito');
+                if (elDistrito) {
+                    elDistrito.disabled = false;
+                    elDistrito.value = d.distritoId;
+                }
+            }
+        }
+    }
+
+    if (d.lat && d.lng) {
+        const lat = parseFloat(d.lat);
+        const lng = parseFloat(d.lng);
+        document.getElementById('latitud').value = lat;
+        document.getElementById('longitud').value = lng;
+        colocarMarcador({ lat: lat, lng: lng });
+        if (mapa) {
+            mapa.setView([lat, lng], 15);
+        }
+    }
+}
+
+function registrarUbicacionAutomatica(lat, lng) {
+    const formData = new FormData();
+    formData.append('lat', lat);
+    formData.append('lng', lng);
+
+    peticion(`${URL_UBICACION}?accion=guardarAutomatica`, {
+        method: 'POST',
+        body: formData
+    })
+        .then(async resp => {
+            if (!resp) return;
+            if (resp.guardado && resp.data) {
+                await aplicarDatosUbicacion(resp.data);
+                mostrarAvisoUbicacion('Ubicación de tu dispositivo detectada y registrada automáticamente.', 'success');
+            } else if (resp.mensaje) {
+                console.info('[Ubicación automática]', resp.mensaje);
+            }
+        })
+        .catch(err => {
+            console.info('Ubicación automática no guardada:', err);
+        });
 }
 
 function colocarMarcador(latlng) {

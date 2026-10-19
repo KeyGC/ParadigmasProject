@@ -28,13 +28,13 @@ if ($vista === 'logout') {
 }
 
 // Vistas públicas, no requieren sesión
-$vistasPublicas = ['login', 'registro'];
+$vistasPublicas = ['login', 'registro', 'ayudapublica'];
 
 // Vistas exclusivas de admin
 $vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos', 'analisisdiscurso', 'comidas', 'deportes'];
 
 // Vistas exclusivas de cliente
-$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos'];
+$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos', 'ayuda'];
 
 if (!in_array($vista, $vistasPublicas, true)) {
 
@@ -111,6 +111,12 @@ switch ($vista) {
         break;
     case 'grupos':
         require_once APP_PATH . '/Vista/Cliente/grupos.php';
+        break;
+    case 'ayuda':
+        require_once APP_PATH . '/Vista/Cliente/ayuda.php';
+        break;
+    case 'ayudapublica':
+        require_once APP_PATH . '/Vista/Cliente/ayudapublica.php';
         break;
     case 'canciones':
         require_once APP_PATH . '/Vista/Admin/canciones.php';

@@ -1,6 +1,6 @@
 <?php
 define('GEO_NOMINATIM_URL', 'https://nominatim.openstreetmap.org/reverse');
-define('GEO_USER_AGENT', 'ParadigmasProject/1.0 (UbicacionAutomatica)');
+define('GEO_USER_AGENT', 'ParadigmasProject/1.0 (UbicacionAutomatica; matchlove@una.cr)');
 define('GEO_TIMEOUT_SEGUNDOS', 8);
 
 function normalizarTextoUbicacion($texto)
@@ -22,10 +22,11 @@ function normalizarTextoUbicacion($texto)
     ];
     $texto = strtr($texto, $acentos);
 
-    // Colapsa espacios múltiples
+    $texto = preg_replace('/^(provincia\s+de\s+|provincia\s+|canton\s+de\s+|canton\s+|distrito\s+de\s+|distrito\s+)/i', '', $texto);
+
     $texto = preg_replace('/\s+/', ' ', $texto);
 
-    return $texto;
+    return trim($texto);
 }
 
 function reverseGeocodificar($latitud, $longitud)
