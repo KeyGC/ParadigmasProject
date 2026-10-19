@@ -139,6 +139,31 @@ class ComidaModelo
         return $stmt->fetch() !== false;
     }
 
+    public function buscarPorNombre($nombre)
+    {
+        $sql = "SELECT c.tbcomidaid AS id, c.tbtipocomidaid, c.tbcomidanombre AS nombre,
+                       c.tbcomidaimagenurl AS imagenUrl, t.tbtipocomidanombre AS tipoNombre
+                FROM tbcomida c
+                INNER JOIN tbtipocomida t ON c.tbtipocomidaid = t.tbtipocomidaid
+                WHERE LOWER(TRIM(c.tbcomidanombre)) = LOWER(TRIM(:nombre))
+                LIMIT 1";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindValue(':nombre', $nombre);
+        $stmt->execute();
+        $fila = $stmt->fetch();
+        return $fila ?: null;
+    }
+
+    public function getNombresPorTipo()
+    {
+        $sql = "SELECT tbtipocomidaid, tbcomidanombre
+                FROM tbcomida
+                WHERE tbcomidaactivo = 1";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public function insert($tipoId, $nombre, $imagenUrl)
     {
         $sql = "INSERT INTO tbcomida (tbtipocomidaid, tbcomidanombre, tbcomidaimagenurl)

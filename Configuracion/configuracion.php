@@ -92,5 +92,13 @@ define('AFINIDAD_MAX_DIARIAS', (int) (getenv('AFINIDAD_MAX_DIARIAS') ?: 5));
 // Dias de enfriamiento antes de volver a proponer una afinidad rechazada.
 define('AFINIDAD_ENFRIAMIENTO_DIAS', (int) (getenv('AFINIDAD_ENFRIAMIENTO_DIAS') ?: 7));
 
+define('MICROLINK_API_KEY', getenv('MICROLINK_API_KEY') ?: 'CAMBIAR_EN_ENV');
+define('MICROLINK_TOPE_DIARIO_GLOBAL', (int) (getenv('MICROLINK_TOPE_DIARIO_GLOBAL') ?: 0));
+define('COMIDA_LINK_TOPE_DIARIO_USUARIO', (int) (getenv('COMIDA_LINK_TOPE_DIARIO_USUARIO') ?: 0));
+define('COMIDA_DOMINIOS_PERMITIDOS', [
+    'cookpad.com',
+    'kiwilimon.com'
+]);
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';

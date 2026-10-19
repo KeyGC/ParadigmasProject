@@ -106,11 +106,22 @@ class ComunidadMensajeModelo
         $categoriaGuardada = $bloqueado ? $categoria : null;
         $scoreGuardado = $bloqueado ? $score : null;
 
+        $comida = null;
+        $comidaId = null;
+        if (!$bloqueado) {
+            require_once __DIR__ . '/comidalinkmodelo.php';
+            $comidaLinkModelo = new ComidaLinkModelo();
+            $comida = $comidaLinkModelo->procesarMensaje($texto, $emisorId);
+            if ($comida && !empty($comida['id'])) {
+                $comidaId = (int) $comida['id'];
+            }
+        }
+
         $sql = "INSERT INTO tbcomunidadmensaje
                     (tbcomunidadid, tbperfilidemisor, tbcomunidadmensajetexto,
                      tbcomunidadmensajefechahora, tbcomunidadmensajebloqueado,
-                     tbcomunidadmensajecategoria, tbcomunidadmensajescore)
-                VALUES (:comunidadId, :emisor, :texto, :fecha, :bloqueado, :categoria, :score)";
+                     tbcomunidadmensajecategoria, tbcomunidadmensajescore, tbcomidaid)
+                VALUES (:comunidadId, :emisor, :texto, :fecha, :bloqueado, :categoria, :score, :comidaId)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':comunidadId', $comunidadId, PDO::PARAM_INT);
         $stmt->bindValue(':emisor', $emisorId, PDO::PARAM_INT);
@@ -119,6 +130,7 @@ class ComunidadMensajeModelo
         $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
         $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindValue(':score', $scoreGuardado);
+        $stmt->bindValue(':comidaId', $comidaId, $comidaId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
@@ -155,7 +167,8 @@ class ComunidadMensajeModelo
                 'tbcomunidadmensajefechahora' => $ahora,
                 'tbcomunidadmensajebloqueado' => $bloqueado,
                 'tbcomunidadmensajecategoria' => $categoriaGuardada,
-                'tbcomunidadmensajescore' => $scoreGuardado
+                'tbcomunidadmensajescore' => $scoreGuardado,
+                'comida' => $comida
             ]
         ];
     }
@@ -173,18 +186,22 @@ class ComunidadMensajeModelo
                        m.tbcomunidadmensajetexto, m.tbcomunidadmensajefechahora,
                        m.tbcomunidadmensajebloqueado, m.tbcomunidadmensajecategoria,
                        m.tbcomunidadmensajescore,
-                       p.tbperfilnombre
+                       m.tbcomidaid,
+                       p.tbperfilnombre,
+                       c.tbcomidanombre, c.tbcomidaimagenurl, tc.tbtipocomidanombre
                 FROM (
                     SELECT x.tbcomunidadmensajeid, x.tbcomunidadid, x.tbperfilidemisor,
                            x.tbcomunidadmensajetexto, x.tbcomunidadmensajefechahora,
                            x.tbcomunidadmensajebloqueado, x.tbcomunidadmensajecategoria,
-                           x.tbcomunidadmensajescore
+                           x.tbcomunidadmensajescore, x.tbcomidaid
                     FROM tbcomunidadmensaje x
                     WHERE x.tbcomunidadid = :comunidadId AND x.tbcomunidadmensajeid > :desdeId
                     ORDER BY x.tbcomunidadmensajeid DESC
                     LIMIT :limite
                 ) m
                 INNER JOIN tbperfil p ON p.tbperfilid = m.tbperfilidemisor
+                LEFT JOIN tbcomida c ON m.tbcomidaid = c.tbcomidaid
+                LEFT JOIN tbtipocomida tc ON c.tbtipocomidaid = tc.tbtipocomidaid
                 ORDER BY m.tbcomunidadmensajeid ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':comunidadId', $comunidadId, PDO::PARAM_INT);
@@ -196,7 +213,7 @@ class ComunidadMensajeModelo
         foreach ($stmt->fetchAll() as $fila) {
             $bloqueado = (bool) $fila['tbcomunidadmensajebloqueado'];
 
-            $mensajes[] = [
+            $item = [
                 'tbcomunidadmensajeid' => (int) $fila['tbcomunidadmensajeid'],
                 'tbcomunidadid' => (int) $fila['tbcomunidadid'],
                 'tbperfilidemisor' => (int) $fila['tbperfilidemisor'],
@@ -207,6 +224,15 @@ class ComunidadMensajeModelo
                 'tbcomunidadmensajecategoria' => $fila['tbcomunidadmensajecategoria'],
                 'tbcomunidadmensajescore' => $fila['tbcomunidadmensajescore'] !== null ? (float) $fila['tbcomunidadmensajescore'] : null
             ];
+            if (!empty($fila['tbcomidaid'])) {
+                $item['comida'] = [
+                    'id' => (int) $fila['tbcomidaid'],
+                    'nombre' => $fila['tbcomidanombre'],
+                    'imagenUrl' => $fila['tbcomidaimagenurl'],
+                    'tipoNombre' => $fila['tbtipocomidanombre']
+                ];
+            }
+            $mensajes[] = $item;
         }
 
         return ['exito' => true, 'data' => $mensajes];

@@ -1642,3 +1642,33 @@ CREATE TABLE IF NOT EXISTS `tbcancionchat` (
   PRIMARY KEY (`tbcancionchatid`),
   KEY `idx_cancionchat_cancion` (`tbcancionid`, `tbcancionchatid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `tbmicrolinkcontrol` (
+  `tbmicrolinkcontrolid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int DEFAULT NULL,
+  `tbmicrolinkcontrolfecha` date NOT NULL,
+  `tbmicrolinkcontroltipo` varchar(20) NOT NULL,
+  `tbmicrolinkcontrolfechahora` datetime NOT NULL,
+  PRIMARY KEY (`tbmicrolinkcontrolid`),
+  KEY `idx_microlink_fecha_tipo` (`tbmicrolinkcontrolfecha`, `tbmicrolinkcontroltipo`),
+  KEY `idx_microlink_perfil_fecha` (`tbperfilid`, `tbmicrolinkcontrolfecha`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbmensaje' AND COLUMN_NAME = 'tbcomidaid');
+SET @sql := IF(@col = 0, 'ALTER TABLE `tbmensaje` ADD COLUMN `tbcomidaid` int DEFAULT NULL AFTER `tbmensajescore`', 'DO 0');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbcomunidadmensaje' AND COLUMN_NAME = 'tbcomidaid');
+SET @sql := IF(@col = 0, 'ALTER TABLE `tbcomunidadmensaje` ADD COLUMN `tbcomidaid` int DEFAULT NULL AFTER `tbcomunidadmensajescore`', 'DO 0');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbgrupomensaje' AND COLUMN_NAME = 'tbcomidaid');
+SET @sql := IF(@col = 0, 'ALTER TABLE `tbgrupomensaje` ADD COLUMN `tbcomidaid` int DEFAULT NULL AFTER `tbgrupomensajescore`', 'DO 0');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbcancionchat' AND COLUMN_NAME = 'tbcomidaid');
+SET @sql := IF(@col = 0, 'ALTER TABLE `tbcancionchat` ADD COLUMN `tbcomidaid` int DEFAULT NULL AFTER `tbcancionchatscore`', 'DO 0');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+INSERT INTO `tbtipocomida` (`tbtipocomidanombre`) SELECT 'Otros' WHERE NOT EXISTS (SELECT 1 FROM `tbtipocomida` WHERE LOWER(`tbtipocomidanombre`) IN ('otros', 'general'));
+

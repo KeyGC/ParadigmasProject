@@ -148,7 +148,7 @@
                 <p>Tus afinidades se construyen a partir de tres pilares:</p>
                 <ul>
                     <li><strong>🎵 Música:</strong> Al escuchar canciones en la sección <em>Inicio</em>, el sistema registra el tiempo reproducido y genera tu perfil musical.</li>
-                    <li><strong>🍔 Comida:</strong> En la sección <em>Comida</em>, desliza (swipe) a la derecha si te gusta o a la izquierda si no, para calcular tus preferencias gastronómicas.</li>
+                    <li><strong>🍔 Comida:</strong> En la sección <em>Comida</em>, desliza (swipe) a la derecha si te gusta o a la izquierda si no, para calcular tus preferencias gastronómicas. Además, compartir un link de recetas de Cookpad o Kiwilimón en cualquier chat la agrega automáticamente al catálogo.</li>
                     <li><strong>⚽ Deporte:</strong> En la sección <em>Deporte</em>, haz swipe sobre disciplinas y actividades para determinar tus gustos deportivos.</li>
                 </ul>
                 <p class="mb-0 small text-secondary">En tu perfil puedes consultar el resumen de tus gustos musicales, gastronómicos y deportivos.</p>

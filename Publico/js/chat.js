@@ -130,6 +130,42 @@
         return 'bloqueado:' + (dato.tbmensajetexto || '') + ':' + (dato.tbmensajefechahora || '');
     }
 
+    function crearTarjetaComida(comida) {
+        if (!comida) return null;
+        var tarjeta = document.createElement('div');
+        tarjeta.className = 'chat-tarjeta-comida mt-1 p-2 border rounded';
+        tarjeta.style.background = 'rgba(255, 255, 255, 0.95)';
+        tarjeta.style.maxWidth = '250px';
+        tarjeta.style.boxShadow = '0 2px 6px rgba(0,0,0,0.08)';
+
+        if (comida.imagenUrl) {
+            var img = document.createElement('img');
+            img.src = comida.imagenUrl;
+            img.alt = comida.nombre || '';
+            img.className = 'img-fluid rounded mb-1';
+            img.style.maxHeight = '120px';
+            img.style.width = '100%';
+            img.style.objectFit = 'cover';
+            img.onerror = function () { this.style.display = 'none'; };
+            tarjeta.appendChild(img);
+        }
+
+        var titulo = document.createElement('div');
+        titulo.className = 'fw-bold small text-truncate text-dark';
+        titulo.textContent = comida.nombre || '';
+        tarjeta.appendChild(titulo);
+
+        if (comida.tipoNombre) {
+            var badge = document.createElement('span');
+            badge.className = 'badge bg-secondary mt-1';
+            badge.style.fontSize = '0.7rem';
+            badge.textContent = comida.tipoNombre;
+            tarjeta.appendChild(badge);
+        }
+
+        return tarjeta;
+    }
+
     function agregarMensaje(dato) {
         if (!el.mensajes) return;
 
@@ -145,6 +181,11 @@
         texto.className = 'chat-burbuja mb-1';
         texto.textContent = dato.tbmensajetexto;
         fila.appendChild(texto);
+
+        if (dato.comida) {
+            var tc = crearTarjetaComida(dato.comida);
+            if (tc) fila.appendChild(tc);
+        }
 
         var meta = document.createElement('span');
         meta.className = 'chat-hora';

@@ -107,11 +107,22 @@ class CancionChatModelo
         $categoriaGuardada = $bloqueado ? $categoria : null;
         $scoreGuardado = $bloqueado ? $score : null;
 
+        $comida = null;
+        $comidaId = null;
+        if (!$bloqueado) {
+            require_once __DIR__ . '/comidalinkmodelo.php';
+            $comidaLinkModelo = new ComidaLinkModelo();
+            $comida = $comidaLinkModelo->procesarMensaje($texto, $emisorId);
+            if ($comida && !empty($comida['id'])) {
+                $comidaId = (int) $comida['id'];
+            }
+        }
+
         $sql = "INSERT INTO tbcancionchat
                     (tbcancionid, tbperfilid, tbcancionchattexto,
                      tbcancionchatfechahora, tbcancionchatbloqueado,
-                     tbcancionchatcategoria, tbcancionchatscore)
-                VALUES (:cancionId, :perfilId, :texto, :fecha, :bloqueado, :categoria, :score)";
+                     tbcancionchatcategoria, tbcancionchatscore, tbcomidaid)
+                VALUES (:cancionId, :perfilId, :texto, :fecha, :bloqueado, :categoria, :score, :comidaId)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
         $stmt->bindValue(':perfilId', $emisorId, PDO::PARAM_INT);
@@ -120,6 +131,7 @@ class CancionChatModelo
         $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
         $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindValue(':score', $scoreGuardado);
+        $stmt->bindValue(':comidaId', $comidaId, $comidaId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
@@ -138,7 +150,8 @@ class CancionChatModelo
                 'tbcancionchatfechahora' => $ahora,
                 'tbcancionchatbloqueado' => $bloqueado,
                 'tbcancionchatcategoria' => $categoriaGuardada,
-                'tbcancionchatscore' => $scoreGuardado
+                'tbcancionchatscore' => $scoreGuardado,
+                'comida' => $comida
             ]
         ];
     }
@@ -160,18 +173,22 @@ class CancionChatModelo
                        m.tbcancionchattexto, m.tbcancionchatfechahora,
                        m.tbcancionchatbloqueado, m.tbcancionchatcategoria,
                        m.tbcancionchatscore,
-                       p.tbperfilnombre
+                       m.tbcomidaid,
+                       p.tbperfilnombre,
+                       c.tbcomidanombre, c.tbcomidaimagenurl, tc.tbtipocomidanombre
                 FROM (
                     SELECT x.tbcancionchatid, x.tbcancionid, x.tbperfilid,
                            x.tbcancionchattexto, x.tbcancionchatfechahora,
                            x.tbcancionchatbloqueado, x.tbcancionchatcategoria,
-                           x.tbcancionchatscore
+                           x.tbcancionchatscore, x.tbcomidaid
                     FROM tbcancionchat x
                     WHERE x.tbcancionid = :cancionId AND x.tbcancionchatid > :desdeId
                     ORDER BY x.tbcancionchatid DESC
                     LIMIT :limite
                 ) m
                 INNER JOIN tbperfil p ON p.tbperfilid = m.tbperfilid
+                LEFT JOIN tbcomida c ON m.tbcomidaid = c.tbcomidaid
+                LEFT JOIN tbtipocomida tc ON c.tbtipocomidaid = tc.tbtipocomidaid
                 ORDER BY m.tbcancionchatid ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':cancionId', $cancionId, PDO::PARAM_INT);
@@ -183,7 +200,7 @@ class CancionChatModelo
         foreach ($stmt->fetchAll() as $fila) {
             $bloqueado = (bool) $fila['tbcancionchatbloqueado'];
 
-            $mensajes[] = [
+            $item = [
                 'tbcancionchatid' => (int) $fila['tbcancionchatid'],
                 'tbcancionid' => (int) $fila['tbcancionid'],
                 'tbperfilid' => (int) $fila['tbperfilid'],
@@ -194,6 +211,15 @@ class CancionChatModelo
                 'tbcancionchatcategoria' => $fila['tbcancionchatcategoria'],
                 'tbcancionchatscore' => $fila['tbcancionchatscore'] !== null ? (float) $fila['tbcancionchatscore'] : null
             ];
+            if (!empty($fila['tbcomidaid'])) {
+                $item['comida'] = [
+                    'id' => (int) $fila['tbcomidaid'],
+                    'nombre' => $fila['tbcomidanombre'],
+                    'imagenUrl' => $fila['tbcomidaimagenurl'],
+                    'tipoNombre' => $fila['tbtipocomidanombre']
+                ];
+            }
+            $mensajes[] = $item;
         }
 
         return ['exito' => true, 'data' => $mensajes];

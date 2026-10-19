@@ -307,10 +307,21 @@ class GrupoModelo
         $scoreGuardado = $bloqueado ? $score : null;
         $ahora = date('Y-m-d H:i:s');
 
+        $comida = null;
+        $comidaId = null;
+        if (!$bloqueado) {
+            require_once __DIR__ . '/comidalinkmodelo.php';
+            $comidaLinkModelo = new ComidaLinkModelo();
+            $comida = $comidaLinkModelo->procesarMensaje($texto, $emisorId);
+            if ($comida && !empty($comida['id'])) {
+                $comidaId = (int) $comida['id'];
+            }
+        }
+
         $sql = "INSERT INTO tbgrupomensaje
                     (tbgrupoid, tbperfilidemisor, tbgrupomensajetexto, tbgrupomensajefechahora,
-                     tbgrupomensajebloqueado, tbgrupomensajecategoria, tbgrupomensajescore)
-                VALUES (:grupo, :emisor, :texto, :fecha, :bloqueado, :categoria, :score)";
+                     tbgrupomensajebloqueado, tbgrupomensajecategoria, tbgrupomensajescore, tbcomidaid)
+                VALUES (:grupo, :emisor, :texto, :fecha, :bloqueado, :categoria, :score, :comidaId)";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':grupo', $grupoId, PDO::PARAM_INT);
         $stmt->bindValue(':emisor', $emisorId, PDO::PARAM_INT);
@@ -319,6 +330,7 @@ class GrupoModelo
         $stmt->bindValue(':bloqueado', $bloqueado ? 1 : 0, PDO::PARAM_INT);
         $stmt->bindValue(':categoria', $categoriaGuardada, $categoriaGuardada === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         $stmt->bindValue(':score', $scoreGuardado);
+        $stmt->bindValue(':comidaId', $comidaId, $comidaId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             return ['exito' => false, 'mensaje' => 'No se pudo guardar el mensaje.'];
@@ -338,7 +350,8 @@ class GrupoModelo
                 'tbgrupomensajefechahora' => $ahora,
                 'tbgrupomensajebloqueado' => $bloqueado,
                 'tbgrupomensajecategoria' => $categoriaGuardada,
-                'tbgrupomensajescore' => $scoreGuardado
+                'tbgrupomensajescore' => $scoreGuardado,
+                'comida' => $comida
             ]
         ];
     }
@@ -355,17 +368,22 @@ class GrupoModelo
         $sql = "SELECT m.tbgrupomensajeid, m.tbgrupoid, m.tbperfilidemisor,
                        m.tbgrupomensajetexto, m.tbgrupomensajefechahora,
                        m.tbgrupomensajebloqueado, m.tbgrupomensajecategoria, m.tbgrupomensajescore,
-                       p.tbperfilnombre
+                       m.tbcomidaid,
+                       p.tbperfilnombre,
+                       c.tbcomidanombre, c.tbcomidaimagenurl, tc.tbtipocomidanombre
                 FROM (
                     SELECT x.tbgrupomensajeid, x.tbgrupoid, x.tbperfilidemisor,
                            x.tbgrupomensajetexto, x.tbgrupomensajefechahora,
-                           x.tbgrupomensajebloqueado, x.tbgrupomensajecategoria, x.tbgrupomensajescore
+                           x.tbgrupomensajebloqueado, x.tbgrupomensajecategoria, x.tbgrupomensajescore,
+                           x.tbcomidaid
                     FROM tbgrupomensaje x
                     WHERE x.tbgrupoid = :grupo AND x.tbgrupomensajeid > :desde
                     ORDER BY x.tbgrupomensajeid DESC
                     LIMIT :limite
                 ) m
                 INNER JOIN tbperfil p ON p.tbperfilid = m.tbperfilidemisor
+                LEFT JOIN tbcomida c ON m.tbcomidaid = c.tbcomidaid
+                LEFT JOIN tbtipocomida tc ON c.tbtipocomidaid = tc.tbtipocomidaid
                 ORDER BY m.tbgrupomensajeid ASC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindValue(':grupo', $grupoId, PDO::PARAM_INT);
@@ -377,7 +395,7 @@ class GrupoModelo
         foreach ($stmt->fetchAll() as $fila) {
             $bloqueado = (bool) $fila['tbgrupomensajebloqueado'];
 
-            $mensajes[] = [
+            $item = [
                 'tbgrupomensajeid' => (int) $fila['tbgrupomensajeid'],
                 'tbgrupoid' => (int) $fila['tbgrupoid'],
                 'tbperfilidemisor' => (int) $fila['tbperfilidemisor'],
@@ -388,6 +406,15 @@ class GrupoModelo
                 'tbgrupomensajecategoria' => $fila['tbgrupomensajecategoria'],
                 'tbgrupomensajescore' => $fila['tbgrupomensajescore'] !== null ? (float) $fila['tbgrupomensajescore'] : null
             ];
+            if (!empty($fila['tbcomidaid'])) {
+                $item['comida'] = [
+                    'id' => (int) $fila['tbcomidaid'],
+                    'nombre' => $fila['tbcomidanombre'],
+                    'imagenUrl' => $fila['tbcomidaimagenurl'],
+                    'tipoNombre' => $fila['tbtipocomidanombre']
+                ];
+            }
+            $mensajes[] = $item;
         }
 
         return ['exito' => true, 'data' => $mensajes];
