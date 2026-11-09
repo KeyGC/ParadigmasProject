@@ -91,6 +91,85 @@
             'index.php?vista=descubrirdeporte',
             'Descubre tus gustos en Deporte.'
         );
+        pintarPerfilFotografico(data.perfilFotografico);
+    }
+
+    function pintarPerfilFotografico(pf) {
+        var contenedor = document.getElementById('perfilFotograficoContenedor');
+        if (!contenedor) return;
+        contenedor.innerHTML = '';
+
+        if (!pf || pf.totalFotos === 0) {
+            var p = document.createElement('p');
+            p.className = 'text-secondary small mb-0';
+            p.textContent = 'Aún no has participado en retos fotográficos.';
+            var a = document.createElement('a');
+            a.href = 'index.php?vista=fotografia';
+            a.className = 'text-decoration-none ms-1';
+            a.style.color = 'var(--color-primario)';
+            a.textContent = 'Explora el Club de Fotografía y sube tus fotos.';
+            p.appendChild(a);
+            contenedor.appendChild(p);
+            return;
+        }
+
+        var html = '<div class="row g-2 mb-3 text-center">' +
+            '<div class="col-4"><div class="p-2 border rounded bg-white"><div class="fw-bold text-primary">' + pf.totalRetos + '</div><small class="text-secondary" style="font-size:0.75rem;">Retos</small></div></div>' +
+            '<div class="col-4"><div class="p-2 border rounded bg-white"><div class="fw-bold text-success">' + pf.totalPodios + '</div><small class="text-secondary" style="font-size:0.75rem;">Podios</small></div></div>' +
+            '<div class="col-4"><div class="p-2 border rounded bg-white"><div class="fw-bold text-warning">★ ' + pf.promedioGeneral + '</div><small class="text-secondary" style="font-size:0.75rem;">Promedio</small></div></div>' +
+        '</div>';
+
+        if (pf.perfilEstructural) {
+            html += '<div class="card p-3 mb-3 border-0 bg-light" style="border-radius: var(--radio-tarjeta);">' +
+                '<h3 class="h6 mb-2 fw-semibold text-primary">Perfil Estructural Fotográfico</h3>' +
+                '<div class="d-flex flex-wrap gap-2">' +
+                    '<span class="badge bg-primary">Estilo: ' + escapeTexto(pf.perfilEstructural.estiloPrincipal) + '</span>' +
+                    '<span class="badge bg-secondary">Color: ' + escapeTexto(pf.perfilEstructural.colorPrincipal) + '</span>' +
+                    '<span class="badge bg-info text-dark">Composición: ' + escapeTexto(pf.perfilEstructural.composicionPrincipal) + '</span>' +
+                '</div>' +
+            '</div>';
+        }
+
+        if (pf.retosParticipados && pf.retosParticipados.length > 0) {
+            html += '<h3 class="h6 mb-2 fw-semibold">Mis participaciones y resultados:</h3><div class="d-flex flex-column gap-2">';
+            pf.retosParticipados.forEach(function (r) {
+                var medalla = 'Participante';
+                var badgeClass = 'bg-secondary';
+                if (r.miPosicion === 1) {
+                    medalla = '🥇 1° Lugar (Ganador)';
+                    badgeClass = 'bg-warning text-dark';
+                } else if (r.miPosicion === 2) {
+                    medalla = '🥈 2° Lugar';
+                    badgeClass = 'bg-secondary text-white';
+                } else if (r.miPosicion === 3) {
+                    medalla = '🥉 3° Lugar';
+                    badgeClass = 'bg-danger text-white';
+                } else if (r.miPosicion) {
+                    medalla = 'Posición #' + r.miPosicion;
+                }
+
+                html += '<div class="p-2 border rounded bg-white d-flex justify-content-between align-items-center">' +
+                    '<div>' +
+                        '<div class="fw-semibold">' + escapeTexto(r.tematica) + '</div>' +
+                        '<small class="text-secondary">' + r.fotos.length + ' foto(s) inscrita(s)</small>' +
+                    '</div>' +
+                    '<div class="text-end">' +
+                        '<span class="badge ' + badgeClass + ' mb-1">' + medalla + '</span><br>' +
+                        '<a href="index.php?vista=fotografia&reto=' + encodeURIComponent(r.tbretoid) + '" class="small text-decoration-none" style="font-size:0.75rem;">Ver reto &rarr;</a>' +
+                    '</div>' +
+                '</div>';
+            });
+            html += '</div>';
+        }
+
+        contenedor.innerHTML = html;
+    }
+
+    function escapeTexto(str) {
+        if (!str) return '';
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
     }
 
     function cargarResumenPerfil() {

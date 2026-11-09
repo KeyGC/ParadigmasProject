@@ -252,6 +252,47 @@
         }
     }
 
+    async function cargarInvitacionesRetos() {
+        const contenedor = document.getElementById('retosInvitacionesLista');
+        const vacioRetos = document.getElementById('retosInvitacionesVacio');
+        if (!contenedor) {
+            return;
+        }
+
+        try {
+            const resp = await peticion('apireto.php?accion=getInvitaciones');
+            if (resp && resp.exito && resp.data) {
+                const lista = resp.data.invitaciones || [];
+                contenedor.innerHTML = '';
+
+                if (vacioRetos) {
+                    vacioRetos.hidden = lista.length > 0;
+                }
+
+                lista.forEach(function (inv) {
+                    const col = document.createElement('div');
+                    col.className = 'col-12 col-md-6';
+                    col.innerHTML =
+                        '<div class="card h-100 shadow-sm border-start border-4 border-warning">' +
+                            '<div class="card-body d-flex flex-column">' +
+                                '<div class="d-flex justify-content-between align-items-start mb-1">' +
+                                    '<h3 class="h6 mb-0 text-truncate">' + escapeHtml(inv.tbretotematica) + '</h3>' +
+                                    '<span class="badge bg-primary text-uppercase" style="font-size: 0.7rem;">' + escapeHtml(inv.estadoReto) + '</span>' +
+                                '</div>' +
+                                '<p class="text-secondary small mb-2">Propuesto por ' + escapeHtml(inv.creadornombre) + '</p>' +
+                                '<p class="small mb-3 text-muted">' + escapeHtml(inv.tbretodescripcion) + '</p>' +
+                                '<div class="mt-auto d-flex gap-2">' +
+                                    '<a href="index.php?vista=fotografia&reto=' + encodeURIComponent(inv.tbretoid) + '" class="btn btn-sm btn-primary">Ver Reto</a>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                    contenedor.appendChild(col);
+                });
+            }
+        } catch (e) {
+        }
+    }
+
     function programar() {
         if (temporizador) {
             clearInterval(temporizador);
@@ -269,6 +310,7 @@
         refrescarContador();
         cargarPendientes();
         cargarRecomendadas();
+        cargarInvitacionesRetos();
         programar();
     });
 })();

@@ -37,6 +37,13 @@ if (!isset($_SESSION['perfil'])) {
                 No tienes recomendaciones pendientes por ahora.
             </p>
 
+            <section class="mt-4" id="seccionInvitacionesRetos">
+                <h2 class="h5 mb-2">Invitaciones a Retos Fotográficos</h2>
+                <p class="text-secondary small mb-3">Retos abiertos sobre temáticas afines a tus gustos e intereses.</p>
+                <div class="row g-3" id="retosInvitacionesLista"></div>
+                <p class="chat-vacio text-secondary mb-0" id="retosInvitacionesVacio" hidden>No tienes invitaciones a retos pendientes.</p>
+            </section>
+
             <?php include APP_PATH . '/Vista/Cliente/parcialrecomendadas.php'; ?>
 
         </div>

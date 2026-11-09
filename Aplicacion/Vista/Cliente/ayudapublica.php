@@ -162,13 +162,18 @@
             </div>
 
             <!-- 6. Comunidades, Grupos y Notificaciones -->
-            <div class="ayuda-publica-card" style="margin-bottom: 2rem;">
+            <div class="ayuda-publica-card">
                 <h2>6. Comunidades, Grupos y Notificaciones</h2>
                 <ul>
                     <li><strong>Comunidades:</strong> salas abiertas organizadas por temática (Música, Comida y Deporte) con moderación automática.</li>
                     <li><strong>Grupos:</strong> se crean automáticamente cuando el analizador de discurso detecta intereses compartidos entre dos o más usuarios.</li>
                     <li><strong>Notificaciones:</strong> el ícono de campana te alerta sobre nuevas propuestas de afinidad y mensajes no leídos.</li>
                 </ul>
+            </div>
+
+            <div class="ayuda-publica-card" style="margin-bottom: 2rem;">
+                <h2>7. Club de Fotografía</h2>
+                <p>Propón y participa en retos fotográficos temáticos subiendo tus fotos desde tu dispositivo. Los participantes votan con estrellas de 1 a 5 y los resultados se actualizan en vivo con reglas de desempate predefinidas y análisis estructural de imagen.</p>
             </div>
 
         </div>

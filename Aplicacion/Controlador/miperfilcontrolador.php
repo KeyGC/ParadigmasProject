@@ -5,6 +5,7 @@ require_once APP_PATH . '/Modelo/ubicacionmodelo.php';
 require_once APP_PATH . '/Modelo/perfilmusicalmodelo.php';
 require_once APP_PATH . '/Modelo/perfilcomidamodelo.php';
 require_once APP_PATH . '/Modelo/perfildeportemodelo.php';
+require_once APP_PATH . '/Modelo/retomodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -112,6 +113,14 @@ switch ($accion) {
             }
         }
 
+        $perfilFotografico = null;
+        try {
+            $retoModelo = new RetoModelo();
+            $perfilFotografico = $retoModelo->getPerfilFotografico($perfilId);
+        } catch (\Throwable $e) {
+            error_log('miperfilcontrolador fotografia: ' . $e->getMessage());
+        }
+
         echo json_encode([
             "exito" => true,
             "data" => [
@@ -135,7 +144,9 @@ switch ($accion) {
                 "gustosDeportivos" => $gustosDeportivos,
                 "gustosDeportivosMensaje" => $perfiladoDeporte['exito']
                     ? null
-                    : ($perfiladoDeporte['mensaje'] ?? 'Aún no tenemos suficiente información sobre tus gustos deportivos.')
+                    : ($perfiladoDeporte['mensaje'] ?? 'Aún no tenemos suficiente información sobre tus gustos deportivos.'),
+
+                "perfilFotografico" => $perfilFotografico
             ]
         ]);
 

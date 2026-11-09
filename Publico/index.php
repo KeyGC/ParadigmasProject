@@ -34,7 +34,7 @@ $vistasPublicas = ['login', 'registro', 'ayudapublica'];
 $vistasAdmin = ['perfiles', 'perfilaccesos', 'perfilreproducciones', 'canciones', 'generos', 'perfilado', 'eventos', 'analisisdiscurso', 'comidas', 'deportes'];
 
 // Vistas exclusivas de cliente
-$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos', 'ayuda'];
+$vistasCliente = ['cliente', 'perfil', 'miperfil', 'cambiarContra', 'descubrircomida', 'descubrirdeporte', 'chat', 'comunidades', 'notificaciones', 'grupos', 'fotografia', 'ayuda'];
 
 if (!in_array($vista, $vistasPublicas, true)) {
 
@@ -111,6 +111,9 @@ switch ($vista) {
         break;
     case 'grupos':
         require_once APP_PATH . '/Vista/Cliente/grupos.php';
+        break;
+    case 'fotografia':
+        require_once APP_PATH . '/Vista/Cliente/fotografia.php';
         break;
     case 'ayuda':
         require_once APP_PATH . '/Vista/Cliente/ayuda.php';

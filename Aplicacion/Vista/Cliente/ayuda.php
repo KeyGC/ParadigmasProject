@@ -99,10 +99,16 @@
                     </div>
 
                     <!-- 9. Chat en vivo de canciones -->
-                    <div class="ayuda-tarjeta" style="margin-bottom: 2rem;">
+                    <div class="ayuda-tarjeta">
                         <h2>9. Chat en vivo por canción</h2>
                         <p>Al reproducir cualquier canción en la sección <em>Inicio</em>, se despliega a la derecha del reproductor un chat en vivo exclusivo para esa pista.</p>
                         <p class="small mb-0">Cualquiera que esté escuchando la misma canción al mismo tiempo puede chatear en tiempo real sin necesidad de haber hecho match previo.</p>
+                    </div>
+
+                    <div class="ayuda-tarjeta" style="margin-bottom: 2rem;">
+                        <h2>10. Club de Fotografía y Retos</h2>
+                        <p>En la sección <em>Fotografía</em> puedes proponer y participar en retos temáticos subiendo tus fotos favoritas desde tu dispositivo y votando con una escala de 1 a 5 estrellas por las imágenes de la comunidad.</p>
+                        <p class="small mb-0">Las fotografías pasan por análisis de moderación y un estudio estructural que define tu perfil artístico. Al aperturarse un reto, se invita automáticamente a usuarios con intereses afines.</p>
                     </div>
 
                 </div>

@@ -35,6 +35,9 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
                     <li class="nav-item">
                         <a class="nav-link <?= $vistaActual === 'grupos' ? 'activo' : '' ?>" href="index.php?vista=grupos">Grupos</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?= $vistaActual === 'fotografia' ? 'activo' : '' ?>" href="index.php?vista=fotografia">Fotografía</a>
+                    </li>
                 </ul>
 
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">

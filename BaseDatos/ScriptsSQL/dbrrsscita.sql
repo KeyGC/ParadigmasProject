@@ -1672,3 +1672,68 @@ PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 INSERT INTO `tbtipocomida` (`tbtipocomidanombre`) SELECT 'Otros' WHERE NOT EXISTS (SELECT 1 FROM `tbtipocomida` WHERE LOWER(`tbtipocomidanombre`) IN ('otros', 'general'));
 
+CREATE TABLE IF NOT EXISTS `tbreto` (
+  `tbretoid` int NOT NULL AUTO_INCREMENT,
+  `tbperfilid` int NOT NULL,
+  `tbretotematica` varchar(150) NOT NULL,
+  `tbretodescripcion` text NOT NULL,
+  `tbretofechainicioparticipacion` datetime NOT NULL,
+  `tbretofechafinparticipacion` datetime NOT NULL,
+  `tbretofechainiciovotacion` datetime NOT NULL,
+  `tbretofechafinvotacion` datetime NOT NULL,
+  `tbretofechacreacion` datetime NOT NULL,
+  `tbretocerrado` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`tbretoid`),
+  KEY `idx_reto_fechas` (`tbretofechafinparticipacion`, `tbretofechafinvotacion`),
+  KEY `idx_reto_perfil` (`tbperfilid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `tbretofoto` (
+  `tbretofotoid` int NOT NULL AUTO_INCREMENT,
+  `tbretoid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbretofototitulo` varchar(200) NOT NULL,
+  `tbretofotodescripcion` text DEFAULT NULL,
+  `tbretofotoarchivo` varchar(255) NOT NULL,
+  `tbretofotofechasubida` datetime NOT NULL,
+  `tbretofotoactivo` tinyint(1) NOT NULL DEFAULT 1,
+  `tbretofotoancho` int DEFAULT NULL,
+  `tbretofotoalto` int DEFAULT NULL,
+  `tbretofotorelacionaspecto` varchar(20) DEFAULT NULL,
+  `tbretofotobrillo` float DEFAULT NULL,
+  `tbretofotocontraste` float DEFAULT NULL,
+  `tbretofotocolordominante` varchar(50) DEFAULT NULL,
+  `tbretofotocomposicion` varchar(50) DEFAULT NULL,
+  `tbretofotoestilo` varchar(50) DEFAULT NULL,
+  `tbretofotoaprobada` tinyint(1) NOT NULL DEFAULT 1,
+  `tbretofotomotivobloqueo` varchar(255) DEFAULT NULL,
+  `tbretofotoscoremoderacion` float DEFAULT 0,
+  PRIMARY KEY (`tbretofotoid`),
+  KEY `idx_retofoto_reto_perfil` (`tbretoid`, `tbperfilid`),
+  KEY `idx_retofoto_perfil` (`tbperfilid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `tbretovoto` (
+  `tbretovotoid` int NOT NULL AUTO_INCREMENT,
+  `tbretofotoid` int NOT NULL,
+  `tbretoid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbretovotoestrellas` tinyint NOT NULL,
+  `tbretovotofechahora` datetime NOT NULL,
+  PRIMARY KEY (`tbretovotoid`),
+  UNIQUE KEY `idx_voto_foto_perfil` (`tbretofotoid`, `tbperfilid`),
+  KEY `idx_voto_reto` (`tbretoid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `tbretoinvitacion` (
+  `tbretoinvitacionid` int NOT NULL AUTO_INCREMENT,
+  `tbretoid` int NOT NULL,
+  `tbperfilid` int NOT NULL,
+  `tbretoinvitacionfecha` datetime NOT NULL,
+  `tbretoinvitacionleida` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`tbretoinvitacionid`),
+  UNIQUE KEY `idx_reto_invitacion_perfil` (`tbretoid`, `tbperfilid`),
+  KEY `idx_reto_invitacion_user` (`tbperfilid`, `tbretoinvitacionleida`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+

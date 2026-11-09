@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Modelo/afinidadmodelo.php';
 require_once __DIR__ . '/../Modelo/grupomodelo.php';
+require_once __DIR__ . '/../Modelo/retomodelo.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -40,12 +41,15 @@ switch ($accion) {
         $afinidadModelo->generarSiCorresponde();
         $pendientes = $afinidadModelo->contarPendientes($perfilId);
         $mensajes = $grupoModelo->contarNoLeidos($perfilId);
+        $retoModelo = new RetoModelo();
+        $invitacionesRetos = $retoModelo->contarInvitacionesNoLeidas($perfilId);
         echo json_encode([
             "exito" => true,
             "data" => [
                 "pendientes" => $pendientes,
                 "mensajes" => $mensajes,
-                "total" => $pendientes + $mensajes
+                "invitacionesRetos" => $invitacionesRetos,
+                "total" => $pendientes + $mensajes + $invitacionesRetos
             ]
         ]);
         break;

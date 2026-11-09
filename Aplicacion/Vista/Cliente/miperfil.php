@@ -58,6 +58,13 @@ $usuarioActivo = $_SESSION['perfil']['tbperfilnombre'] ?? null;
 
                 <hr>
 
+                <h2 class="h5 mb-3">Club de Fotografía y Retos</h2>
+                <div id="perfilFotograficoContenedor">
+                    <p class="text-secondary">Cargando perfil fotográfico...</p>
+                </div>
+
+                <hr>
+
                 <h2 class="h5 mb-3">Biometría facial</h2>
                 <p class="text-secondary small mb-3">
                     Configura tu rostro para iniciar sesión con la cámara en lugar de usuario y contraseña.
