@@ -32,7 +32,7 @@
             case 'votacion':
                 return '<span class="badge bg-warning text-dark">En Votación</span>';
             case 'espera_votacion':
-                return '<span class="badge bg-info text-dark">Esperando Votación</span>';
+                return '<span class="badge" style="background-color: #9B3B68; color: #ffffff;">Esperando Votación</span>';
             case 'finalizado':
                 return '<span class="badge bg-secondary">Finalizado</span>';
             default:
@@ -300,7 +300,7 @@
                             '<h4 class="h6 mb-0 fw-bold text-truncate">' + escapeHtml(foto.tbretofototitulo) + '</h4>' +
                             '<span class="badge bg-warning text-dark fw-bold">★ ' + (foto.promediovotos > 0 ? foto.promediovotos : '0.00') + '</span>' +
                         '</div>' +
-                        '<div class="small text-muted mb-2">Por: ' + escapeHtml(foto.autornombre) + '</div>' +
+                        '<div class="small text-muted mb-2">Por: <a href="' + (foto.esPropia ? 'index.php?vista=miperfil' : 'index.php?vista=perfil&id=' + foto.tbperfilid) + '" class="text-decoration-none fw-semibold" style="color: var(--color-primario);">' + escapeHtml(foto.autornombre) + '</a></div>' +
                         (foto.tbretofotodescripcion ? '<p class="small text-secondary mb-2">' + escapeHtml(foto.tbretofotodescripcion) + '</p>' : '') +
                         '<div class="d-flex flex-wrap gap-1 mb-3">' +
                             '<span class="badge bg-light text-dark border" style="font-size:0.7rem;">' + escapeHtml(foto.tbretofotocomposicion || 'Horizontal') + '</span>' +
@@ -510,7 +510,16 @@
                 var invitaciones = res.data.invitaciones || [];
                 var noLeidas = res.data.noLeidas || 0;
 
-                if (badge) {
+                var tabInvEl = document.getElementById('tab-invitaciones');
+                if (tabInvEl && tabInvEl.classList.contains('active')) {
+                    if (badge) {
+                        badge.textContent = '0';
+                        badge.classList.add('d-none');
+                    }
+                    var fdClean = new FormData();
+                    fdClean.append('accion', 'marcarTodasInvitaciones');
+                    peticion(API_URL, { method: 'POST', body: fdClean });
+                } else if (badge) {
                     if (noLeidas > 0) {
                         badge.textContent = noLeidas;
                         badge.classList.remove('d-none');
@@ -597,7 +606,7 @@
                                     '</div>' +
                                     '<span class="badge ' + bClass + ' mb-1">' + med + '</span>' +
                                     '<div class="fw-semibold text-truncate small">' + escapeHtml(pf.tbretofototitulo) + '</div>' +
-                                    '<small class="text-secondary">Por ' + escapeHtml(pf.autornombre) + ' (★ ' + pf.promediovotos + ')</small>' +
+                                    '<small class="text-secondary">Por <a href="index.php?vista=perfil&id=' + pf.tbperfilid + '" class="text-decoration-none fw-semibold" style="color: var(--color-primario);">' + escapeHtml(pf.autornombre) + '</a> (★ ' + pf.promediovotos + ')</small>' +
                                 '</div>' +
                             '</div>';
                         });
@@ -748,24 +757,24 @@
             btnRefrescarAnt.addEventListener('click', cargarRetosAnteriores);
         }
 
-        var btnRefrescarPerfil = document.getElementById('btnRefrescarPerfilFoto');
-        if (btnRefrescarPerfil) {
-            btnRefrescarPerfil.addEventListener('click', cargarMiPerfilFoto);
-        }
-
         var tabAnteriores = document.getElementById('tab-retos-anteriores');
         if (tabAnteriores) {
             tabAnteriores.addEventListener('shown.bs.tab', cargarRetosAnteriores);
         }
 
-        var tabPerfil = document.getElementById('tab-mi-perfil-foto');
-        if (tabPerfil) {
-            tabPerfil.addEventListener('shown.bs.tab', cargarMiPerfilFoto);
-        }
-
         var tabInv = document.getElementById('tab-invitaciones');
         if (tabInv) {
-            tabInv.addEventListener('shown.bs.tab', cargarInvitaciones);
+            tabInv.addEventListener('shown.bs.tab', function () {
+                var badgeInv = document.getElementById('badgeInvitacionesFotografia');
+                if (badgeInv) {
+                    badgeInv.textContent = '0';
+                    badgeInv.classList.add('d-none');
+                }
+                var fdClean = new FormData();
+                fdClean.append('accion', 'marcarTodasInvitaciones');
+                peticion(API_URL, { method: 'POST', body: fdClean });
+                cargarInvitaciones();
+            });
         }
 
         if (retoActualId) {

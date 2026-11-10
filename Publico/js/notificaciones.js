@@ -32,7 +32,16 @@
             return;
         }
 
-        const numero = Number(total) || 0;
+        const isVistaNotificaciones = window.location.search.indexOf('vista=notificaciones') !== -1;
+        if (isVistaNotificaciones) {
+            badge.textContent = '0';
+            badge.classList.add('d-none');
+            sessionStorage.setItem('notificaciones_vistas_total', String(total));
+            return;
+        }
+
+        const vistoTotal = parseInt(sessionStorage.getItem('notificaciones_vistas_total') || '0', 10);
+        const numero = Math.max(0, (Number(total) || 0) - vistoTotal);
 
         if (numero > 0) {
             badge.textContent = numero > 99 ? '99+' : String(numero);
@@ -186,7 +195,7 @@
         } else if (cerrada) {
             acciones = '<span class="badge bg-secondary">Desactivada</span>';
         } else {
-            acciones = '<span class="badge bg-info text-dark">Esperando más personas</span>';
+            acciones = '<span class="badge" style="background-color: #9B3B68; color: #ffffff;">Esperando más personas</span>';
         }
 
         columna.innerHTML =
@@ -261,6 +270,7 @@
 
         try {
             const resp = await peticion('apireto.php?accion=getInvitaciones');
+            peticion('apireto.php?accion=marcarTodasInvitaciones', { method: 'POST' });
             if (resp && resp.exito && resp.data) {
                 const lista = resp.data.invitaciones || [];
                 contenedor.innerHTML = '';

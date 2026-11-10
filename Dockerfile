@@ -13,7 +13,12 @@ RUN apt-get update \
         libcurl4-openssl-dev \
         libonig-dev \
         libzip-dev \
-    && docker-php-ext-install pdo_mysql mysqli curl mbstring zip \
+        libpng-dev \
+        libjpeg-dev \
+        libwebp-dev \
+        libfreetype6-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
+    && docker-php-ext-install pdo_mysql mysqli curl mbstring zip gd \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalación de dependencias con Composer (vendor/ NO se copia: está en .dockerignore)
