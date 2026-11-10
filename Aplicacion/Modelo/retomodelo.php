@@ -415,18 +415,29 @@ class RetoModelo
             $ext = 'gif';
         }
 
-        $nombreArchivo = 'reto_' . $retoId . '_' . $perfilId . '_' . time() . '_' . substr(bin2hex(random_bytes(6)), 0, 8) . '.' . $ext;
-        $directorioDestino = BASE_PATH . '/Publico/imagenes/retos';
-        if (!is_dir($directorioDestino)) {
-            mkdir($directorioDestino, 0755, true);
-        }
+        $publicId = 'unamatch/retos/reto_' . $retoId . '_' . $perfilId . '_' . time() . '_' . substr(bin2hex(random_bytes(6)), 0, 8);
 
-        $rutaFinal = $directorioDestino . '/' . $nombreArchivo;
-        if (!move_uploaded_file($archivoTmp, $rutaFinal)) {
+        try {
+            $cloudinary = new \Cloudinary\Cloudinary([
+                'cloud' => [
+                    'cloud_name' => CLOUDINARY_CLOUD_NAME,
+                    'api_key'    => CLOUDINARY_API_KEY,
+                    'api_secret' => CLOUDINARY_API_SECRET,
+                ],
+                'url' => ['secure' => true],
+            ]);
+
+            $resultado = $cloudinary->uploadApi()->upload($archivoTmp, [
+                'public_id'       => $publicId,
+                'resource_type'   => 'image',
+                'overwrite'       => false,
+            ]);
+
+            $rutaRelativa = $resultado['secure_url'];
+        } catch (\Exception $e) {
+            error_log('[cloudinary] ' . $e->getMessage());
             return ['exito' => false, 'mensaje' => 'No se pudo guardar la fotografía en el servidor.'];
         }
-
-        $rutaRelativa = 'imagenes/retos/' . $nombreArchivo;
         $ahora = date('Y-m-d H:i:s');
 
         $sql = "INSERT INTO tbretofoto (
@@ -463,7 +474,6 @@ class RetoModelo
         $stmt->bindValue(':scoreMod', $analisisModeracion['score']);
 
         if (!$stmt->execute()) {
-            @unlink($rutaFinal);
             return ['exito' => false, 'mensaje' => 'Error al registrar la fotografía en la base de datos.'];
         }
 
