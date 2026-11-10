@@ -1,5 +1,6 @@
 {
     "require": {
-        "rubix/ml": "^2.5"
+        "rubix/ml": "^2.5",
+        "cloudinary/cloudinary_php": "^3.3"
     }
 }
