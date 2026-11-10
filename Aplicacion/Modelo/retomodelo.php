@@ -204,29 +204,18 @@ class RetoModelo
             $perfilesInteresados = array_column($stmt->fetchAll(), 'tbperfilid');
         }
 
-        if (count($perfilesInteresados) < 5) {
-            $sqlActivos = "SELECT tbperfilid FROM tbretofoto 
-                           WHERE tbperfilid != :creadorId 
-                           GROUP BY tbperfilid 
-                           ORDER BY MAX(tbretofotoid) DESC 
-                           LIMIT 30";
-            $stmtActivos = $this->conexion->prepare($sqlActivos);
-            $stmtActivos->bindValue(':creadorId', $creadorId, PDO::PARAM_INT);
-            $stmtActivos->execute();
-            $otros = array_column($stmtActivos->fetchAll(), 'tbperfilid');
-            $perfilesInteresados = array_unique(array_merge($perfilesInteresados, $otros));
-        }
-
-        if (count($perfilesInteresados) < 3) {
-            $sqlGeneral = "SELECT tbperfilid FROM tbperfil 
-                           WHERE tbperfilid != :creadorId AND tbperfilactivo = 1 
-                           ORDER BY RAND() LIMIT 20";
-            $stmtGeneral = $this->conexion->prepare($sqlGeneral);
-            $stmtGeneral->bindValue(':creadorId', $creadorId, PDO::PARAM_INT);
-            $stmtGeneral->execute();
-            $generales = array_column($stmtGeneral->fetchAll(), 'tbperfilid');
-            $perfilesInteresados = array_unique(array_merge($perfilesInteresados, $generales));
-        }
+        $sqlAfin = "SELECT DISTINCT m2.tbperfilid 
+                    FROM tbafinidadmiembro m1
+                    INNER JOIN tbafinidadmiembro m2 ON m1.tbafinidadid = m2.tbafinidadid
+                    INNER JOIN tbafinidad a ON m1.tbafinidadid = a.tbafinidadid
+                    WHERE m1.tbperfilid = :creadorId AND m2.tbperfilid != :creadorId
+                      AND a.tbafinidadestado = 'abierta'
+                    LIMIT 30";
+        $stmtAfin = $this->conexion->prepare($sqlAfin);
+        $stmtAfin->bindValue(':creadorId', $creadorId, PDO::PARAM_INT);
+        $stmtAfin->execute();
+        $afines = array_column($stmtAfin->fetchAll(), 'tbperfilid');
+        $perfilesInteresados = array_unique(array_merge($perfilesInteresados, $afines));
 
         $ahora = date('Y-m-d H:i:s');
         $insertados = 0;
@@ -393,10 +382,16 @@ class RetoModelo
             return ['exito' => false, 'mensaje' => 'El archivo proporcionado no es una imagen válida.'];
         }
 
-        $mime = $info['mime'] ?? '';
-        $mimesPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+        $mime = strtolower((string) ($info['mime'] ?? ''));
+        $mimesPermitidos = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png', 'image/x-png', 'image/webp', 'image/avif', 'image/gif'];
         if (!in_array($mime, $mimesPermitidos, true)) {
-            return ['exito' => false, 'mensaje' => 'Formato no soportado. Se permiten únicamente imágenes JPG, PNG o WebP.'];
+            return ['exito' => false, 'mensaje' => 'Formato no soportado. Se permiten únicamente imágenes JPG, PNG, WebP o AVIF.'];
+        }
+
+        if ($mime === 'image/pjpeg' || $mime === 'image/jpg') {
+            $mime = 'image/jpeg';
+        } elseif ($mime === 'image/x-png') {
+            $mime = 'image/png';
         }
 
         $analisisModeracion = $this->analizarContenidoProhibido($archivoTmp, $mime, $titulo . ' ' . $descripcion);
@@ -414,6 +409,10 @@ class RetoModelo
             $ext = 'png';
         } elseif ($mime === 'image/webp') {
             $ext = 'webp';
+        } elseif ($mime === 'image/avif') {
+            $ext = 'avif';
+        } elseif ($mime === 'image/gif') {
+            $ext = 'gif';
         }
 
         $nombreArchivo = 'reto_' . $retoId . '_' . $perfilId . '_' . time() . '_' . substr(bin2hex(random_bytes(6)), 0, 8) . '.' . $ext;
@@ -698,6 +697,13 @@ class RetoModelo
         return $stmt->execute();
     }
 
+    public function marcarTodasInvitacionesLeidas($perfilId)
+    {
+        $stmt = $this->conexion->prepare("UPDATE tbretoinvitacion SET tbretoinvitacionleida = 1 WHERE tbperfilid = :perfilId AND tbretoinvitacionleida = 0");
+        $stmt->bindValue(':perfilId', (int) $perfilId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function getPerfilFotografico($perfilId)
     {
         $perfilId = (int) $perfilId;
@@ -813,6 +819,328 @@ class RetoModelo
         ];
     }
 
+    private function analizarPatronesVisualesIA($rutaArchivo, $mime)
+    {
+        if (!extension_loaded('gd') || !file_exists($rutaArchivo)) {
+            return ['esIA' => false, 'probabilidad' => 0.0, 'motivo' => ''];
+        }
+
+        $img = null;
+        if ($mime === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+            $img = @imagecreatefromjpeg($rutaArchivo);
+        } elseif ($mime === 'image/png' && function_exists('imagecreatefrompng')) {
+            $img = @imagecreatefrompng($rutaArchivo);
+        } elseif (($mime === 'image/webp' || $mime === 'image/x-webp') && function_exists('imagecreatefromwebp')) {
+            $img = @imagecreatefromwebp($rutaArchivo);
+        } elseif ($mime === 'image/avif' && function_exists('imagecreatefromavif')) {
+            $img = @imagecreatefromavif($rutaArchivo);
+        }
+
+        if (!$img && function_exists('imagecreatefromstring')) {
+            $contenido = @file_get_contents($rutaArchivo);
+            if ($contenido) {
+                $img = @imagecreatefromstring($contenido);
+            }
+        }
+
+        if (!$img) {
+            return ['esIA' => false, 'probabilidad' => 0.0, 'motivo' => ''];
+        }
+
+        $origW = imagesx($img);
+        $origH = imagesy($img);
+
+        $muestraTam = 160;
+        $muestra = imagecreatetruecolor($muestraTam, $muestraTam);
+        imagecopyresampled($muestra, $img, 0, 0, 0, 0, $muestraTam, $muestraTam, $origW, $origH);
+
+        $grises = [];
+        $saturaciones = [];
+        $diffRG = [];
+        $diffBG = [];
+
+        for ($y = 0; $y < $muestraTam; $y++) {
+            $grises[$y] = [];
+            for ($x = 0; $x < $muestraTam; $x++) {
+                $rgb = imagecolorat($muestra, $x, $y);
+                $r = ($rgb >> 16) & 0xFF;
+                $g = ($rgb >> 8) & 0xFF;
+                $b = $rgb & 0xFF;
+
+                $grises[$y][$x] = 0.299 * $r + 0.587 * $g + 0.114 * $b;
+
+                $max = max($r, $g, $b);
+                $min = min($r, $g, $b);
+                $saturaciones[] = $max > 0 ? ($max - $min) / $max : 0;
+                $diffRG[] = $r - $g;
+                $diffBG[] = $b - $g;
+            }
+        }
+
+        $laplacians = [];
+        $pixelesSuaves = 0;
+        $bordesExtremos = 0;
+        for ($y = 1; $y < $muestraTam - 1; $y++) {
+            for ($x = 1; $x < $muestraTam - 1; $x++) {
+                $lap = 4 * $grises[$y][$x] - $grises[$y - 1][$x] - $grises[$y + 1][$x] - $grises[$y][$x - 1] - $grises[$y][$x + 1];
+                $absLap = abs($lap);
+                $laplacians[] = $absLap;
+                if ($absLap < 2.0) {
+                    $pixelesSuaves++;
+                }
+                if ($absLap > 30.0) {
+                    $bordesExtremos++;
+                }
+            }
+        }
+
+        $totalLaps = count($laplacians);
+        $smoothRatio = $totalLaps > 0 ? ($pixelesSuaves / $totalLaps) : 0;
+        $edgeRatio = $totalLaps > 0 ? ($bordesExtremos / $totalLaps) : 0;
+
+        $altoSatCount = 0;
+        foreach ($saturaciones as $s) {
+            if ($s > 0.45) {
+                $altoSatCount++;
+            }
+        }
+        $highSatRatio = count($saturaciones) > 0 ? ($altoSatCount / count($saturaciones)) : 0;
+
+        $countPixels = count($diffRG);
+        $meanRG = $countPixels > 0 ? (array_sum($diffRG) / $countPixels) : 0;
+        $meanBG = $countPixels > 0 ? (array_sum($diffBG) / $countPixels) : 0;
+        $cov = 0;
+        $varRG = 0;
+        $varBG = 0;
+        for ($i = 0; $i < $countPixels; $i++) {
+            $drg = $diffRG[$i] - $meanRG;
+            $dbg = $diffBG[$i] - $meanBG;
+            $cov += $drg * $dbg;
+            $varRG += $drg * $drg;
+            $varBG += $dbg * $dbg;
+        }
+        $stdRG = sqrt($varRG / ($countPixels ?: 1));
+        $stdBG = sqrt($varBG / ($countPixels ?: 1));
+        $chromaCorr = ($stdRG * $stdBG) > 0 ? abs($cov / ($stdRG * $stdBG * $countPixels)) : 0;
+
+        $diff8Sum = 0;
+        $diff7Sum = 0;
+        $diff9Sum = 0;
+        $pairsCount = 0;
+        for ($y = 0; $y < $muestraTam; $y++) {
+            for ($x = 9; $x < $muestraTam; $x++) {
+                $diff8Sum += abs($grises[$y][$x] - $grises[$y][$x - 8]);
+                $diff7Sum += abs($grises[$y][$x] - $grises[$y][$x - 7]);
+                $diff9Sum += abs($grises[$y][$x] - $grises[$y][$x - 9]);
+                $pairsCount++;
+            }
+        }
+        $avgD8 = $pairsCount > 0 ? ($diff8Sum / $pairsCount) : 0;
+        $avgDNeighbors = $pairsCount > 0 ? (($diff7Sum + $diff9Sum) / (2 * $pairsCount + 0.0001)) : 1;
+        $vaeGridAnomaly = abs($avgD8 - $avgDNeighbors) / ($avgDNeighbors + 0.0001);
+
+        imagedestroy($muestra);
+        imagedestroy($img);
+
+        $probabilidad = 0.0;
+        $motivos = [];
+
+        if ($smoothRatio > 0.35 && $edgeRatio > 0.12) {
+            $probabilidad += 0.35;
+            $motivos[] = 'suavizado sintético excesivo con bordes no ópticos';
+        }
+
+        if ($highSatRatio > 0.40) {
+            $probabilidad += 0.25;
+            $motivos[] = 'rango dinámico y saturación sintética de modelo generativo';
+        }
+
+        if ($chromaCorr > 0.60) {
+            $probabilidad += 0.20;
+            $motivos[] = 'inconsistencia cromática entre canales (ausencia de filtro Bayer físico)';
+        }
+
+        if ($vaeGridAnomaly > 0.003) {
+            $probabilidad += 0.15;
+            $motivos[] = 'patrón de periodicidad en cuadrícula latente (decodificador VAE)';
+        }
+
+        $esIA = ($probabilidad >= 0.65);
+        $motivoTexto = $esIA ? ('El análisis visual de píxeles detectó patrones sintéticos característicos de Inteligencia Artificial (' . implode(', ', $motivos) . ').') : '';
+
+        return [
+            'esIA' => $esIA,
+            'probabilidad' => round($probabilidad, 2),
+            'motivo' => $motivoTexto
+        ];
+    }
+
+    private function consultarSightengineModeracion($rutaArchivo, $mime)
+    {
+        $apiUser = defined('SIGHTENGINE_API_USER') ? SIGHTENGINE_API_USER : '';
+        $apiSecret = defined('SIGHTENGINE_API_SECRET') ? SIGHTENGINE_API_SECRET : '';
+
+        if (empty($apiUser) || empty($apiSecret) || !file_exists($rutaArchivo)) {
+            return null;
+        }
+
+        $ch = curl_init('https://api.sightengine.com/1.0/check.json');
+        if (!$ch) {
+            return null;
+        }
+
+        $postFields = [
+            'models' => 'genai,nudity-2.0',
+            'api_user' => $apiUser,
+            'api_secret' => $apiSecret,
+            'media' => new CURLFile($rutaArchivo, $mime ?: 'image/jpeg')
+        ];
+
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_POSTFIELDS => $postFields,
+            CURLOPT_SSL_VERIFYPEER => false
+        ]);
+
+        $response = curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+
+        if ($err || !$response) {
+            return null;
+        }
+
+        $json = json_decode($response, true);
+        if (!isset($json['status']) || $json['status'] !== 'success') {
+            return null;
+        }
+
+        $scoreIA = (float) ($json['type']['ai_generated'] ?? 0.0);
+        $sexualActivity = (float) ($json['nudity']['sexual_activity'] ?? 0.0);
+        $sexualDisplay = (float) ($json['nudity']['sexual_display'] ?? 0.0);
+        $erotica = (float) ($json['nudity']['erotica'] ?? 0.0);
+        $sextoy = (float) ($json['nudity']['sextoy'] ?? 0.0);
+
+        $scoreDesnudez = max($sexualActivity, $sexualDisplay, $erotica, $sextoy);
+
+        return [
+            'scoreIA' => $scoreIA,
+            'esIA' => ($scoreIA >= 0.50),
+            'scoreDesnudez' => $scoreDesnudez,
+            'esDesnudez' => ($scoreDesnudez >= 0.40)
+        ];
+    }
+
+    private function detectarImagenIA($rutaArchivo, $textoAsociado, $mime = null)
+    {
+        $resSight = $this->consultarSightengineModeracion($rutaArchivo, $mime);
+        if ($resSight !== null) {
+            if ($resSight['esIA']) {
+                return [
+                    'esIA' => true,
+                    'motivo' => 'La imagen fue identificada como generada por Inteligencia Artificial mediante Sightengine AI (' . round($resSight['scoreIA'] * 100, 1) . '% de certeza).'
+                ];
+            }
+            return [
+                'esIA' => false,
+                'motivo' => ''
+            ];
+        }
+
+        if ($mime) {
+            $analisisVisual = $this->analizarPatronesVisualesIA($rutaArchivo, $mime);
+            if ($analisisVisual['esIA']) {
+                return [
+                    'esIA' => true,
+                    'motivo' => $analisisVisual['motivo']
+                ];
+            }
+        }
+        $terminosIA = [
+            'midjourney', 'dall-e', 'dall·e', 'dalle', 'stable diffusion', 'stablediffusion',
+            'novelai', 'bing image creator', 'firefly', 'comfyui', 'civitai', 'leonardo.ai',
+            'generada por ia', 'generado por ia', 'creada con ia', 'creado con ia',
+            'ai generated', 'ai art', 'generated by ai', 'artificial intelligence'
+        ];
+
+        $textoNorm = mb_strtolower($textoAsociado, 'UTF-8');
+        foreach ($terminosIA as $t) {
+            if (mb_strpos($textoNorm, $t) !== false) {
+                return [
+                    'esIA' => true,
+                    'motivo' => 'La imagen indica en su descripción o título haber sido generada mediante Inteligencia Artificial.'
+                ];
+            }
+        }
+
+        if (file_exists($rutaArchivo)) {
+            $tamano = filesize($rutaArchivo);
+            $bytesLeer = min(131072, $tamano);
+            $fp = @fopen($rutaArchivo, 'rb');
+            if ($fp) {
+                $cabecera = fread($fp, $bytesLeer);
+                fclose($fp);
+
+                $firmasIA = [
+                    'trainedAlgorithmicMedia',
+                    'StableDiffusion',
+                    'stable-diffusion',
+                    'Midjourney',
+                    'DALL·E',
+                    'DALL-E',
+                    'comfyui',
+                    'Civitai',
+                    'NovelAI',
+                    'adobe:generator="Firefly"',
+                    'Generation tool: Midjourney'
+                ];
+
+                foreach ($firmasIA as $firma) {
+                    if (stripos($cabecera, $firma) !== false) {
+                        return [
+                            'esIA' => true,
+                            'motivo' => 'La imagen contiene firmas o metadatos de generación por Inteligencia Artificial (' . $firma . ').'
+                        ];
+                    }
+                }
+
+                if (stripos($cabecera, 'parameters') !== false && stripos($cabecera, 'Steps:') !== false) {
+                    return [
+                        'esIA' => true,
+                        'motivo' => 'La imagen contiene parámetros de generación sintética por Inteligencia Artificial.'
+                    ];
+                }
+            }
+
+            if (function_exists('exif_read_data')) {
+                $exif = @exif_read_data($rutaArchivo);
+                if ($exif && is_array($exif)) {
+                    $software = mb_strtolower($exif['Software'] ?? '', 'UTF-8');
+                    $make = mb_strtolower($exif['Make'] ?? '', 'UTF-8');
+                    $model = mb_strtolower($exif['Model'] ?? '', 'UTF-8');
+                    $comment = mb_strtolower($exif['COMPUTED']['UserComment'] ?? '', 'UTF-8');
+                    $combined = $software . ' ' . $make . ' ' . $model . ' ' . $comment;
+
+                    foreach ($terminosIA as $t) {
+                        if (mb_strpos($combined, $t) !== false) {
+                            return [
+                                'esIA' => true,
+                                'motivo' => 'Los metadatos EXIF de la imagen registran herramientas de Inteligencia Artificial.'
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return [
+            'esIA' => false,
+            'motivo' => ''
+        ];
+    }
+
     private function analizarContenidoProhibido($rutaArchivo, $mime, $textoAsociado)
     {
         $palabrasProhibidas = [
@@ -831,20 +1159,60 @@ class RetoModelo
             }
         }
 
+        $resSight = $this->consultarSightengineModeracion($rutaArchivo, $mime);
+        if ($resSight !== null) {
+            if ($resSight['esIA']) {
+                return [
+                    'aprobada' => false,
+                    'motivo' => 'La imagen fue identificada como generada por Inteligencia Artificial (' . round($resSight['scoreIA'] * 100, 1) . '% de certeza).',
+                    'score' => $resSight['scoreIA']
+                ];
+            }
+
+            if ($resSight['esDesnudez']) {
+                return [
+                    'aprobada' => false,
+                    'motivo' => 'La imagen contiene desnudez o contenido sexual no permitido (' . round($resSight['scoreDesnudez'] * 100, 1) . '% de detección).',
+                    'score' => $resSight['scoreDesnudez']
+                ];
+            }
+
+            return [
+                'aprobada' => true,
+                'motivo' => null,
+                'score' => 0.0
+            ];
+        }
+
+        $analisisIA = $this->detectarImagenIA($rutaArchivo, $textoAsociado, $mime);
+        if ($analisisIA['esIA']) {
+            return [
+                'aprobada' => false,
+                'motivo' => $analisisIA['motivo'],
+                'score' => 0.99
+            ];
+        }
+
         $img = null;
-        if ($mime === 'image/jpeg') {
-            $img = @imagecreatefromjpeg($rutaArchivo);
-        } elseif ($mime === 'image/png') {
-            $img = @imagecreatefrompng($rutaArchivo);
-        } elseif ($mime === 'image/webp') {
-            $img = @imagecreatefromwebp($rutaArchivo);
+        if (extension_loaded('gd')) {
+            if ($mime === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+                $img = @imagecreatefromjpeg($rutaArchivo);
+            } elseif ($mime === 'image/png' && function_exists('imagecreatefrompng')) {
+                $img = @imagecreatefrompng($rutaArchivo);
+            } elseif ($mime === 'image/webp' && function_exists('imagecreatefromwebp')) {
+                $img = @imagecreatefromwebp($rutaArchivo);
+            } elseif ($mime === 'image/avif' && function_exists('imagecreatefromavif')) {
+                $img = @imagecreatefromavif($rutaArchivo);
+            } elseif ($mime === 'image/gif' && function_exists('imagecreatefromgif')) {
+                $img = @imagecreatefromgif($rutaArchivo);
+            }
         }
 
         if (!$img) {
             return [
-                'aprobada' => false,
-                'motivo' => 'No se pudo procesar la imagen para su validación.',
-                'score' => 0.8
+                'aprobada' => true,
+                'motivo' => '',
+                'score' => 0.0
             ];
         }
 
@@ -920,12 +1288,18 @@ class RetoModelo
         }
 
         $img = null;
-        if ($mime === 'image/jpeg') {
-            $img = @imagecreatefromjpeg($rutaArchivo);
-        } elseif ($mime === 'image/png') {
-            $img = @imagecreatefrompng($rutaArchivo);
-        } elseif ($mime === 'image/webp') {
-            $img = @imagecreatefromwebp($rutaArchivo);
+        if (extension_loaded('gd')) {
+            if ($mime === 'image/jpeg' && function_exists('imagecreatefromjpeg')) {
+                $img = @imagecreatefromjpeg($rutaArchivo);
+            } elseif ($mime === 'image/png' && function_exists('imagecreatefrompng')) {
+                $img = @imagecreatefrompng($rutaArchivo);
+            } elseif ($mime === 'image/webp' && function_exists('imagecreatefromwebp')) {
+                $img = @imagecreatefromwebp($rutaArchivo);
+            } elseif ($mime === 'image/avif' && function_exists('imagecreatefromavif')) {
+                $img = @imagecreatefromavif($rutaArchivo);
+            } elseif ($mime === 'image/gif' && function_exists('imagecreatefromgif')) {
+                $img = @imagecreatefromgif($rutaArchivo);
+            }
         }
 
         $brilloMedio = 50.0;

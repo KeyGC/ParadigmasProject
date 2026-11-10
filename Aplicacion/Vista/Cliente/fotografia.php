@@ -173,11 +173,6 @@ $retoSeleccionadoId = (int) ($_GET['reto'] ?? 0);
                         Retos Anteriores y Ganadores
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="tab-mi-perfil-foto" data-bs-toggle="pill" data-bs-target="#panel-mi-perfil-foto" type="button" role="tab">
-                        Mi Perfil Fotográfico
-                    </button>
-                </li>
             </ul>
 
             <div class="tab-content" id="pillsFotografiaContent">
@@ -233,8 +228,8 @@ $retoSeleccionadoId = (int) ($_GET['reto'] ?? 0);
                                 
                                 <div class="col-12 col-md-6">
                                     <label class="form-label fw-semibold">Seleccionar archivo de imagen <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control" id="inputFotoArchivo" name="foto" accept="image/jpeg,image/png,image/webp" required>
-                                    <small class="text-muted">Formatos admitidos: JPG, PNG o WebP desde tu dispositivo.</small>
+                                    <input type="file" class="form-control" id="inputFotoArchivo" name="foto" accept=".jpg,.jpeg,.png,.webp,.avif,.gif,image/jpeg,image/png,image/webp,image/avif,image/gif" required>
+                                    <small class="text-muted">Formatos admitidos: JPG, PNG, WebP o AVIF desde tu dispositivo.</small>
                                     
                                     <div class="preview-upload-box mt-3" id="previewFotoBox">
                                         <span class="text-muted small" id="previewFotoPlaceholder">Vista previa de la imagen seleccionada</span>
@@ -311,16 +306,6 @@ $retoSeleccionadoId = (int) ($_GET['reto'] ?? 0);
                     </p>
                     <div class="d-flex flex-column gap-4" id="contenedorRetosAnteriores">
                         <p class="text-secondary">Cargando retos anteriores...</p>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="panel-mi-perfil-foto" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="h5 mb-0">Mi Perfil y Análisis Fotográfico</h2>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnRefrescarPerfilFoto">Actualizar datos</button>
-                    </div>
-                    <div id="contenedorDetallePerfilFoto">
-                        <p class="text-secondary">Cargando perfil fotográfico...</p>
                     </div>
                 </div>
 
