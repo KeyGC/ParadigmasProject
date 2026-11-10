@@ -103,5 +103,9 @@ define('COMIDA_DOMINIOS_PERMITIDOS', [
 define('SIGHTENGINE_API_USER', getenv('SIGHTENGINE_API_USER') ?: '848621621');
 define('SIGHTENGINE_API_SECRET', getenv('SIGHTENGINE_API_SECRET') ?: 'NMaJXjZZE2mSWHgEendQN4a7niU5cxgB');
 
+define('CLOUDINARY_CLOUD_NAME', getenv('CLOUDINARY_CLOUD_NAME') ?: 'hqcc3hno');
+define('CLOUDINARY_API_KEY',    getenv('CLOUDINARY_API_KEY')    ?: '569515558751674');
+define('CLOUDINARY_API_SECRET', getenv('CLOUDINARY_API_SECRET') ?: 'ACRB3nBmwkDDevHu7w1VPZecY_Q');
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';
