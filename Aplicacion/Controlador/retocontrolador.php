@@ -133,6 +133,11 @@ switch ($accion) {
         echo json_encode(["exito" => (bool) $ok]);
         break;
 
+    case 'marcarTodasInvitaciones':
+        $ok = $retoModelo->marcarTodasInvitacionesLeidas($perfilId);
+        echo json_encode(["exito" => (bool) $ok]);
+        break;
+
     case 'getPerfilFotografico':
         $targetId = (int) ($_GET['perfilId'] ?? $perfilId);
         if ($targetId <= 0) {
