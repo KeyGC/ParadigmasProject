@@ -205,9 +205,10 @@ class RetoModelo
         }
 
         if (count($perfilesInteresados) < 5) {
-            $sqlActivos = "SELECT DISTINCT tbperfilid FROM tbretofoto 
+            $sqlActivos = "SELECT tbperfilid FROM tbretofoto 
                            WHERE tbperfilid != :creadorId 
-                           ORDER BY tbretofotoid DESC 
+                           GROUP BY tbperfilid 
+                           ORDER BY MAX(tbretofotoid) DESC 
                            LIMIT 30";
             $stmtActivos = $this->conexion->prepare($sqlActivos);
             $stmtActivos->bindValue(':creadorId', $creadorId, PDO::PARAM_INT);
@@ -584,7 +585,7 @@ class RetoModelo
                 INNER JOIN tbperfil p ON f.tbperfilid = p.tbperfilid
                 LEFT JOIN tbretovoto v ON f.tbretofotoid = v.tbretofotoid
                 WHERE f.tbretoid = :retoId AND f.tbretofotoactivo = 1
-                GROUP BY f.tbretofotoid
+                GROUP BY f.tbretofotoid, p.tbperfilnombre
                 ORDER BY promediovotos DESC,
                          votoscincoestrellas DESC,
                          totalvotos DESC,
@@ -708,7 +709,7 @@ class RetoModelo
                      INNER JOIN tbreto r ON f.tbretoid = r.tbretoid
                      LEFT JOIN tbretovoto v ON f.tbretofotoid = v.tbretofotoid
                      WHERE f.tbperfilid = :perfilId AND f.tbretofotoactivo = 1
-                     GROUP BY f.tbretofotoid
+                     GROUP BY f.tbretofotoid, r.tbretotematica, r.tbretocerrado, r.tbretofechafinvotacion
                      ORDER BY f.tbretofotoid DESC";
 
         $stmtFotos = $this->conexion->prepare($sqlFotos);
