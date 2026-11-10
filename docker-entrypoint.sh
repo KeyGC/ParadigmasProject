@@ -26,4 +26,8 @@ EOF
 
 a2ensite 000-default.conf >/dev/null 2>&1 || true
 
+mkdir -p /var/www/html/Publico/imagenes/retos
+chown -R www-data:www-data /var/www/html/Publico/imagenes
+chmod -R 775 /var/www/html/Publico/imagenes
+
 exec apache2-foreground

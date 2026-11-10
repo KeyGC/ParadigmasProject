@@ -125,7 +125,7 @@
                 '<div class="d-flex flex-wrap gap-2">' +
                     '<span class="badge bg-primary">Estilo: ' + escapeTexto(pf.perfilEstructural.estiloPrincipal) + '</span>' +
                     '<span class="badge bg-secondary">Color: ' + escapeTexto(pf.perfilEstructural.colorPrincipal) + '</span>' +
-                    '<span class="badge bg-info text-dark">Composición: ' + escapeTexto(pf.perfilEstructural.composicionPrincipal) + '</span>' +
+                    '<span class="badge" style="background-color: #9B3B68; color: #ffffff;">Composición: ' + escapeTexto(pf.perfilEstructural.composicionPrincipal) + '</span>' +
                 '</div>' +
             '</div>';
         }

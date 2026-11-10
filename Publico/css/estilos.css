@@ -127,6 +127,54 @@ body {
     text-decoration: underline;
 }
 
+.btn-outline-primary {
+    --bs-btn-color: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: var(--color-primario);
+    --bs-btn-hover-border-color: var(--color-primario);
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: var(--color-primario-oscuro);
+    --bs-btn-active-border-color: var(--color-primario-oscuro);
+}
+
+.text-primary {
+    color: var(--color-primario) !important;
+}
+
+.text-info {
+    color: #9B3B68 !important;
+}
+
+.bg-primary {
+    background-color: var(--color-primario) !important;
+    color: #ffffff !important;
+}
+
+.bg-info {
+    background-color: #9B3B68 !important;
+    color: #ffffff !important;
+}
+
+.border-primary {
+    border-color: var(--color-primario) !important;
+}
+
+.border-info {
+    border-color: #9B3B68 !important;
+}
+
+.alert-info {
+    background-color: var(--color-primario-claro);
+    border-color: #E8D4DF;
+    color: var(--color-primario-oscuro);
+}
+
+.badge-info {
+    background-color: #9B3B68;
+    color: #ffffff;
+}
+
 .btn-accion {
     --bs-btn-bg: var(--color-dorado);
     --bs-btn-border-color: var(--color-dorado);

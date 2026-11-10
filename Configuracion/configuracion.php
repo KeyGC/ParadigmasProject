@@ -100,5 +100,8 @@ define('COMIDA_DOMINIOS_PERMITIDOS', [
     'kiwilimon.com'
 ]);
 
+define('SIGHTENGINE_API_USER', getenv('SIGHTENGINE_API_USER') ?: '848621621');
+define('SIGHTENGINE_API_SECRET', getenv('SIGHTENGINE_API_SECRET') ?: 'NMaJXjZZE2mSWHgEendQN4a7niU5cxgB');
+
 require_once BASE_PATH . '/vendor/autoload.php';
 require_once __DIR__ . '/basedatos.php';
