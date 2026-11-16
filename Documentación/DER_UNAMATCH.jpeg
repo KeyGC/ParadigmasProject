@@ -1,0 +1,1338 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="6802" height="2452" viewBox="0 0 6802 2452" font-family="Arial, Helvetica, sans-serif" xmlns:c2pa="http://c2pa.org/manifest">
+<rect width="100%" height="100%" fill="#111111"/><g fill="none" stroke="#d8d8d8" stroke-width="1.2">
+<line x1="572.7" y1="874.0" x2="572.7" y2="902.0"/>
+<line x1="616.7" y1="924.0" x2="806.0" y2="924.0"/>
+<line x1="806.0" y1="924.0" x2="806.0" y2="874.0"/>
+<line x1="862.0" y1="874.0" x2="862.0" y2="902.0"/>
+<line x1="906.0" y1="924.0" x2="1090.7" y2="924.0"/>
+<line x1="1090.7" y1="924.0" x2="1090.7" y2="874.0"/>
+<line x1="631.3" y1="874.0" x2="631.3" y2="1040.0"/>
+<line x1="675.3" y1="1062.0" x2="1320.0" y2="1062.0"/>
+<line x1="1320.0" y1="1062.0" x2="1320.0" y2="874.0"/>
+<line x1="918.0" y1="874.0" x2="918.0" y2="994.0"/>
+<line x1="962.0" y1="1016.0" x2="1376.0" y2="1016.0"/>
+<line x1="1376.0" y1="1016.0" x2="1376.0" y2="874.0"/>
+<line x1="1147.3" y1="874.0" x2="1147.3" y2="902.0"/>
+<line x1="1191.3" y1="924.0" x2="1432.0" y2="924.0"/>
+<line x1="1432.0" y1="924.0" x2="1432.0" y2="874.0"/>
+<line x1="1488.0" y1="874.0" x2="1488.0" y2="1086.0"/>
+<line x1="1532.0" y1="1108.0" x2="2676.0" y2="1108.0"/>
+<line x1="2676.0" y1="1108.0" x2="2676.0" y2="874.0"/>
+<line x1="136.0" y1="1986.0" x2="136.0" y2="1958.0"/>
+<line x1="180.0" y1="1936.0" x2="420.0" y2="1936.0"/>
+<line x1="420.0" y1="1936.0" x2="420.0" y2="1986.0"/>
+<line x1="192.0" y1="1986.0" x2="192.0" y2="1820.0"/>
+<line x1="236.0" y1="1798.0" x2="1561.5" y2="1798.0"/>
+<line x1="1561.5" y1="1798.0" x2="1561.5" y2="1986.0"/>
+<line x1="2620.0" y1="874.0" x2="2620.0" y2="1132.0"/>
+<line x1="2576.0" y1="1154.0" x2="1100.0" y2="1154.0"/>
+<line x1="1100.0" y1="1154.0" x2="1100.0" y2="1986.0"/>
+<line x1="532.0" y1="1986.0" x2="532.0" y2="1866.0"/>
+<line x1="576.0" y1="1844.0" x2="988.0" y2="1844.0"/>
+<line x1="988.0" y1="1844.0" x2="988.0" y2="1986.0"/>
+<line x1="1330.8" y1="1986.0" x2="1330.8" y2="1958.0"/>
+<line x1="1286.8" y1="1936.0" x2="1044.0" y2="1936.0"/>
+<line x1="1044.0" y1="1936.0" x2="1044.0" y2="1986.0"/>
+<line x1="3068.0" y1="874.0" x2="3068.0" y2="1086.0"/>
+<line x1="3112.0" y1="1108.0" x2="3990.7" y2="1108.0"/>
+<line x1="3990.7" y1="1108.0" x2="3990.7" y2="874.0"/>
+<line x1="4322.8" y1="874.0" x2="4322.8" y2="902.0"/>
+<line x1="4278.8" y1="924.0" x2="4069.3" y2="924.0"/>
+<line x1="4069.3" y1="924.0" x2="4069.3" y2="874.0"/>
+<line x1="2732.0" y1="874.0" x2="2732.0" y2="948.0"/>
+<line x1="2688.0" y1="970.0" x2="1710.0" y2="970.0"/>
+<line x1="1710.0" y1="970.0" x2="1710.0" y2="874.0"/>
+<line x1="2900.0" y1="874.0" x2="2900.0" y2="994.0"/>
+<line x1="2856.0" y1="1016.0" x2="2319.0" y2="1016.0"/>
+<line x1="2319.0" y1="1016.0" x2="2319.0" y2="874.0"/>
+<line x1="2844.0" y1="874.0" x2="2844.0" y2="902.0"/>
+<line x1="2800.0" y1="924.0" x2="2003.0" y2="924.0"/>
+<line x1="2003.0" y1="924.0" x2="2003.0" y2="874.0"/>
+<line x1="2788.0" y1="874.0" x2="2788.0" y2="1040.0"/>
+<line x1="2744.0" y1="1062.0" x2="1946.8" y2="1062.0"/>
+<line x1="1946.8" y1="1062.0" x2="1946.8" y2="1986.0"/>
+<line x1="1617.5" y1="1986.0" x2="1617.5" y2="1958.0"/>
+<line x1="1661.5" y1="1936.0" x2="1868.2" y2="1936.0"/>
+<line x1="1868.2" y1="1936.0" x2="1868.2" y2="1986.0"/>
+<line x1="1673.5" y1="1986.0" x2="1673.5" y2="1866.0"/>
+<line x1="1717.5" y1="1844.0" x2="2209.5" y2="1844.0"/>
+<line x1="2209.5" y1="1844.0" x2="2209.5" y2="1986.0"/>
+<line x1="2454.2" y1="1986.0" x2="2454.2" y2="1958.0"/>
+<line x1="2498.2" y1="1936.0" x2="2747.5" y2="1936.0"/>
+<line x1="2747.5" y1="1936.0" x2="2747.5" y2="1986.0"/>
+<line x1="2956.0" y1="874.0" x2="2956.0" y2="902.0"/>
+<line x1="3000.0" y1="924.0" x2="3208.8" y2="924.0"/>
+<line x1="3208.8" y1="924.0" x2="3208.8" y2="1986.0"/>
+<line x1="2803.5" y1="1986.0" x2="2803.5" y2="1958.0"/>
+<line x1="2847.5" y1="1936.0" x2="3148.2" y2="1936.0"/>
+<line x1="3148.2" y1="1936.0" x2="3148.2" y2="1986.0"/>
+<line x1="3392.2" y1="1986.0" x2="3392.2" y2="1958.0"/>
+<line x1="3436.2" y1="1936.0" x2="3638.2" y2="1936.0"/>
+<line x1="3638.2" y1="1936.0" x2="3638.2" y2="1986.0"/>
+<line x1="3012.0" y1="874.0" x2="3012.0" y2="994.0"/>
+<line x1="3056.0" y1="1016.0" x2="3882.2" y2="1016.0"/>
+<line x1="3882.2" y1="1016.0" x2="3882.2" y2="1986.0"/>
+<line x1="3698.8" y1="1986.0" x2="3698.8" y2="1958.0"/>
+<line x1="3742.8" y1="1936.0" x2="3944.8" y2="1936.0"/>
+<line x1="3944.8" y1="1936.0" x2="3944.8" y2="1986.0"/>
+<line x1="3124.0" y1="874.0" x2="3124.0" y2="948.0"/>
+<line x1="3168.0" y1="970.0" x2="4126.5" y2="970.0"/>
+<line x1="4126.5" y1="970.0" x2="4126.5" y2="1986.0"/>
+<line x1="4185.5" y1="1986.0" x2="4185.5" y2="1866.0"/>
+<line x1="4141.5" y1="1844.0" x2="3180.0" y2="1844.0"/>
+<line x1="3180.0" y1="1844.0" x2="3180.0" y2="874.0"/>
+<line x1="4244.5" y1="1986.0" x2="4244.5" y2="1958.0"/>
+<line x1="4288.5" y1="1936.0" x2="4531.5" y2="1936.0"/>
+<line x1="4531.5" y1="1936.0" x2="4531.5" y2="1986.0"/>
+<line x1="4475.5" y1="1986.0" x2="4475.5" y2="1912.0"/>
+<line x1="4431.5" y1="1890.0" x2="3236.0" y2="1890.0"/>
+<line x1="3236.0" y1="1890.0" x2="3236.0" y2="874.0"/>
+<line x1="4871.5" y1="1986.0" x2="4871.5" y2="1958.0"/>
+<line x1="4915.5" y1="1936.0" x2="5164.5" y2="1936.0"/>
+<line x1="5164.5" y1="1936.0" x2="5164.5" y2="1986.0"/>
+<line x1="3404.0" y1="874.0" x2="3404.0" y2="1224.0"/>
+<line x1="3448.0" y1="1246.0" x2="5105.5" y2="1246.0"/>
+<line x1="5105.5" y1="1246.0" x2="5105.5" y2="1986.0"/>
+<line x1="3292.0" y1="874.0" x2="3292.0" y2="1040.0"/>
+<line x1="3336.0" y1="1062.0" x2="4603.5" y2="1062.0"/>
+<line x1="4603.5" y1="1062.0" x2="4603.5" y2="874.0"/>
+<line x1="5364.2" y1="1986.0" x2="5364.2" y2="1958.0"/>
+<line x1="5408.2" y1="1936.0" x2="5758.8" y2="1936.0"/>
+<line x1="5758.8" y1="1936.0" x2="5758.8" y2="1986.0"/>
+<line x1="3516.0" y1="874.0" x2="3516.0" y2="1178.0"/>
+<line x1="3560.0" y1="1200.0" x2="5672.2" y2="1200.0"/>
+<line x1="5672.2" y1="1200.0" x2="5672.2" y2="1986.0"/>
+<line x1="5444.8" y1="1986.0" x2="5444.8" y2="1866.0"/>
+<line x1="5488.8" y1="1844.0" x2="5961.5" y2="1844.0"/>
+<line x1="5961.5" y1="1844.0" x2="5961.5" y2="1986.0"/>
+<line x1="6017.5" y1="1986.0" x2="6017.5" y2="1958.0"/>
+<line x1="6061.5" y1="1936.0" x2="6354.8" y2="1936.0"/>
+<line x1="6354.8" y1="1936.0" x2="6354.8" y2="1986.0"/>
+<line x1="3684.0" y1="874.0" x2="3684.0" y2="1454.0"/>
+<line x1="3728.0" y1="1476.0" x2="6272.2" y2="1476.0"/>
+<line x1="6272.2" y1="1476.0" x2="6272.2" y2="1986.0"/>
+<line x1="6073.5" y1="1986.0" x2="6073.5" y2="1866.0"/>
+<line x1="6117.5" y1="1844.0" x2="6665.5" y2="1844.0"/>
+<line x1="6665.5" y1="1844.0" x2="6665.5" y2="1986.0"/>
+<line x1="3796.0" y1="874.0" x2="3796.0" y2="1408.0"/>
+<line x1="3840.0" y1="1430.0" x2="6609.5" y2="1430.0"/>
+<line x1="6609.5" y1="1430.0" x2="6609.5" y2="1986.0"/>
+<line x1="476.0" y1="1986.0" x2="476.0" y2="1958.0"/>
+<line x1="520.0" y1="1936.0" x2="704.0" y2="1936.0"/>
+<line x1="704.0" y1="1936.0" x2="704.0" y2="1986.0"/>
+<line x1="2564.0" y1="874.0" x2="2564.0" y2="1224.0"/>
+<line x1="2520.0" y1="1246.0" x2="816.0" y2="1246.0"/>
+<line x1="816.0" y1="1246.0" x2="816.0" y2="1986.0"/>
+<line x1="3348.0" y1="874.0" x2="3348.0" y2="1132.0"/>
+<line x1="3392.0" y1="1154.0" x2="4887.5" y2="1154.0"/>
+<line x1="4887.5" y1="1154.0" x2="4887.5" y2="874.0"/>
+<line x1="2859.5" y1="1986.0" x2="2859.5" y2="1774.0"/>
+<line x1="2903.5" y1="1752.0" x2="4419.5" y2="1752.0"/>
+<line x1="4419.5" y1="1752.0" x2="4419.5" y2="1986.0"/>
+<line x1="2915.5" y1="1986.0" x2="2915.5" y2="1682.0"/>
+<line x1="2959.5" y1="1660.0" x2="5046.5" y2="1660.0"/>
+<line x1="5046.5" y1="1660.0" x2="5046.5" y2="1986.0"/>
+<line x1="2971.5" y1="1986.0" x2="2971.5" y2="1590.0"/>
+<line x1="3015.5" y1="1568.0" x2="6553.5" y2="1568.0"/>
+<line x1="6553.5" y1="1568.0" x2="6553.5" y2="1986.0"/>
+<line x1="2691.5" y1="1986.0" x2="2691.5" y2="1912.0"/>
+<line x1="2647.5" y1="1890.0" x2="760.0" y2="1890.0"/>
+<line x1="760.0" y1="1890.0" x2="760.0" y2="1986.0"/>
+<line x1="3460.0" y1="874.0" x2="3460.0" y2="1316.0"/>
+<line x1="3504.0" y1="1338.0" x2="5465.5" y2="1338.0"/>
+<line x1="5465.5" y1="1338.0" x2="5465.5" y2="874.0"/>
+<line x1="5521.5" y1="874.0" x2="5521.5" y2="902.0"/>
+<line x1="5565.5" y1="924.0" x2="5861.5" y2="924.0"/>
+<line x1="5861.5" y1="924.0" x2="5861.5" y2="874.0"/>
+<line x1="3572.0" y1="874.0" x2="3572.0" y2="1270.0"/>
+<line x1="3616.0" y1="1292.0" x2="5805.5" y2="1292.0"/>
+<line x1="5805.5" y1="1292.0" x2="5805.5" y2="874.0"/>
+<line x1="5917.5" y1="874.0" x2="5917.5" y2="902.0"/>
+<line x1="5961.5" y1="924.0" x2="6201.5" y2="924.0"/>
+<line x1="6201.5" y1="924.0" x2="6201.5" y2="874.0"/>
+<line x1="5577.5" y1="874.0" x2="5577.5" y2="994.0"/>
+<line x1="5621.5" y1="1016.0" x2="6145.5" y2="1016.0"/>
+<line x1="6145.5" y1="1016.0" x2="6145.5" y2="874.0"/>
+<line x1="3628.0" y1="874.0" x2="3628.0" y2="1362.0"/>
+<line x1="3672.0" y1="1384.0" x2="6089.5" y2="1384.0"/>
+<line x1="6089.5" y1="1384.0" x2="6089.5" y2="874.0"/>
+<line x1="5633.5" y1="874.0" x2="5633.5" y2="1086.0"/>
+<line x1="5677.5" y1="1108.0" x2="6450.8" y2="1108.0"/>
+<line x1="6450.8" y1="1108.0" x2="6450.8" y2="874.0"/>
+<line x1="3740.0" y1="874.0" x2="3740.0" y2="1500.0"/>
+<line x1="3784.0" y1="1522.0" x2="6384.2" y2="1522.0"/>
+<line x1="6384.2" y1="1522.0" x2="6384.2" y2="874.0"/>
+<line x1="248.0" y1="1986.0" x2="248.0" y2="1636.0" stroke-dasharray="7 5"/>
+<line x1="292.0" y1="1614.0" x2="4703.5" y2="1614.0" stroke-dasharray="7 5"/>
+<line x1="4703.5" y1="1614.0" x2="4703.5" y2="1986.0" stroke-dasharray="7 5"/>
+<line x1="2514.8" y1="1986.0" x2="2514.8" y2="1728.0" stroke-dasharray="7 5"/>
+<line x1="2558.8" y1="1706.0" x2="4759.5" y2="1706.0" stroke-dasharray="7 5"/>
+<line x1="4759.5" y1="1706.0" x2="4759.5" y2="1986.0" stroke-dasharray="7 5"/>
+<line x1="3454.8" y1="1986.0" x2="3454.8" y2="1820.0" stroke-dasharray="7 5"/>
+<line x1="3498.8" y1="1798.0" x2="4815.5" y2="1798.0" stroke-dasharray="7 5"/>
+<line x1="4815.5" y1="1798.0" x2="4815.5" y2="1986.0" stroke-dasharray="7 5"/>
+</g>
+<polygon points="528.7,924 572.7,902 616.7,924 572.7,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="572.7" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="572.7" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="579.7" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="813.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="818.0,924 862.0,902 906.0,924 862.0,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="862.0" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="862.0" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="869.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1097.7" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="587.3,1062 631.3,1040 675.3,1062 631.3,1084" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="631.3" y="1061" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ABARCA</text>
+<text x="631.3" y="1073" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="638.3" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1327.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="874.0,1016 918.0,994 962.0,1016 918.0,1038" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="918.0" y="1015" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ABARCA</text>
+<text x="918.0" y="1027" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="925.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1383.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="1103.3,924 1147.3,902 1191.3,924 1147.3,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1147.3" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ABARCA</text>
+<text x="1147.3" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="1154.3" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1439.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="1444.0,1108 1488.0,1086 1532.0,1108 1488.0,1130" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1488.0" y="1107" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="1488.0" y="1119" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="1495.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="2683.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="92.0,1936 136.0,1914 180.0,1936 136.0,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="136.0" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="136.0" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="143.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="427.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="148.0,1798 192.0,1776 236.0,1798 192.0,1820" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="192.0" y="1797" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CLASIFICA</text>
+<text x="192.0" y="1809" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="199.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1568.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2576.0,1154 2620.0,1132 2664.0,1154 2620.0,1176" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2620.0" y="1153" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REPRODUCE</text>
+<text x="2620.0" y="1165" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2627.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1107.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="488.0,1844 532.0,1822 576.0,1844 532.0,1866" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="532.0" y="1843" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">APARECE</text>
+<text x="532.0" y="1855" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="539.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="995.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="1286.8,1936 1330.8,1914 1374.8,1936 1330.8,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1330.8" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RESUME</text>
+<text x="1330.8" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="1337.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1051.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3024.0,1108 3068.0,1086 3112.0,1108 3068.0,1130" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3068.0" y="1107" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="3068.0" y="1119" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:1</text>
+<text x="3075.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3997.7" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="4278.8,924 4322.8,902 4366.8,924 4322.8,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4322.8" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RESUME</text>
+<text x="4322.8" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="4329.8" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4076.3" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2688.0,970 2732.0,948 2776.0,970 2732.0,992" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2732.0" y="969" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="2732.0" y="981" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2739.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1717.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2856.0,1016 2900.0,994 2944.0,1016 2900.0,1038" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2900.0" y="1015" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="2900.0" y="1027" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:1</text>
+<text x="2907.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="2326.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="2800.0,924 2844.0,902 2888.0,924 2844.0,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2844.0" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="2844.0" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:1</text>
+<text x="2851.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="2010.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="2744.0,1062 2788.0,1040 2832.0,1062 2788.0,1084" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2788.0" y="1061" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ASISTE</text>
+<text x="2788.0" y="1073" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2795.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1953.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="1573.5,1936 1617.5,1914 1661.5,1936 1617.5,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REGISTRA</text>
+<text x="1617.5" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="1624.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="1875.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="1629.5,1844 1673.5,1822 1717.5,1844 1673.5,1866" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1673.5" y="1843" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="1673.5" y="1855" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="1680.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="2216.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2410.2,1936 2454.2,1914 2498.2,1936 2454.2,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2454.2" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="2454.2" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2461.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="2754.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2912.0,924 2956.0,902 3000.0,924 2956.0,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2956.0" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">HACE</text>
+<text x="2956.0" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2963.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3215.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2759.5,1936 2803.5,1914 2847.5,1936 2803.5,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2803.5" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">APARECE</text>
+<text x="2803.5" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2810.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3155.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3348.2,1936 3392.2,1914 3436.2,1936 3392.2,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3392.2" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="3392.2" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3399.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3645.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2968.0,1016 3012.0,994 3056.0,1016 3012.0,1038" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3012.0" y="1015" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">HACE</text>
+<text x="3012.0" y="1027" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3019.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3889.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3654.8,1936 3698.8,1914 3742.8,1936 3698.8,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3698.8" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">APARECE</text>
+<text x="3698.8" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3705.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="3951.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3080.0,970 3124.0,948 3168.0,970 3124.0,992" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3124.0" y="969" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">INICIA</text>
+<text x="3124.0" y="981" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3131.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4133.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="4141.5,1844 4185.5,1822 4229.5,1844 4185.5,1866" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4185.5" y="1843" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RECIBE</text>
+<text x="4185.5" y="1855" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="4192.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<text x="3187.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="4200.5,1936 4244.5,1914 4288.5,1936 4244.5,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4244.5" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="4244.5" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="4251.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4538.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="4431.5,1890 4475.5,1868 4519.5,1890 4475.5,1912" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="1889" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ENVÍA</text>
+<text x="4475.5" y="1901" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="4482.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<text x="3243.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="4827.5,1936 4871.5,1914 4915.5,1936 4871.5,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4871.5" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="4871.5" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="4878.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5171.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3360.0,1246 3404.0,1224 3448.0,1246 3404.0,1268" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3404.0" y="1245" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ENVÍA</text>
+<text x="3404.0" y="1257" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3411.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5112.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3248.0,1062 3292.0,1040 3336.0,1062 3292.0,1084" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3292.0" y="1061" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="3292.0" y="1073" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3299.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4610.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5320.2,1936 5364.2,1914 5408.2,1936 5364.2,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5364.2" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="5364.2" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="5371.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5765.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3472.0,1200 3516.0,1178 3560.0,1200 3516.0,1222" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3516.0" y="1199" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">PARTICIPA</text>
+<text x="3516.0" y="1211" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3523.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5679.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5400.8,1844 5444.8,1822 5488.8,1844 5444.8,1866" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5444.8" y="1843" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ORIGINA</text>
+<text x="5444.8" y="1855" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:1</text>
+<text x="5451.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5968.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<polygon points="5973.5,1936 6017.5,1914 6061.5,1936 6017.5,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="6017.5" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="6024.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6361.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3640.0,1476 3684.0,1454 3728.0,1476 3684.0,1498" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3684.0" y="1475" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">INTEGRA</text>
+<text x="3684.0" y="1487" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3691.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6279.2" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="6029.5,1844 6073.5,1822 6117.5,1844 6073.5,1866" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6073.5" y="1843" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CONTIENE</text>
+<text x="6073.5" y="1855" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="6080.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6672.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3752.0,1430 3796.0,1408 3840.0,1430 3796.0,1452" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3796.0" y="1429" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ENVÍA</text>
+<text x="3796.0" y="1441" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3803.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6616.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="432.0,1936 476.0,1914 520.0,1936 476.0,1958" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="1935" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="476.0" y="1947" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="483.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="711.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2520.0,1246 2564.0,1224 2608.0,1246 2564.0,1268" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2564.0" y="1245" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ESCRIBE</text>
+<text x="2564.0" y="1257" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2571.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="823.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3304.0,1154 3348.0,1132 3392.0,1154 3348.0,1176" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3348.0" y="1153" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REGISTRA</text>
+<text x="3348.0" y="1165" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3355.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4894.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2815.5,1752 2859.5,1730 2903.5,1752 2859.5,1774" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2859.5" y="1751" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">COMPARTE</text>
+<text x="2859.5" y="1763" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2866.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4426.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2871.5,1660 2915.5,1638 2959.5,1660 2915.5,1682" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2915.5" y="1659" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">COMPARTE</text>
+<text x="2915.5" y="1671" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2922.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5053.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2927.5,1568 2971.5,1546 3015.5,1568 2971.5,1590" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2971.5" y="1567" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">COMPARTE</text>
+<text x="2971.5" y="1579" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2978.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6560.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2647.5,1890 2691.5,1868 2735.5,1890 2691.5,1912" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2691.5" y="1889" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">COMPARTE</text>
+<text x="2691.5" y="1901" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2698.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="767.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3416.0,1338 3460.0,1316 3504.0,1338 3460.0,1360" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3460.0" y="1337" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">CREA</text>
+<text x="3460.0" y="1349" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3467.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5472.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5477.5,924 5521.5,902 5565.5,924 5521.5,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5521.5" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RECIBE</text>
+<text x="5521.5" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="5528.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5868.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3528.0,1292 3572.0,1270 3616.0,1292 3572.0,1314" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3572.0" y="1291" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">SUBE</text>
+<text x="3572.0" y="1303" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3579.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="5812.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5873.5,924 5917.5,902 5961.5,924 5917.5,946" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5917.5" y="923" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RECIBE</text>
+<text x="5917.5" y="935" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="5924.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6208.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5533.5,1016 5577.5,994 5621.5,1016 5577.5,1038" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5577.5" y="1015" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">TIENE</text>
+<text x="5577.5" y="1027" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="5584.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6152.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3584.0,1384 3628.0,1362 3672.0,1384 3628.0,1406" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3628.0" y="1383" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">EMITE</text>
+<text x="3628.0" y="1395" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3635.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6096.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="5589.5,1108 5633.5,1086 5677.5,1108 5633.5,1130" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5633.5" y="1107" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">ENVÍA</text>
+<text x="5633.5" y="1119" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="5640.5" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6457.8" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3696.0,1522 3740.0,1500 3784.0,1522 3740.0,1544" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3740.0" y="1521" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">RECIBE</text>
+<text x="3740.0" y="1533" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3747.0" y="891" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="6391.2" y="891" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="204.0,1614 248.0,1592 292.0,1614 248.0,1636" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="248.0" y="1613" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REFERENCIA</text>
+<text x="248.0" y="1625" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="255.0" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4710.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="2470.8,1706 2514.8,1684 2558.8,1706 2514.8,1728" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2514.8" y="1705" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REFERENCIA</text>
+<text x="2514.8" y="1717" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="2521.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4766.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<polygon points="3410.8,1798 3454.8,1776 3498.8,1798 3454.8,1820" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3454.8" y="1797" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">REFERENCIA</text>
+<text x="3454.8" y="1809" text-anchor="middle" font-size="10" font-weight="bold" fill="#f5c542">1:N</text>
+<text x="3461.8" y="1978" font-size="12" font-weight="bold" fill="#f5c542">1</text>
+<text x="4822.5" y="1978" font-size="12" font-weight="bold" fill="#f5c542">N</text>
+<rect x="2508.0" y="834" width="1344.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="3180.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfil</text>
+<line x1="3095.0" y1="834" x2="3095.0" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3095.0" y1="808" x2="3105.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="808" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilid</text>
+<line x1="3095.0" y1="772" x2="3105.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="772" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbubicacionid</text>
+<line x1="3095.0" y1="736" x2="3105.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="736" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbperfilnombre</text>
+<line x1="3095.0" y1="700" x2="3105.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="700" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfilcontra</text>
+<line x1="3095.0" y1="664" x2="3105.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="664" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="668" text-anchor="middle" font-size="11" fill="#fff">tbperfilcorreo</text>
+<line x1="3095.0" y1="628" x2="3105.0" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="628" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="632" text-anchor="middle" font-size="11" fill="#fff">tbperfilcambiocontra</text>
+<line x1="3095.0" y1="592" x2="3105.0" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="592" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="596" text-anchor="middle" font-size="11" fill="#fff">tbperfilrol</text>
+<line x1="3095.0" y1="556" x2="3105.0" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3180.0" cy="556" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3180.0" y="560" text-anchor="middle" font-size="11" fill="#fff">tbperfilactivo</text>
+<rect x="1264.0" y="834" width="280.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1404.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbubicacion</text>
+<line x1="1319.0" y1="834" x2="1319.0" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1319.0" y1="808" x2="1329.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="808" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbubicacionid</text>
+<line x1="1319.0" y1="772" x2="1329.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="772" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbubicacionprovincia</text>
+<line x1="1319.0" y1="736" x2="1329.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="736" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="740" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbubicacioncanton</text>
+<line x1="1319.0" y1="700" x2="1329.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="700" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="704" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbubicaciondistrito</text>
+<line x1="1319.0" y1="664" x2="1329.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="664" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="668" text-anchor="middle" font-size="11" fill="#fff">tbubicacionlongitud</text>
+<line x1="1319.0" y1="628" x2="1329.0" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="628" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="632" text-anchor="middle" font-size="11" fill="#fff">tbubicacionlatitud</text>
+<line x1="1319.0" y1="592" x2="1329.0" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1404.0" cy="592" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1404.0" y="596" text-anchor="middle" font-size="11" fill="#fff">tbubicacionestado</text>
+<rect x="514.0" y="834" width="176.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="602.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbprovincia</text>
+<line x1="526.0" y1="834" x2="526.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="526.0" y1="808" x2="536.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="602.0" cy="808" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="602.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbprovinciaid</text>
+<line x1="526.0" y1="772" x2="536.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="602.0" cy="772" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="602.0" y="776" text-anchor="middle" font-size="11" fill="#fff">tbprovincianombre</text>
+<line x1="526.0" y1="736" x2="536.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="602.0" cy="736" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="602.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbprovinciaestado</text>
+<rect x="750.0" y="834" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="862.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcanton</text>
+<line x1="795.0" y1="834" x2="795.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="795.0" y1="808" x2="805.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="862.0" cy="808" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="862.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcantonid</text>
+<line x1="795.0" y1="772" x2="805.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="862.0" cy="772" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="862.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbprovinciaid</text>
+<line x1="795.0" y1="736" x2="805.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="862.0" cy="736" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="862.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbcantonnombre</text>
+<line x1="795.0" y1="700" x2="805.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="862.0" cy="700" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="862.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbcantonestado</text>
+<rect x="1034.0" y="834" width="170.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1119.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbdistrito</text>
+<line x1="1046.0" y1="834" x2="1046.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1046.0" y1="808" x2="1056.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1119.0" cy="808" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1119.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbdistritoid</text>
+<line x1="1046.0" y1="772" x2="1056.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1119.0" cy="772" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1119.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcantonid</text>
+<line x1="1046.0" y1="736" x2="1056.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1119.0" cy="736" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1119.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbdistritonombre</text>
+<line x1="1046.0" y1="700" x2="1056.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1119.0" cy="700" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1119.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbdistritoestado</text>
+<rect x="80.0" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="192.0" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbgenero</text>
+<line x1="125.0" y1="2026" x2="125.0" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="125.0" y1="2052" x2="135.0" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="192.0" cy="2052" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="192.0" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbgeneroid</text>
+<line x1="125.0" y1="2088" x2="135.0" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="192.0" cy="2088" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="192.0" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbgeneronombre</text>
+<line x1="125.0" y1="2124" x2="135.0" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="192.0" cy="2124" rx="57.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="192.0" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbgeneroestado</text>
+<rect x="364.0" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="476.0" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcancion</text>
+<line x1="403.0" y1="2026" x2="403.0" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="403.0" y1="2052" x2="413.0" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2052" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcancionid</text>
+<line x1="403.0" y1="2088" x2="413.0" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2088" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbgeneroid</text>
+<line x1="403.0" y1="2124" x2="413.0" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2124" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbcancionnombre</text>
+<line x1="403.0" y1="2160" x2="413.0" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2160" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcancionartista</text>
+<line x1="403.0" y1="2196" x2="413.0" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2196" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcancionurl</text>
+<line x1="403.0" y1="2232" x2="413.0" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="476.0" cy="2232" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="476.0" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbcancionactivo</text>
+<rect x="1216.0" y="1986" width="229.5" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1330.8" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbreproduccionsemanal</text>
+<line x1="1230.8" y1="2026" x2="1230.8" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1230.8" y1="2052" x2="1240.8" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1330.8" cy="2052" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1330.8" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbreproduccionsemanalid</text>
+<line x1="1230.8" y1="2088" x2="1240.8" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1330.8" cy="2088" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1330.8" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbreproduccionsemanaldata</text>
+<rect x="932.0" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1044.0" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbreproduccion</text>
+<line x1="950.0" y1="2026" x2="950.0" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="950.0" y1="2052" x2="960.0" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2052" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbreproduccionid</text>
+<line x1="950.0" y1="2088" x2="960.0" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2088" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="950.0" y1="2124" x2="960.0" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2124" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcancionid</text>
+<line x1="950.0" y1="2160" x2="960.0" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2160" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2164" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbreproduccionsemanalid</text>
+<line x1="950.0" y1="2196" x2="960.0" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2196" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbreproducciontiempo</text>
+<line x1="950.0" y1="2232" x2="960.0" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1044.0" cy="2232" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1044.0" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbreproduccionestado</text>
+<rect x="4208.0" y="834" width="229.5" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4322.8" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfilaccesosemanal</text>
+<line x1="4222.8" y1="834" x2="4222.8" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4222.8" y1="808" x2="4232.8" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4322.8" cy="808" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4322.8" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilaccesosemanalid</text>
+<line x1="4222.8" y1="772" x2="4232.8" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4322.8" cy="772" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4322.8" y="776" text-anchor="middle" font-size="11" fill="#fff">tbperfilaccesosemanaldata</text>
+<rect x="3912.0" y="834" width="236.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4030.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfilacceso</text>
+<line x1="3924.0" y1="834" x2="3924.0" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3924.0" y1="808" x2="3934.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="808" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilaccesoid</text>
+<line x1="3924.0" y1="772" x2="3934.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="772" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="3924.0" y1="736" x2="3934.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="736" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="740" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilaccesosemanalid</text>
+<line x1="3924.0" y1="700" x2="3934.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="700" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfilaccesofechacreacion</text>
+<line x1="3924.0" y1="664" x2="3934.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="664" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="668" text-anchor="middle" font-size="11" fill="#fff">tbperfilaccesofechaultima</text>
+<line x1="3924.0" y1="628" x2="3934.0" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4030.0" cy="628" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4030.0" y="632" text-anchor="middle" font-size="11" fill="#fff">tbperfilaccesoestado</text>
+<rect x="1604.0" y="834" width="212.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1710.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfilubicacion</text>
+<line x1="1616.0" y1="834" x2="1616.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1616.0" y1="808" x2="1626.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1710.0" cy="808" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1710.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilubicacionid</text>
+<line x1="1616.0" y1="772" x2="1626.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1710.0" cy="772" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1710.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="1616.0" y1="736" x2="1626.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1710.0" cy="736" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1710.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbperfilubicaciondata</text>
+<line x1="1616.0" y1="700" x2="1626.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1710.0" cy="700" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1710.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfilubicacionestado</text>
+<rect x="2190.0" y="834" width="258.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="2319.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfilregistrossemanal</text>
+<line x1="2213.0" y1="834" x2="2213.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="2213.0" y1="808" x2="2223.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2319.0" cy="808" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2319.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilregistrossemanalid</text>
+<line x1="2213.0" y1="772" x2="2223.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2319.0" cy="772" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2319.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="2213.0" y1="736" x2="2223.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2319.0" cy="736" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2319.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbperfilregistroscontradata</text>
+<line x1="2213.0" y1="700" x2="2223.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2319.0" cy="700" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2319.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfilregistroscorreodata</text>
+<line x1="2213.0" y1="664" x2="2223.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2319.0" cy="664" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2319.0" y="668" text-anchor="middle" font-size="11" fill="#fff">tbperfilregistrosnombredata</text>
+<rect x="1876.0" y="834" width="254.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="2003.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfilfranjas</text>
+<line x1="1888.0" y1="834" x2="1888.0" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1888.0" y1="808" x2="1898.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="808" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfilfranjasid</text>
+<line x1="1888.0" y1="772" x2="1898.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="772" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="1888.0" y1="736" x2="1898.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="736" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbperfilfranjasmadrugadainicio</text>
+<line x1="1888.0" y1="700" x2="1898.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="700" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfilfranjasmananainicio</text>
+<line x1="1888.0" y1="664" x2="1898.0" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="664" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="668" text-anchor="middle" font-size="11" fill="#fff">tbperfilfranjastardeinicio</text>
+<line x1="1888.0" y1="628" x2="1898.0" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="628" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="632" text-anchor="middle" font-size="11" fill="#fff">tbperfilfranjasnocheinicio</text>
+<line x1="1888.0" y1="592" x2="1898.0" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2003.0" cy="592" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2003.0" y="596" text-anchor="middle" font-size="11" fill="#fff">tbperfilfranjasfechacalculo</text>
+<rect x="284.0" y="834" width="170.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="369.0" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbferiados</text>
+<line x1="296.0" y1="834" x2="296.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="296.0" y1="808" x2="306.0" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="369.0" cy="808" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="369.0" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbferiadosid</text>
+<line x1="296.0" y1="772" x2="306.0" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="369.0" cy="772" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="369.0" y="776" text-anchor="middle" font-size="11" fill="#fff">tbferiadosfecha</text>
+<line x1="296.0" y1="736" x2="306.0" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="369.0" cy="736" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="369.0" y="740" text-anchor="middle" font-size="11" fill="#fff">tbferiadosnombre</text>
+<line x1="296.0" y1="700" x2="306.0" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="369.0" cy="700" rx="63.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="369.0" y="704" text-anchor="middle" font-size="11" fill="#fff">tbferiadosanio</text>
+<rect x="1505.5" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1617.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbevento</text>
+<line x1="1520.5" y1="2026" x2="1520.5" y2="2376" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1520.5" y1="2052" x2="1530.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2052" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbeventoid</text>
+<line x1="1520.5" y1="2088" x2="1530.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2088" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbgeneroid</text>
+<line x1="1520.5" y1="2124" x2="1530.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2124" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbeventonombre</text>
+<line x1="1520.5" y1="2160" x2="1530.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2160" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbeventoartista</text>
+<line x1="1520.5" y1="2196" x2="1530.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2196" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicaciongeneral</text>
+<line x1="1520.5" y1="2232" x2="1530.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2232" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbeventolatitud</text>
+<line x1="1520.5" y1="2268" x2="1530.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2268" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbeventolongitud</text>
+<line x1="1520.5" y1="2304" x2="1530.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2304" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbeventofecha</text>
+<line x1="1520.5" y1="2340" x2="1530.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2340" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2344" text-anchor="middle" font-size="11" fill="#fff">tbeventohora</text>
+<line x1="1520.5" y1="2376" x2="1530.5" y2="2376" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1617.5" cy="2376" rx="87.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1617.5" y="2380" text-anchor="middle" font-size="11" fill="#fff">tbeventoestado</text>
+<rect x="1789.5" y="1986" width="236.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="1907.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbeventoasistencia</text>
+<line x1="1801.5" y1="2026" x2="1801.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="1801.5" y1="2052" x2="1811.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2052" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbeventoasistenciaid</text>
+<line x1="1801.5" y1="2088" x2="1811.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2088" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="1801.5" y1="2124" x2="1811.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2124" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbeventoid</text>
+<line x1="1801.5" y1="2160" x2="1811.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2160" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbeventoasistenciafechahora</text>
+<line x1="1801.5" y1="2196" x2="1811.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2196" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbeventoasistencialatitud</text>
+<line x1="1801.5" y1="2232" x2="1811.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2232" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbeventoasistencialongitud</text>
+<line x1="1801.5" y1="2268" x2="1811.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="1907.5" cy="2268" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="1907.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbeventoasistenciacoincide</text>
+<rect x="2085.5" y="1986" width="248.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="2209.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbeventoubicacion</text>
+<line x1="2097.5" y1="2026" x2="2097.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="2097.5" y1="2052" x2="2107.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2052" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbeventoubicacionid</text>
+<line x1="2097.5" y1="2088" x2="2107.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2088" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbeventoid</text>
+<line x1="2097.5" y1="2124" x2="2107.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2124" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacioncategoria</text>
+<line x1="2097.5" y1="2160" x2="2107.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2160" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacionreferenciaid</text>
+<line x1="2097.5" y1="2196" x2="2107.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2196" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacionnombre</text>
+<line x1="2097.5" y1="2232" x2="2107.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2232" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacionlatitud</text>
+<line x1="2097.5" y1="2268" x2="2107.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2268" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacionlongitud</text>
+<line x1="2097.5" y1="2304" x2="2107.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2209.5" cy="2304" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2209.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbeventoubicacionestado</text>
+<rect x="2393.5" y="1986" width="182.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="2484.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbtipocomida</text>
+<line x1="2405.5" y1="2026" x2="2405.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="2405.5" y1="2052" x2="2415.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2484.5" cy="2052" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2484.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbtipocomidaid</text>
+<line x1="2405.5" y1="2088" x2="2415.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2484.5" cy="2088" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2484.5" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbtipocomidanombre</text>
+<line x1="2405.5" y1="2124" x2="2415.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2484.5" cy="2124" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2484.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbtipocomidaestado</text>
+<rect x="2635.5" y="1986" width="392.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="2831.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcomida</text>
+<line x1="2755.5" y1="2026" x2="2755.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="2755.5" y1="2052" x2="2765.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2831.5" cy="2052" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2831.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcomidaid</text>
+<line x1="2755.5" y1="2088" x2="2765.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2831.5" cy="2088" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2831.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbtipocomidaid</text>
+<line x1="2755.5" y1="2124" x2="2765.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2831.5" cy="2124" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2831.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbcomidanombre</text>
+<line x1="2755.5" y1="2160" x2="2765.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2831.5" cy="2160" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2831.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcomidaimagenurl</text>
+<line x1="2755.5" y1="2196" x2="2765.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="2831.5" cy="2196" rx="66.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="2831.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcomidaactivo</text>
+<rect x="3087.5" y="1986" width="182.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="3178.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcomidaswipe</text>
+<line x1="3099.5" y1="2026" x2="3099.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3099.5" y1="2052" x2="3109.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3178.5" cy="2052" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3178.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcomidaswipeid</text>
+<line x1="3099.5" y1="2088" x2="3109.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3178.5" cy="2088" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3178.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="3099.5" y1="2124" x2="3109.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3178.5" cy="2124" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3178.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomidaid</text>
+<line x1="3099.5" y1="2160" x2="3109.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3178.5" cy="2160" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3178.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcomidaswipelike</text>
+<line x1="3099.5" y1="2196" x2="3109.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3178.5" cy="2196" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3178.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcomidaswipefecha</text>
+<rect x="3329.5" y="1986" width="188.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="3423.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbtipodeporte</text>
+<line x1="3341.5" y1="2026" x2="3341.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3341.5" y1="2052" x2="3351.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3423.5" cy="2052" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3423.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbtipodeporteid</text>
+<line x1="3341.5" y1="2088" x2="3351.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3423.5" cy="2088" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3423.5" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbtipodeportenombre</text>
+<line x1="3341.5" y1="2124" x2="3351.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3423.5" cy="2124" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3423.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbtipodeporteestado</text>
+<rect x="3577.5" y="1986" width="182.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="3668.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbdeporte</text>
+<line x1="3589.5" y1="2026" x2="3589.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3589.5" y1="2052" x2="3599.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3668.5" cy="2052" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3668.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbdeporteid</text>
+<line x1="3589.5" y1="2088" x2="3599.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3668.5" cy="2088" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3668.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbtipodeporteid</text>
+<line x1="3589.5" y1="2124" x2="3599.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3668.5" cy="2124" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3668.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbdeportenombre</text>
+<line x1="3589.5" y1="2160" x2="3599.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3668.5" cy="2160" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3668.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbdeporteimagenurl</text>
+<line x1="3589.5" y1="2196" x2="3599.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3668.5" cy="2196" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3668.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbdeporteactivo</text>
+<rect x="3819.5" y="1986" width="188.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="3913.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbdeporteswipe</text>
+<line x1="3831.5" y1="2026" x2="3831.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="3831.5" y1="2052" x2="3841.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3913.5" cy="2052" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3913.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbdeporteswipeid</text>
+<line x1="3831.5" y1="2088" x2="3841.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3913.5" cy="2088" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3913.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="3831.5" y1="2124" x2="3841.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3913.5" cy="2124" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3913.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbdeporteid</text>
+<line x1="3831.5" y1="2160" x2="3841.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3913.5" cy="2160" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3913.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbdeporteswipelike</text>
+<line x1="3831.5" y1="2196" x2="3841.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="3913.5" cy="2196" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="3913.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbdeporteswipefecha</text>
+<rect x="4067.5" y="1986" width="236.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4185.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbconversacion</text>
+<line x1="4079.5" y1="2026" x2="4079.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4079.5" y1="2052" x2="4089.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4185.5" cy="2052" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4185.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbconversacionid</text>
+<line x1="4079.5" y1="2088" x2="4089.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4185.5" cy="2088" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4185.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid1</text>
+<line x1="4079.5" y1="2124" x2="4089.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4185.5" cy="2124" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4185.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid2</text>
+<line x1="4079.5" y1="2160" x2="4089.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4185.5" cy="2160" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4185.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbconversacionfechacreacion</text>
+<rect x="4363.5" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4475.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbmensaje</text>
+<line x1="4396.5" y1="2026" x2="4396.5" y2="2376" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4396.5" y1="2052" x2="4406.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2052" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbmensajeid</text>
+<line x1="4396.5" y1="2088" x2="4406.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2088" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbconversacionid</text>
+<line x1="4396.5" y1="2124" x2="4406.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2124" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilidemisor</text>
+<line x1="4396.5" y1="2160" x2="4406.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2160" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbmensajetexto</text>
+<line x1="4396.5" y1="2196" x2="4406.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2196" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbmensajefechahora</text>
+<line x1="4396.5" y1="2232" x2="4406.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2232" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbmensajeleido</text>
+<line x1="4396.5" y1="2268" x2="4406.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2268" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbmensajebloqueado</text>
+<line x1="4396.5" y1="2304" x2="4406.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2304" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbmensajecategoria</text>
+<line x1="4396.5" y1="2340" x2="4406.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2340" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2344" text-anchor="middle" font-size="11" fill="#fff">tbmensajescore</text>
+<line x1="4396.5" y1="2376" x2="4406.5" y2="2376" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4475.5" cy="2376" rx="69.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4475.5" y="2380" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomidaid</text>
+<rect x="4647.5" y="1986" width="280.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4787.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcomunidad</text>
+<line x1="4693.5" y1="2026" x2="4693.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4693.5" y1="2052" x2="4703.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4787.5" cy="2052" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4787.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcomunidadid</text>
+<line x1="4693.5" y1="2088" x2="4703.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4787.5" cy="2088" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4787.5" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadcategoria</text>
+<line x1="4693.5" y1="2124" x2="4703.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4787.5" cy="2124" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4787.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadreferenciaid</text>
+<line x1="4693.5" y1="2160" x2="4703.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4787.5" cy="2160" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4787.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadnombre</text>
+<line x1="4693.5" y1="2196" x2="4703.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4787.5" cy="2196" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4787.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadestado</text>
+<rect x="4987.5" y="1986" width="236.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5105.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcomunidadmensaje</text>
+<line x1="4999.5" y1="2026" x2="4999.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4999.5" y1="2052" x2="5009.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2052" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcomunidadmensajeid</text>
+<line x1="4999.5" y1="2088" x2="5009.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2088" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomunidadid</text>
+<line x1="4999.5" y1="2124" x2="5009.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2124" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilidemisor</text>
+<line x1="4999.5" y1="2160" x2="5009.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2160" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadmensajetexto</text>
+<line x1="4999.5" y1="2196" x2="5009.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2196" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadmensajefechahora</text>
+<line x1="4999.5" y1="2232" x2="5009.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2232" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadmensajebloqueado</text>
+<line x1="4999.5" y1="2268" x2="5009.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2268" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadmensajecategoria</text>
+<line x1="4999.5" y1="2304" x2="5009.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2304" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbcomunidadmensajescore</text>
+<line x1="4999.5" y1="2340" x2="5009.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5105.5" cy="2340" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5105.5" y="2344" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomidaid</text>
+<rect x="4497.5" y="834" width="212.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4603.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbperfiltema</text>
+<line x1="4509.5" y1="834" x2="4509.5" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4509.5" y1="808" x2="4519.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="808" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbperfiltemaid</text>
+<line x1="4509.5" y1="772" x2="4519.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="772" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="4509.5" y1="736" x2="4519.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="736" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="740" text-anchor="middle" font-size="11" fill="#fff">tbperfiltematipo</text>
+<line x1="4509.5" y1="700" x2="4519.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="700" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="704" text-anchor="middle" font-size="11" fill="#fff">tbperfiltemacategoria</text>
+<line x1="4509.5" y1="664" x2="4519.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="664" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbperfiltematema</text>
+<line x1="4509.5" y1="628" x2="4519.5" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="628" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="632" text-anchor="middle" font-size="11" fill="#fff">tbperfiltemaorigen</text>
+<line x1="4509.5" y1="592" x2="4519.5" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="592" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="596" text-anchor="middle" font-size="11" fill="#fff">tbperfiltemacount</text>
+<line x1="4509.5" y1="556" x2="4519.5" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4603.5" cy="556" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4603.5" y="560" text-anchor="middle" font-size="11" fill="#fff">tbperfiltemafechaultima</text>
+<rect x="5065.5" y="834" width="284.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5207.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbafinidadcontrol</text>
+<line x1="5077.5" y1="834" x2="5077.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5077.5" y1="808" x2="5087.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5207.5" cy="808" rx="120.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5207.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbafinidadcontrolid</text>
+<line x1="5077.5" y1="772" x2="5087.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5207.5" cy="772" rx="120.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5207.5" y="776" text-anchor="middle" font-size="11" fill="#fff">tbafinidadcontrolultimageneracion</text>
+<line x1="5077.5" y1="736" x2="5087.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5207.5" cy="736" rx="120.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5207.5" y="740" text-anchor="middle" font-size="11" fill="#fff">tbafinidadcontrolfechaactualizacion</text>
+<rect x="5283.5" y="1986" width="242.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5404.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbafinidad</text>
+<line x1="5295.5" y1="2026" x2="5295.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5295.5" y1="2052" x2="5305.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2052" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbafinidadid</text>
+<line x1="5295.5" y1="2088" x2="5305.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2088" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2092" text-anchor="middle" font-size="11" fill="#fff">tbafinidadtipo</text>
+<line x1="5295.5" y1="2124" x2="5305.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2124" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbafinidadcategoria</text>
+<line x1="5295.5" y1="2160" x2="5305.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2160" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbafinidadtema</text>
+<line x1="5295.5" y1="2196" x2="5305.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2196" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbafinidadorigen</text>
+<line x1="5295.5" y1="2232" x2="5305.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2232" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbafinidadestado</text>
+<line x1="5295.5" y1="2268" x2="5305.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2268" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbafinidadfechacreacion</text>
+<line x1="5295.5" y1="2304" x2="5305.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5404.5" cy="2304" rx="99.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5404.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbafinidadfechaactualizacion</text>
+<rect x="5585.5" y="1986" width="260.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5715.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbafinidadmiembro</text>
+<line x1="5597.5" y1="2026" x2="5597.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5597.5" y1="2052" x2="5607.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2052" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbafinidadmiembroid</text>
+<line x1="5597.5" y1="2088" x2="5607.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2088" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbafinidadid</text>
+<line x1="5597.5" y1="2124" x2="5607.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2124" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="5597.5" y1="2160" x2="5607.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2160" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbafinidadmiembroestado</text>
+<line x1="5597.5" y1="2196" x2="5607.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2196" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbafinidadmiembrofechapropuesta</text>
+<line x1="5597.5" y1="2232" x2="5607.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5715.5" cy="2232" rx="108.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5715.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbafinidadmiembrofecharespuesta</text>
+<rect x="5905.5" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="6017.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbgrupo</text>
+<line x1="5932.5" y1="2026" x2="5932.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5932.5" y1="2052" x2="5942.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2052" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbgrupoid</text>
+<line x1="5932.5" y1="2088" x2="5942.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2088" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbafinidadid</text>
+<line x1="5932.5" y1="2124" x2="5942.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2124" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2128" text-anchor="middle" font-size="11" fill="#fff">tbgrupocategoria</text>
+<line x1="5932.5" y1="2160" x2="5942.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2160" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbgrupotema</text>
+<line x1="5932.5" y1="2196" x2="5942.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2196" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbgrupoorigen</text>
+<line x1="5932.5" y1="2232" x2="5942.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2232" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbgruponombre</text>
+<line x1="5932.5" y1="2268" x2="5942.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2268" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbgrupoestado</text>
+<line x1="5932.5" y1="2304" x2="5942.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6017.5" cy="2304" rx="75.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6017.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbgrupofechacreacion</text>
+<rect x="6189.5" y="1986" width="248.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="6313.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbgrupomiembro</text>
+<line x1="6201.5" y1="2026" x2="6201.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="6201.5" y1="2052" x2="6211.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6313.5" cy="2052" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6313.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbgrupomiembroid</text>
+<line x1="6201.5" y1="2088" x2="6211.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6313.5" cy="2088" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6313.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbgrupoid</text>
+<line x1="6201.5" y1="2124" x2="6211.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6313.5" cy="2124" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6313.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="6201.5" y1="2160" x2="6211.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6313.5" cy="2160" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6313.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbgrupomiembrofechaingreso</text>
+<line x1="6201.5" y1="2196" x2="6211.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6313.5" cy="2196" rx="102.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6313.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbgrupomiembroultimomensajeid</text>
+<rect x="6497.5" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="6609.5" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbgrupomensaje</text>
+<line x1="6515.5" y1="2026" x2="6515.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="6515.5" y1="2052" x2="6525.5" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2052" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbgrupomensajeid</text>
+<line x1="6515.5" y1="2088" x2="6525.5" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2088" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbgrupoid</text>
+<line x1="6515.5" y1="2124" x2="6525.5" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2124" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilidemisor</text>
+<line x1="6515.5" y1="2160" x2="6525.5" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2160" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbgrupomensajetexto</text>
+<line x1="6515.5" y1="2196" x2="6525.5" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2196" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbgrupomensajefechahora</text>
+<line x1="6515.5" y1="2232" x2="6525.5" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2232" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbgrupomensajebloqueado</text>
+<line x1="6515.5" y1="2268" x2="6525.5" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2268" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbgrupomensajecategoria</text>
+<line x1="6515.5" y1="2304" x2="6525.5" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2304" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbgrupomensajescore</text>
+<line x1="6515.5" y1="2340" x2="6525.5" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6609.5" cy="2340" rx="84.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6609.5" y="2344" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomidaid</text>
+<rect x="648.0" y="1986" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="760.0" y="2011.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbcancionchat</text>
+<line x1="669.0" y1="2026" x2="669.0" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="669.0" y1="2052" x2="679.0" y2="2052" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2052" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2056" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbcancionchatid</text>
+<line x1="669.0" y1="2088" x2="679.0" y2="2088" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2088" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2092" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcancionid</text>
+<line x1="669.0" y1="2124" x2="679.0" y2="2124" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2124" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2128" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="669.0" y1="2160" x2="679.0" y2="2160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2160" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2164" text-anchor="middle" font-size="11" fill="#fff">tbcancionchattexto</text>
+<line x1="669.0" y1="2196" x2="679.0" y2="2196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2196" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2200" text-anchor="middle" font-size="11" fill="#fff">tbcancionchatfechahora</text>
+<line x1="669.0" y1="2232" x2="679.0" y2="2232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2232" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2236" text-anchor="middle" font-size="11" fill="#fff">tbcancionchatbloqueado</text>
+<line x1="669.0" y1="2268" x2="679.0" y2="2268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2268" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2272" text-anchor="middle" font-size="11" fill="#fff">tbcancionchatcategoria</text>
+<line x1="669.0" y1="2304" x2="679.0" y2="2304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2304" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2308" text-anchor="middle" font-size="11" fill="#fff">tbcancionchatscore</text>
+<line x1="669.0" y1="2340" x2="679.0" y2="2340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="760.0" cy="2340" rx="81.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="760.0" y="2344" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbcomidaid</text>
+<rect x="4769.5" y="834" width="236.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="4887.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbmicrolinkcontrol</text>
+<line x1="4781.5" y1="834" x2="4781.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="4781.5" y1="808" x2="4791.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4887.5" cy="808" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4887.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbmicrolinkcontrolid</text>
+<line x1="4781.5" y1="772" x2="4791.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4887.5" cy="772" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4887.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="4781.5" y1="736" x2="4791.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4887.5" cy="736" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4887.5" y="740" text-anchor="middle" font-size="11" fill="#fff">tbmicrolinkcontrolfecha</text>
+<line x1="4781.5" y1="700" x2="4791.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4887.5" cy="700" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4887.5" y="704" text-anchor="middle" font-size="11" fill="#fff">tbmicrolinkcontroltipo</text>
+<line x1="4781.5" y1="664" x2="4791.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="4887.5" cy="664" rx="96.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="4887.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbmicrolinkcontrolfechahora</text>
+<rect x="5409.5" y="834" width="280.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5549.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbreto</text>
+<line x1="5434.5" y1="834" x2="5434.5" y2="484" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5434.5" y1="808" x2="5444.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="808" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbretoid</text>
+<line x1="5434.5" y1="772" x2="5444.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="772" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="5434.5" y1="736" x2="5444.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="736" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="740" text-anchor="middle" font-size="11" fill="#fff">tbretotematica</text>
+<line x1="5434.5" y1="700" x2="5444.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="700" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="704" text-anchor="middle" font-size="11" fill="#fff">tbretodescripcion</text>
+<line x1="5434.5" y1="664" x2="5444.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="664" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbretofechainicioparticipacion</text>
+<line x1="5434.5" y1="628" x2="5444.5" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="628" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="632" text-anchor="middle" font-size="11" fill="#fff">tbretofechafinparticipacion</text>
+<line x1="5434.5" y1="592" x2="5444.5" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="592" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="596" text-anchor="middle" font-size="11" fill="#fff">tbretofechainiciovotacion</text>
+<line x1="5434.5" y1="556" x2="5444.5" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="556" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="560" text-anchor="middle" font-size="11" fill="#fff">tbretofechafinvotacion</text>
+<line x1="5434.5" y1="520" x2="5444.5" y2="520" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="520" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="524" text-anchor="middle" font-size="11" fill="#fff">tbretofechacreacion</text>
+<line x1="5434.5" y1="484" x2="5444.5" y2="484" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5549.5" cy="484" rx="105.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5549.5" y="488" text-anchor="middle" font-size="11" fill="#fff">tbretocerrado</text>
+<rect x="5749.5" y="834" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="5861.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbretofoto</text>
+<line x1="5761.5" y1="834" x2="5761.5" y2="160" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="5761.5" y1="808" x2="5771.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="808" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbretofotoid</text>
+<line x1="5761.5" y1="772" x2="5771.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="772" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbretoid</text>
+<line x1="5761.5" y1="736" x2="5771.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="736" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="740" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="5761.5" y1="700" x2="5771.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="700" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="704" text-anchor="middle" font-size="11" fill="#fff">tbretofototitulo</text>
+<line x1="5761.5" y1="664" x2="5771.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="664" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbretofotodescripcion</text>
+<line x1="5761.5" y1="628" x2="5771.5" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="628" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="632" text-anchor="middle" font-size="11" fill="#fff">tbretofotoarchivo</text>
+<line x1="5761.5" y1="592" x2="5771.5" y2="592" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="592" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="596" text-anchor="middle" font-size="11" fill="#fff">tbretofotofechasubida</text>
+<line x1="5761.5" y1="556" x2="5771.5" y2="556" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="556" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="560" text-anchor="middle" font-size="11" fill="#fff">tbretofotoactivo</text>
+<line x1="5761.5" y1="520" x2="5771.5" y2="520" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="520" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="524" text-anchor="middle" font-size="11" fill="#fff">tbretofotoancho</text>
+<line x1="5761.5" y1="484" x2="5771.5" y2="484" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="484" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="488" text-anchor="middle" font-size="11" fill="#fff">tbretofotoalto</text>
+<line x1="5761.5" y1="448" x2="5771.5" y2="448" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="448" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="452" text-anchor="middle" font-size="11" fill="#fff">tbretofotorelacionaspecto</text>
+<line x1="5761.5" y1="412" x2="5771.5" y2="412" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="412" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="416" text-anchor="middle" font-size="11" fill="#fff">tbretofotobrillo</text>
+<line x1="5761.5" y1="376" x2="5771.5" y2="376" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="376" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="380" text-anchor="middle" font-size="11" fill="#fff">tbretofotocontraste</text>
+<line x1="5761.5" y1="340" x2="5771.5" y2="340" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="340" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="344" text-anchor="middle" font-size="11" fill="#fff">tbretofotocolordominante</text>
+<line x1="5761.5" y1="304" x2="5771.5" y2="304" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="304" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="308" text-anchor="middle" font-size="11" fill="#fff">tbretofotocomposicion</text>
+<line x1="5761.5" y1="268" x2="5771.5" y2="268" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="268" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="272" text-anchor="middle" font-size="11" fill="#fff">tbretofotoestilo</text>
+<line x1="5761.5" y1="232" x2="5771.5" y2="232" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="232" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="236" text-anchor="middle" font-size="11" fill="#fff">tbretofotoaprobada</text>
+<line x1="5761.5" y1="196" x2="5771.5" y2="196" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="196" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="200" text-anchor="middle" font-size="11" fill="#fff">tbretofotomotivobloqueo</text>
+<line x1="5761.5" y1="160" x2="5771.5" y2="160" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="5861.5" cy="160" rx="90.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="5861.5" y="164" text-anchor="middle" font-size="11" fill="#fff">tbretofotoscoremoderacion</text>
+<rect x="6033.5" y="834" width="224.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="6145.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbretovoto</text>
+<line x1="6063.5" y1="834" x2="6063.5" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="6063.5" y1="808" x2="6073.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="808" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbretovotoid</text>
+<line x1="6063.5" y1="772" x2="6073.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="772" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbretofotoid</text>
+<line x1="6063.5" y1="736" x2="6073.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="736" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="740" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbretoid</text>
+<line x1="6063.5" y1="700" x2="6073.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="700" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="704" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="6063.5" y1="664" x2="6073.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="664" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbretovotoestrellas</text>
+<line x1="6063.5" y1="628" x2="6073.5" y2="628" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6145.5" cy="628" rx="72.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6145.5" y="632" text-anchor="middle" font-size="11" fill="#fff">tbretovotofechahora</text>
+<rect x="6317.5" y="834" width="200.0" height="40" rx="5" fill="#111" stroke="#fff" stroke-width="1.4"/>
+<text x="6417.5" y="859.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">tbretoinvitacion</text>
+<line x1="6329.5" y1="834" x2="6329.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<line x1="6329.5" y1="808" x2="6339.5" y2="808" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6417.5" cy="808" rx="78.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6417.5" y="812" text-anchor="middle" font-size="11" fill="#fff" text-decoration="underline" font-weight="bold">tbretoinvitacionid</text>
+<line x1="6329.5" y1="772" x2="6339.5" y2="772" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6417.5" cy="772" rx="78.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6417.5" y="776" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbretoid</text>
+<line x1="6329.5" y1="736" x2="6339.5" y2="736" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6417.5" cy="736" rx="78.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6417.5" y="740" text-anchor="middle" font-size="11" fill="#fff" font-style="italic">tbperfilid</text>
+<line x1="6329.5" y1="700" x2="6339.5" y2="700" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6417.5" cy="700" rx="78.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6417.5" y="704" text-anchor="middle" font-size="11" fill="#fff">tbretoinvitacionfecha</text>
+<line x1="6329.5" y1="664" x2="6339.5" y2="664" stroke="#d8d8d8" stroke-width="1.2"/>
+<ellipse cx="6417.5" cy="664" rx="78.0" ry="14" fill="#111" stroke="#d8d8d8" stroke-width="1.2"/>
+<text x="6417.5" y="668" text-anchor="middle" font-size="11" fill="#fff">tbretoinvitacionleida</text>
+<text x="40" y="52" font-size="26" font-weight="bold" fill="#fff">DER UNAMATCH — dbrrsscita</text>
+<text x="40" y="78" font-size="13" fill="#bbb">Subrayado = PK · Cursiva = FK · Línea punteada = referencia polimórfica (categoría + referenciaid) · 1 / N = cardinalidad</text>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpmNTdkNWRmOS04OWI4LTQxZGQtOTIxNi04ZWZkNjIyMjJkN2EAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaOUeFiNCA+XIjrF1kg2pbUcAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDphOGNiMWFhZS0wY2U0LTQwYWMtOGFlOC0yZTA2NTA2ZDBhZWVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoYDBquk0kMBJx4HeKaj42jQAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggvo8qNQLNqQyoo7nUZOHXwZXHW8n3SMbnz3soBW/98bWkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaCfkK8162HCtf6q00EaJduEAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRKAAAAAAAAAAAAAGRoYXNoWCDIF/wBEk+c+/5SWC3e7lGM+VX2yej2y81OzKPuetBdMGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBoAAemnZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmY1N2Q1ZGY5LTg5YjgtNDFkZC05MjE2LThlZmQ2MjIyMmQ3YS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjNlMTA3YTNiLWY4MTAtNDkwYy05MTg0LTY1ZDQzMDUwZjliZXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCC+jyo1As2pDKijudRk4dfBlcdbyfdIxufPeygFb/3xtaJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggdfIS5wxsjoDn3hakCjZo12Onj86GFQFmVPW5aTbPLh+iY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggYcmrTKyXd8dVlUJwS2c4NyLTMiB/eNUXVRLPDcuPKHZ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQOZ6R5NBZoyAAULl38hH2ssHVZ0gG8hujP7G0zfRmB/K4KMh8QbMnJMzyqgR/25ocvjYJ6uf/A71ajyLNQIJUdw=</c2pa:manifest></metadata></svg>
